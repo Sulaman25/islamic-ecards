@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  emailVerified    DateTime?
+  name             String?
+  image            String?
+  locale           String    @default("en")
+  plan             Plan      @default(FREE)
+  stripeCustomerId String?
+  subscriptionId   String?
+  subscriptionEnd  DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  sentCards SentCard[]
+  contacts  Contact[]
+  reminders Reminder[]
+  accounts  Account[]
+  sessions  Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Occasion {
+  id        String           @id @default(cuid())
+  slug      String           @unique
+  nameEn    String
+  nameAr    String
+  category  OccasionCategory
+  isActive  Boolean          @default(true)
+  sortOrder Int              @default(0)
+
+  templates CardTemplate[]
+}
+
+model CardTemplate {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  titleEn       String
+  titleAr       String
+  occasionId    String
+  animationFile String
+  bgImageUrl    String
+  bgColor       String   @default("#1a3a2a")
+  isPremium     Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  occasion  Occasion   @relation(fields: [occasionId], references: [id])
+  sentCards SentCard[]
+}
+
+model SentCard {
+  id            String  @id @default(cuid())
+  viewToken     String  @unique @default(cuid())
+  senderId      String
+  templateId    String
+  senderName    String
+  recipientName String
+  customMessage String  @db.Text
+  selectedVerse String?
+  verseTextAr   String? @db.Text
+  verseTextEn   String? @db.Text
+  fontStyle     String  @default("amiri")
+  aiGenerated   Boolean @default(false)
+
+  channel        DeliveryChannel
+  recipientEmail String?
+  recipientPhone String?
+  scheduledAt    DateTime?
+  sentAt         DateTime?
+  status         DeliveryStatus @default(PENDING)
+  deliveryJobId  String?
+
+  viewCount     Int       @default(0)
+  firstViewedAt DateTime?
+  createdAt     DateTime  @default(now())
+
+  sender   User         @relation(fields: [senderId], references: [id])
+  template CardTemplate @relation(fields: [templateId], references: [id])
+}
+
+model Contact {
+  id        String    @id @default(cuid())
+  userId    String
+  name      String
+  nameAr    String?
+  email     String?
+  phone     String?
+  birthday  DateTime?
+  notes     String?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Reminder {
+  id         String   @id @default(cuid())
+  userId     String
+  contactId  String?
+  occasion   String
+  remindAt   DateTime
+  repeat     Boolean  @default(true)
+  repeatUnit String?
+  isSent     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Plan {
+  FREE
+  MONTHLY
+  ANNUAL
+}
+
+enum OccasionCategory {
+  EID
+  RAMADAN
+  LIFE_EVENT
+  WEEKLY
+  GENERAL
+}
+
+enum DeliveryChannel {
+  EMAIL
+  SMS
+  WHATSAPP
+}
+
+enum DeliveryStatus {
+  PENDING
+  SCHEDULED
+  SENT
+  DELIVERED
+  FAILED
+  VIEWED
+}
