@@ -11,7 +11,7 @@ export function CustomCursor() {
     if (!window.matchMedia("(pointer: fine)").matches) return;
     document.body.classList.add("v3-page");
 
-    let raf: number;
+    let raf: number = 0;
     let gx = 0, gy = 0;
 
     const onMove = (e: MouseEvent) => {
