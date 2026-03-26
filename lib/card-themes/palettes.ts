@@ -16,8 +16,8 @@ const PALETTES: Record<string, CardPalette> = {
   general:          { background: '#080418', primary: '#a880f0', accent: '#9060e0', text: '#c0a8e8' },
 }
 
-const DEFAULT_PALETTE: CardPalette = PALETTES.general
+const DEFAULT_PALETTE: CardPalette = { ...PALETTES.general }
 
 export function getPalette(occasionSlug: string): CardPalette {
-  return PALETTES[occasionSlug] ?? DEFAULT_PALETTE
+  return { ...(PALETTES[occasionSlug] ?? DEFAULT_PALETTE) }
 }
