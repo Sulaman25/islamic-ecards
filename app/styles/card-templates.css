@@ -1,0 +1,64 @@
+/* app/styles/card-templates.css
+   Base styles for the 6 AI card templates.
+   All accent overrides must use .accent-* selectors (never modify these). */
+
+/* 1. Aurora Float — drifting colour bands */
+.tmpl-aurora-float {
+  background: linear-gradient(135deg, #0d0d2b, #1a1a4a, #0d2b1a);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.tmpl-aurora-float::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(45deg, rgba(0,120,255,0.15) 0%, rgba(100,0,255,0.1) 50%, rgba(0,200,120,0.1) 100%);
+  animation: aurora-drift 8s ease-in-out infinite alternate;
+}
+@keyframes aurora-drift {
+  from { transform: translateX(-10%) skewX(-5deg); }
+  to   { transform: translateX(10%)  skewX(5deg);  }
+}
+
+/* 2. Starfield Drift — dark space, twinkling stars */
+.tmpl-starfield-drift {
+  background: radial-gradient(ellipse at 50% 20%, #0a0a1e 0%, #000010 100%);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 3. Calligraphy Reveal — dark bg, gold text focus */
+.tmpl-calligraphy-reveal {
+  background: linear-gradient(160deg, #0d0d0d, #1a1000);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.tmpl-calligraphy-reveal::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(240,208,128,0.08), transparent 70%);
+}
+
+/* 4. Gradient Pulse — breathing gradient */
+.tmpl-gradient-pulse {
+  background: linear-gradient(135deg, #1a0a2e, #2d1b4a, #0d2a1a);
+  position: relative; overflow: hidden;
+  animation: gradient-breathe 6s ease-in-out infinite alternate;
+  display: flex; align-items: center; justify-content: center;
+}
+@keyframes gradient-breathe {
+  from { filter: brightness(0.9); }
+  to   { filter: brightness(1.1); }
+}
+
+/* 5. Glass Layer — glassmorphism stack */
+.tmpl-glass-layer {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 6. Ink Wash — painterly, organic edges */
+.tmpl-ink-wash {
+  background: radial-gradient(ellipse at 30% 70%, #1a0a00, #0a0a1a 60%, #001a0a);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
