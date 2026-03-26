@@ -1,0 +1,7 @@
+{
+  "crons": [
+    { "path": "/api/send/scheduled",   "schedule": "* * * * *"    },
+    { "path": "/api/agents/daily-cards",   "schedule": "0 4 * * *"   },
+    { "path": "/api/cron/publish-pending", "schedule": "*/5 * * * *" }
+  ]
+}
