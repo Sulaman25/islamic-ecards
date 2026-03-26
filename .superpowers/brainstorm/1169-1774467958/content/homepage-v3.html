@@ -31,8 +31,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
-  cursor: none; /* hide default cursor — we use custom */
+  /* cursor: none applied only for pointer devices — see @media block below */
 }
+
+@media (pointer: fine) { body { cursor: none; } }
 
 /* ═══════════════════════════════════════════
    ① CUSTOM CURSOR GLOW
@@ -575,7 +577,7 @@ footer {
 .reel-card.reel-center { transform: scale(1.15); }
 @keyframes reel-scroll {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(calc(-92px * 5)); }
+  100% { transform: translateX(-460px); }
 }
 
 /* ④ Nasheed toggle */
@@ -864,6 +866,8 @@ footer {
     <h2 class="section-title">New This Week</h2>
     <a class="section-link" href="#">View all new →</a>
   </div>
+  <!-- New This Week grid -->
+  <div class="cards-grid" id="new-this-week-grid"></div>
   <!-- ⑦ Masonry grid -->
   <div class="masonry-grid" id="masonry-grid"></div>
 </section>
@@ -949,12 +953,14 @@ const dot  = document.getElementById('cursor-dot');
 const ring = document.getElementById('cursor-ring');
 const glow = document.getElementById('cursor-glow');
 let mx = -500, my = -500;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
-  ring.style.left = mx + 'px'; ring.style.top = my + 'px';
-  glow.style.left = mx + 'px'; glow.style.top = my + 'px';
-});
+if (window.matchMedia('(pointer: fine)').matches) {
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
+    ring.style.left = mx + 'px'; ring.style.top = my + 'px';
+    glow.style.left = mx + 'px'; glow.style.top = my + 'px';
+  });
+}
 document.addEventListener('mousedown', () => { dot.style.transform = 'translate(-50%,-50%) scale(0.7)'; });
 document.addEventListener('mouseup',   () => { dot.style.transform = 'translate(-50%,-50%) scale(1)'; });
 
@@ -962,7 +968,7 @@ document.addEventListener('mouseup',   () => { dot.style.transform = 'translate(
    ⑤ HIJRI DATE
 ══════════════════════════════════════════════════ */
 function toHijri(date) {
-  // Accurate Hijri conversion algorithm (Kuwaiti algorithm)
+  // Kuwaiti algorithm (direct formula)
   const JD = Math.floor((14 + Math.floor((date.getMonth() + 1 + 9) / 12)) / 4)
            + 367 * Math.floor((date.getMonth() + 1 + 9) / 12)
            - Math.floor(3 * Math.floor((date.getFullYear() + Math.floor((date.getMonth() + 1 + 9) / 12) - 1) / 100 + 1) / 4)
@@ -972,34 +978,14 @@ function toHijri(date) {
            + Math.floor(date.getFullYear() / 4)
            + 1721028.5 - 0.5;
 
-  const Z = Math.floor(JD + 0.5);
-  const A = Math.floor((Z - 1867216.25) / 36524.25);
-  const AA = Z + 1 + A - Math.floor(A / 4);
-  const B = AA + 1524;
-  const C = Math.floor((B - 122.1) / 365.25);
-  const D = Math.floor(365.25 * C);
-  const E = Math.floor((B - D) / 30.6001);
-
-  const gDay   = B - D - Math.floor(30.6001 * E);
-  const gMonth = E < 14 ? E - 1 : E - 13;
-  const gYear  = gMonth > 2 ? C - 4716 : C - 4715;
-
-  let hYear  = Math.floor((11 * gYear + 3) / 30) + Math.floor(gYear / 4) - Math.floor(gYear / 100) + Math.floor(gYear / 400) + gDay + Math.floor(275 * gMonth / 9) - 38 - 1948440 + 385;
-  let hMonth = 0;
-
-  if (hYear < 0) { hYear = -1 - hYear; }
-
-  let hDay = hYear % 30;
-  hYear = Math.floor(hYear / 30);
-
-  // Simpler direct formula
   const jd = Math.floor(JD) + 0.5;
   const l  = Math.floor(jd) - 1948440 + 10632;
   const n  = Math.floor((l - 1) / 10631);
   const ll = l - 10631 * n + 354;
   const jj = Math.floor((10985 - ll) / 5316) * Math.floor(50 * ll / 17719) + Math.floor(ll / 5670) * Math.floor(43 * ll / 15238);
   const lll = ll - Math.floor((30 - jj) / 15) * Math.floor(17719 * jj / 50) - Math.floor(jj / 16) * Math.floor(15238 * jj / 43) + 29;
-  const mm  = Math.floor(24 * lll / 709);
+  let mm    = Math.floor(24 * lll / 709);
+  if (!mm || mm < 1 || mm > 12) mm = 1; // fallback to Muharram
   const dd  = lll - Math.floor(709 * mm / 24);
   const yy  = 30 * n + jj - 30;
 
@@ -1248,7 +1234,7 @@ document.getElementById('popular-grid').innerHTML = popularCards.map((c,i) => `
   </div>`).join('');
 
 /* NEW THIS WEEK */
-document.getElementById('cards-grid').innerHTML = newCards.map(c => `
+document.getElementById('new-this-week-grid').innerHTML = newCards.map(c => `
   <div class="ecard" style="--card-gradient:${c.gradient};--card-glow:${c.glow};--card-c:${c.c};">
     <div class="card-visual" style="background:${c.gradient}">${c.emoji}</div>
     <div class="card-overlay"></div>
@@ -1325,6 +1311,20 @@ document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
     d.textContent = card.emoji || '🌙';
     strip.appendChild(d);
   });
+  // Measure and set the reel scroll distance
+  requestAnimationFrame(function() {
+    var s = document.querySelector('.card-reel-strip');
+    if (s) {
+      var half = s.scrollWidth / 2;
+      var styleId = 'reel-dynamic-style';
+      var existing = document.getElementById(styleId);
+      if (existing) existing.remove();
+      var el = document.createElement('style');
+      el.id = styleId;
+      el.textContent = '@keyframes reel-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-' + half + 'px); } }';
+      document.head.appendChild(el);
+    }
+  });
 })();
 
 // ③ Parallax depth layers
@@ -1371,7 +1371,7 @@ function v3ToggleNasheed() {
 }
 // Restore state across page loads
 if (sessionStorage.getItem('nasheedOn') === '1') {
-  document.addEventListener('DOMContentLoaded', function() { v3ToggleNasheed(); });
+  v3ToggleNasheed();
 }
 
 // ⑤ Occasion countdown
@@ -1444,7 +1444,7 @@ if (sessionStorage.getItem('nasheedOn') === '1') {
 })();
 
 function v3ScrollToCards() {
-  var el = document.querySelector('[id*="cards"], .cards-section, .section-cards');
+  var el = document.getElementById('masonry-grid') || document.querySelector('.masonry-grid');
   if (el) el.scrollIntoView({ behavior: 'smooth' });
 }
 
