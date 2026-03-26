@@ -1,4 +1,5 @@
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
@@ -406,6 +407,96 @@ async function main() {
   }
 
   console.log("Seeded card templates");
+
+  // Seed 5 demo cards — one per animation style
+  const animationCards = [
+    {
+      slug:           'eid-portal-demo',
+      titleEn:        'Eid al-Fitr Mubarak',
+      titleAr:        'عِيدٌ مُبَارَك',
+      occasionSlug:   'eid-ul-fitr',
+      animationStyle: 'portal',
+      bgColor:        '#050210',
+      animationFile:  '',
+      bgImageUrl:     '',
+      isPremium:      false,
+      sortOrder:      1,
+    },
+    {
+      slug:           'ramadan-lantern-demo',
+      titleEn:        'Ramadan Kareem — may this blessed month bring you peace and light',
+      titleAr:        'رَمَضَان كَرِيم',
+      occasionSlug:   'ramadan',
+      animationStyle: 'lantern',
+      bgColor:        '#140820',
+      animationFile:  '',
+      bgImageUrl:     '',
+      isPremium:      false,
+      sortOrder:      2,
+    },
+    {
+      slug:           'hajj-doors-demo',
+      titleEn:        'May Allah accept your pilgrimage and grant you Jannatul Firdaus',
+      titleAr:        'حَجٌّ مَبْرُور',
+      occasionSlug:   'hajj',
+      animationStyle: 'doors',
+      bgColor:        '#080808',
+      animationFile:  '',
+      bgImageUrl:     '',
+      isPremium:      false,
+      sortOrder:      3,
+    },
+    {
+      slug:           'mawlid-portal-demo',
+      titleEn:        'Blessings upon the Prophet ﷺ on this most blessed day',
+      titleAr:        'مَوْلِدٌ مُبَارَك',
+      occasionSlug:   'mawlid',
+      animationStyle: 'portal',
+      bgColor:        '#040e08',
+      animationFile:  '',
+      bgImageUrl:     '',
+      isPremium:      false,
+      sortOrder:      4,
+    },
+    {
+      slug:           'jumuah-envelope-demo',
+      titleEn:        'May your Friday be filled with blessings, peace and answered duaas',
+      titleAr:        'جُمُعَةٌ مُبَارَكَة',
+      occasionSlug:   'jummah',
+      animationStyle: 'envelope',
+      bgColor:        '#040c10',
+      animationFile:  '',
+      bgImageUrl:     '',
+      isPremium:      false,
+      sortOrder:      5,
+    },
+  ];
+
+  for (const card of animationCards) {
+    const occasion = await prisma.occasion.findUnique({ where: { slug: card.occasionSlug } });
+    if (!occasion) { console.warn(`Occasion not found: ${card.occasionSlug}`); continue; }
+
+    await prisma.cardTemplate.upsert({
+      where:  { slug: card.slug },
+      update: { animationStyle: card.animationStyle, status: 'published', isActive: true },
+      create: {
+        slug:           card.slug,
+        titleEn:        card.titleEn,
+        titleAr:        card.titleAr,
+        occasionId:     occasion.id,
+        animationFile:  card.animationFile,
+        bgImageUrl:     card.bgImageUrl,
+        bgColor:        card.bgColor,
+        isPremium:      card.isPremium,
+        isActive:       true,
+        status:         'published',
+        sortOrder:      card.sortOrder,
+        animationStyle: card.animationStyle,
+      },
+    });
+    console.log(`✓ Seeded card: ${card.slug}`);
+  }
+
   console.log("Database seeding complete!");
 }
 
