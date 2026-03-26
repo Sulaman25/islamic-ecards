@@ -960,9 +960,9 @@ if (window.matchMedia('(pointer: fine)').matches) {
     ring.style.left = mx + 'px'; ring.style.top = my + 'px';
     glow.style.left = mx + 'px'; glow.style.top = my + 'px';
   });
+  document.addEventListener('mousedown', () => { dot.style.transform = 'translate(-50%,-50%) scale(0.7)'; });
+  document.addEventListener('mouseup',   () => { dot.style.transform = 'translate(-50%,-50%) scale(1)'; });
 }
-document.addEventListener('mousedown', () => { dot.style.transform = 'translate(-50%,-50%) scale(0.7)'; });
-document.addEventListener('mouseup',   () => { dot.style.transform = 'translate(-50%,-50%) scale(1)'; });
 
 /* ══════════════════════════════════════════════════
    ⑤ HIJRI DATE
