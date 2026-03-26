@@ -3,7 +3,9 @@ import type { AnimationStyle } from '@/types/card'
 
 const ANIMATION_MAP: Record<string, AnimationStyle> = {
   'eid-al-fitr':      'portal',
+  'eid-ul-fitr':      'portal',
   'eid-al-adha':      'doors',
+  'eid-ul-adha':      'doors',
   eid:                'portal',
   ramadan:            'lantern',
   hajj:               'doors',

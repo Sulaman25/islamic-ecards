@@ -4,7 +4,9 @@ import type { CardPalette } from '@/types/card'
 const PALETTES: Record<string, CardPalette> = {
   eid:              { background: '#050210', primary: '#f0d080', accent: '#4ecdc4', text: '#c8b8d0' },
   'eid-al-fitr':    { background: '#050210', primary: '#f0d080', accent: '#4ecdc4', text: '#c8b8d0' },
+  'eid-ul-fitr':    { background: '#050210', primary: '#f0d080', accent: '#4ecdc4', text: '#c8b8d0' },
   'eid-al-adha':    { background: '#0c0604', primary: '#e8a020', accent: '#c08010', text: '#d0b890' },
+  'eid-ul-adha':    { background: '#0c0604', primary: '#e8a020', accent: '#c08010', text: '#d0b890' },
   ramadan:          { background: '#140820', primary: '#ff9040', accent: '#c060a0', text: '#d0b0c8' },
   hajj:             { background: '#080808', primary: '#d4a820', accent: '#c0a030', text: '#c8c0a0' },
   mawlid:           { background: '#040e08', primary: '#40d080', accent: '#20c060', text: '#a0d0b0' },
