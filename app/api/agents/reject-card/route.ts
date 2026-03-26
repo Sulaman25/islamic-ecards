@@ -1,12 +1,16 @@
 // app/api/agents/reject-card/route.ts
-import { createHmac } from 'crypto';
+import { createHmac, timingSafeEqual } from 'crypto';
 import { prisma } from '@/lib/db/prisma';
 
 function verifyToken(cardId: string, token: string): boolean {
   const expected = createHmac('sha256', process.env.AUTH_SECRET!)
     .update(cardId)
     .digest('hex');
-  return expected === token;
+  try {
+    return timingSafeEqual(Buffer.from(expected), Buffer.from(token));
+  } catch {
+    return false;
+  }
 }
 
 export async function GET(request: Request) {
