@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noor Cards — Islamic Ecards</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #f0d080;
+  --gold-dim: rgba(240,208,128,0.12);
+  --gold-glow: rgba(240,208,128,0.35);
+  --teal: #4ecdc4;
+  --rose: #ff6b9d;
+  --violet: #a78bfa;
+  --bg: #03020a;
+  --surface: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text: #e7e5e4;
+  --text-dim: rgba(231,229,228,0.55);
+  --nav-h: 64px;
+  --radius: 16px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none; /* hide default cursor — we use custom */
+}
+
+/* ═══════════════════════════════════════════
+   ① CUSTOM CURSOR GLOW
+═══════════════════════════════════════════ */
+#cursor-dot {
+  position: fixed; pointer-events: none; z-index: 9999;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold);
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease, opacity 0.2s;
+  box-shadow: 0 0 8px 2px rgba(240,208,128,0.8);
+}
+#cursor-glow {
+  position: fixed; pointer-events: none; z-index: 9998;
+  width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,208,128,0.07) 0%, transparent 65%);
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s ease;
+}
+#cursor-ring {
+  position: fixed; pointer-events: none; z-index: 9997;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(240,208,128,0.45);
+  transform: translate(-50%, -50%);
+  transition: transform 0.14s ease, width 0.2s, height 0.2s, border-color 0.2s;
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring,
+body:has(.ecard:hover) #cursor-ring,
+body:has(.popular-card:hover) #cursor-ring {
+  width: 56px; height: 56px;
+  border-color: rgba(240,208,128,0.8);
+}
+
+/* ═══════════════════════════════════════════
+   ② SOCIAL PROOF TICKER
+═══════════════════════════════════════════ */
+.ticker-bar {
+  position: relative; z-index: 3;
+  background: linear-gradient(90deg,
+    rgba(240,208,128,0.06) 0%,
+    rgba(78,205,196,0.04) 50%,
+    rgba(240,208,128,0.06) 100%);
+  border-bottom: 1px solid rgba(240,208,128,0.1);
+  height: 36px; overflow: hidden;
+  display: flex; align-items: center;
+  margin-top: var(--nav-h);
+}
+.ticker-label {
+  flex-shrink: 0;
+  padding: 0 16px 0 20px;
+  font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--gold); opacity: 0.8;
+  border-right: 1px solid rgba(240,208,128,0.15);
+  white-space: nowrap;
+}
+.ticker-track-wrap { flex: 1; overflow: hidden; position: relative; }
+.ticker-track-wrap::before,
+.ticker-track-wrap::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 1;
+  pointer-events: none;
+}
+.ticker-track-wrap::before { left: 0; background: linear-gradient(90deg, rgba(3,2,10,0.95), transparent); }
+.ticker-track-wrap::after  { right: 0; background: linear-gradient(-90deg, rgba(3,2,10,0.95), transparent); }
+.ticker-track {
+  display: flex; align-items: center; gap: 0;
+  animation: ticker-scroll 40s linear infinite;
+  white-space: nowrap;
+}
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker-event {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 0 28px; font-size: 0.78rem; color: var(--text-dim);
+}
+.ticker-event .avatar {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; flex-shrink: 0;
+}
+.ticker-event .name { color: var(--text); font-weight: 500; }
+.ticker-event .card-name { color: var(--gold); opacity: 0.85; }
+.ticker-event .time { opacity: 0.5; font-size: 0.7rem; }
+.ticker-sep { color: rgba(255,255,255,0.12); }
+
+/* ═══════════════════════════════════════════
+   AURORA BACKGROUND
+═══════════════════════════════════════════ */
+.aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.aurora-band {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); opacity: 0.07;
+  animation: auroradrift var(--dur) ease-in-out infinite alternate;
+}
+@keyframes auroradrift {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(var(--tx), var(--ty)) scale(1.25); }
+}
+
+/* STARFIELD */
+#stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.s { position: absolute; border-radius: 50%; background: #fff; animation: tw var(--d) ease-in-out infinite alternate; }
+@keyframes tw { from { opacity: var(--a); transform: scale(0.7); } to { opacity: var(--b); transform: scale(1.4); } }
+
+/* SHOOTING STARS */
+.shoot {
+  position: fixed; z-index: 0; pointer-events: none;
+  width: 2px; height: 2px; background: #fff; border-radius: 50%;
+  box-shadow: 0 0 6px 2px rgba(255,255,255,0.6);
+  animation: shoot var(--sd) linear infinite;
+  animation-delay: var(--sdel);
+}
+.shoot::after {
+  content: ''; position: absolute; width: 60px; height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.5), transparent);
+  transform: translateX(-60px);
+}
+@keyframes shoot {
+  0% { opacity:0; transform:translate(0,0); }
+  5% { opacity:1; }
+  100%{ opacity:0; transform:translate(var(--sx),var(--sy)); }
+}
+
+/* ═══════════════════════════════════════════
+   STICKY NAV (with Hijri date)
+═══════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  background: rgba(3,2,10,0.85);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--gold) 0%, #c8a84b 100%);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-size: 20px; box-shadow: 0 0 16px var(--gold-glow);
+}
+.nav-name {
+  font-size: 1.15rem; font-weight: 700;
+  background: linear-gradient(90deg, var(--gold), #fff 60%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+.nav-name span { font-size: 0.7em; opacity: 0.7; display: block; font-weight: 400; }
+
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-links a {
+  color: var(--text-dim); text-decoration: none;
+  padding: 6px 12px; border-radius: 8px;
+  font-size: 0.88rem; transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: var(--surface); }
+
+/* ⑤ HIJRI DATE PILL */
+.hijri-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(240,208,128,0.07);
+  border: 1px solid rgba(240,208,128,0.18);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 0.76rem; color: var(--gold); opacity: 0.85;
+  white-space: nowrap;
+}
+.hijri-pill .moon-icon { font-size: 0.85rem; }
+
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+.btn-nav-ghost {
+  background: none; border: 1px solid var(--border);
+  color: var(--text-dim); padding: 7px 16px; border-radius: 8px;
+  font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+}
+.btn-nav-ghost:hover { border-color: var(--gold-dim); color: var(--gold); }
+.btn-nav-cta {
+  background: linear-gradient(135deg, #b8860b, var(--gold));
+  color: #0a0700; padding: 7px 18px; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s;
+  box-shadow: 0 0 12px rgba(240,208,128,0.25);
+}
+.btn-nav-cta:hover { box-shadow: 0 0 20px rgba(240,208,128,0.45); transform: translateY(-1px); }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  position: relative; z-index: 2;
+  padding: 72px 32px 60px;
+  text-align: center; overflow: hidden;
+}
+.hero-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.14) 0%, transparent 60%);
+}
+.moon-stage {
+  width: 100px; height: 100px; margin: 0 auto 28px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.moon-halo {
+  position: absolute; inset: -14px; border-radius: 50%;
+  border: 1px solid rgba(240,208,128,0.12);
+  animation: halo-pulse 3.5s ease-in-out infinite alternate;
+}
+.moon-halo2 {
+  position: absolute; inset: -28px; border-radius: 50%;
+  border: 1px solid rgba(240,208,128,0.06);
+  animation: halo-pulse 3.5s ease-in-out infinite alternate;
+  animation-delay: -1.5s;
+}
+@keyframes halo-pulse {
+  from { opacity: 0.4; transform: scale(0.97); }
+  to   { opacity: 1;   transform: scale(1.03); }
+}
+.moon-svg {
+  font-size: 52px; line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(240,208,128,0.7));
+  animation: moon-float 4s ease-in-out infinite;
+}
+@keyframes moon-float {
+  0%,100% { transform: translateY(0) rotate(-5deg); }
+  50%     { transform: translateY(-8px) rotate(5deg); }
+}
+.hero-eyebrow {
+  font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); opacity: 0.8; margin-bottom: 14px;
+}
+.hero-title {
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -1px; margin-bottom: 12px;
+}
+.hero-title .line1 {
+  background: linear-gradient(90deg, #fff 0%, var(--gold) 50%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer { to { background-position: 200% center; } }
+.hero-title .line2 {
+  color: rgba(255,255,255,0.4); font-weight: 300;
+  font-size: 0.55em; display: block; margin-top: 6px; letter-spacing: 2px;
+}
+
+/* ④ TYPEWRITER HERO SUB */
+.hero-sub {
+  font-size: 1.05rem; color: var(--text-dim);
+  max-width: 520px; margin: 0 auto 36px; line-height: 1.6;
+  min-height: 2.4em;
+}
+.typewriter-wrap {
+  display: inline;
+}
+.typewriter-text { color: var(--gold); font-weight: 500; }
+.typewriter-cursor {
+  display: inline-block; width: 2px; height: 1em;
+  background: var(--gold); margin-left: 2px; vertical-align: text-bottom;
+  animation: blink 0.75s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.hero-search {
+  display: flex; align-items: center; gap: 0;
+  max-width: 560px; margin: 0 auto 20px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50px; padding: 6px 6px 6px 20px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.hero-search:focus-within {
+  border-color: rgba(240,208,128,0.4);
+  box-shadow: 0 0 0 4px rgba(240,208,128,0.06);
+}
+.hero-search input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 0.95rem; }
+.hero-search input::placeholder { color: var(--text-dim); }
+.search-btn {
+  background: linear-gradient(135deg, #b8860b, var(--gold));
+  border: none; color: #0a0700; font-weight: 700;
+  padding: 10px 22px; border-radius: 40px; cursor: pointer;
+  font-size: 0.88rem; transition: all 0.2s;
+}
+.search-btn:hover { box-shadow: 0 0 16px rgba(240,208,128,0.4); }
+
+.trending-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 48px; }
+.tag {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-dim); padding: 5px 14px; border-radius: 20px;
+  font-size: 0.8rem; cursor: pointer; transition: all 0.2s; text-decoration: none;
+}
+.tag:hover { border-color: var(--gold-dim); color: var(--gold); background: rgba(240,208,128,0.05); }
+.tag.active { background: rgba(240,208,128,0.1); border-color: rgba(240,208,128,0.35); color: var(--gold); }
+
+/* ═══════════════════════════════════════════
+   ③ TRUST BAR — Animated Counters
+═══════════════════════════════════════════ */
+.trust-bar {
+  position: relative; z-index: 2;
+  display: flex; justify-content: center; gap: 40px;
+  padding: 18px 32px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-dim); }
+.trust-item .icon { font-size: 1.1rem; }
+.trust-item strong { color: var(--text); font-weight: 700; font-size: 0.95rem; }
+.counter { display: inline-block; }
+.dot-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--border); }
+
+/* ═══════════════════════════════════════════
+   SECTIONS & LAYOUT
+═══════════════════════════════════════════ */
+.section { position: relative; z-index: 2; padding: 56px 32px; }
+.section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+.section-title { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.section-title::before {
+  content: ''; display: inline-block; width: 3px; height: 18px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+}
+.section-link { font-size: 0.82rem; color: var(--gold); text-decoration: none; opacity: 0.7; transition: opacity 0.2s; }
+.section-link:hover { opacity: 1; }
+
+/* OCCASION MEDALLIONS */
+.medallions { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+.medallions::-webkit-scrollbar { display: none; }
+.medallion { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: transform 0.2s; }
+.medallion:hover { transform: translateY(-4px); }
+.medallion:hover .med-circle { box-shadow: 0 0 24px var(--med-glow); }
+.med-circle {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; transition: all 0.3s; position: relative; overflow: hidden;
+}
+.med-circle::before {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), transparent 70%);
+}
+.medallion.active .med-circle { background: rgba(240,208,128,0.1); border-color: rgba(240,208,128,0.4); box-shadow: 0 0 24px rgba(240,208,128,0.25); }
+.med-label { font-size: 0.75rem; color: var(--text-dim); text-align: center; max-width: 72px; line-height: 1.3; }
+.medallion.active .med-label { color: var(--gold); }
+
+/* FEATURED CAROUSEL */
+.featured-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+.featured-row::-webkit-scrollbar { display: none; }
+.featured-card {
+  flex: 0 0 280px; border-radius: var(--radius); overflow: hidden; position: relative;
+  cursor: pointer; background: var(--surface); border: 1px solid var(--border);
+  transition: transform 0.3s cubic-bezier(0.23,1,0.32,1), box-shadow 0.3s;
+  height: 200px;
+}
+.featured-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px var(--card-glow); }
+.featured-card .card-bg { position: absolute; inset: 0; background: var(--card-gradient); opacity: 0.9; }
+.featured-card .card-content {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 20px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 55%);
+}
+.featured-card .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.featured-card .card-sub { font-size: 0.75rem; opacity: 0.65; }
+.featured-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: var(--gold); color: #0a0700;
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 1px;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+}
+
+/* CARD GRID */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.ecard {
+  border-radius: var(--radius); overflow: hidden; position: relative; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); transition: border-color 0.3s;
+  aspect-ratio: 4/3; transform-style: preserve-3d;
+}
+.ecard:hover { border-color: var(--card-c); }
+.ecard:hover .card-overlay { opacity: 1; }
+.ecard:hover .card-actions { transform: translateY(0); opacity: 1; }
+.card-visual {
+  position: absolute; inset: 0; background: var(--card-gradient);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; transition: transform 0.4s;
+}
+.ecard:hover .card-visual { transform: scale(1.05); }
+.card-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(0,0,0,0.75) 0%,transparent 50%); opacity:0; transition:opacity 0.3s; }
+.card-meta {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 14px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent);
+  transform: translateY(8px); transition: transform 0.3s;
+}
+.ecard:hover .card-meta { transform: translateY(0); }
+.card-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 3px; }
+.card-occasion { font-size: 0.72rem; color: var(--text-dim); }
+.card-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
+.badge { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 7px; border-radius: 4px; }
+.badge-animated { background: rgba(78,205,196,0.85); color: #001a18; }
+.badge-new      { background: rgba(255,107,157,0.85); color: #1a000d; }
+.badge-audio    { background: rgba(167,139,250,0.85); color: #0d0020; }
+.badge-popular  { background: rgba(240,208,128,0.85); color: #1a1000; }
+.badge-premium  { background: linear-gradient(135deg,#b8860b,#f0d080); color: #0a0700; }
+.badge-hot      { background: rgba(255,80,50,0.85); color: #fff; }
+.card-actions {
+  position: absolute; bottom: 44px; left: 0; right: 0; padding: 0 12px;
+  display: flex; gap: 8px;
+  transform: translateY(8px); opacity: 0;
+  transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+}
+.btn-preview, .btn-send {
+  flex: 1; padding: 8px; border-radius: 8px;
+  font-size: 0.78rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s;
+}
+.btn-preview { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+.btn-preview:hover { background: rgba(255,255,255,0.2); }
+.btn-send { background: linear-gradient(135deg,#b8860b,var(--gold)); color: #0a0700; }
+.btn-send:hover { box-shadow: 0 0 16px rgba(240,208,128,0.5); }
+
+/* POPULAR GRID */
+.popular-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.popular-card {
+  border-radius: 12px; overflow: hidden; position: relative; cursor: pointer;
+  aspect-ratio: 3/4; background: var(--surface); border: 1px solid var(--border); transition: all 0.3s;
+}
+.popular-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 20px var(--card-glow); border-color: var(--card-c); }
+.popular-card .card-visual { font-size: 40px; }
+.rank-badge {
+  position: absolute; top: 10px; right: 10px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 800; color: var(--gold);
+  border: 1px solid rgba(240,208,128,0.3);
+}
+
+/* SENT TODAY badge */
+.sent-today {
+  position: absolute; bottom: 44px; left: 10px;
+  background: rgba(0,0,0,0.65); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 3px 9px;
+  font-size: 0.66rem; color: var(--text-dim);
+  display: flex; align-items: center; gap: 4px;
+}
+.sent-today .fire { font-size: 0.75rem; }
+
+/* TAG CLOUD */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+.tag-cloud .tag { font-size: 0.82rem; padding: 6px 16px; }
+
+/* DIVIDER */
+.divider {
+  position: relative; z-index: 2; height: 1px; margin: 0 32px;
+  background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+}
+
+/* CTA BANNER */
+.cta-banner {
+  position: relative; z-index: 2;
+  margin: 0 32px 56px; border-radius: 24px; overflow: hidden;
+  padding: 56px 48px;
+  background: linear-gradient(135deg, rgba(180,130,20,0.15) 0%, rgba(78,205,196,0.08) 50%, rgba(167,139,250,0.12) 100%);
+  border: 1px solid rgba(240,208,128,0.15); text-align: center;
+}
+.cta-banner::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(240,208,128,0.08), transparent 60%),
+              radial-gradient(ellipse at 70% 50%, rgba(78,205,196,0.06), transparent 60%);
+}
+.cta-eyebrow { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; opacity: 0.8; }
+.cta-title { font-size: clamp(1.6rem,4vw,2.6rem); font-weight: 800; margin-bottom: 12px; }
+.cta-sub { font-size: 1rem; color: var(--text-dim); margin-bottom: 28px; max-width: 420px; margin-left: auto; margin-right: auto; }
+.cta-btn {
+  display: inline-block;
+  background: linear-gradient(135deg,#b8860b,var(--gold));
+  color: #0a0700; font-weight: 800; font-size: 1rem;
+  padding: 14px 40px; border-radius: 50px; cursor: pointer;
+  border: none; transition: all 0.3s;
+  box-shadow: 0 0 30px rgba(240,208,128,0.3);
+}
+.cta-btn:hover { box-shadow: 0 0 50px rgba(240,208,128,0.5); transform: translateY(-2px) scale(1.02); }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 2;
+  border-top: 1px solid var(--border);
+  padding: 40px 32px 24px;
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px;
+}
+.footer-brand p { font-size: 0.82rem; color: var(--text-dim); margin-top: 10px; max-width: 220px; line-height: 1.6; }
+.footer-col h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); opacity: 0.7; margin-bottom: 14px; }
+.footer-col a { display: block; font-size: 0.82rem; color: var(--text-dim); text-decoration: none; margin-bottom: 8px; transition: color 0.2s; }
+.footer-col a:hover { color: var(--text); }
+.footer-bottom {
+  position: relative; z-index: 2; border-top: 1px solid var(--border);
+  padding: 16px 32px; display: flex; justify-content: space-between; align-items: center;
+}
+.footer-bottom p { font-size: 0.78rem; color: var(--text-dim); }
+
+/* SCROLL REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   V3 ADDITIONS — paste before </style>
+   ============================================================ */
+
+/* ① Greeting pill */
+.greeting-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 999px; padding: 6px 16px; font-size: 0.82rem;
+  letter-spacing: 0.04em; margin-bottom: 18px;
+}
+.greeting-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #2dd4c0;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.4); opacity: 0.6; }
+}
+
+/* ② Card reel */
+.card-reel-wrapper {
+  overflow: hidden; width: 460px; margin: 0 auto 28px;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+.card-reel-strip {
+  display: flex; gap: 12px;
+  animation: reel-scroll 12.5s linear infinite;
+}
+.reel-card {
+  flex-shrink: 0; width: 80px; height: 110px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 2rem;
+  transition: transform 0.3s;
+}
+.reel-card.reel-center { transform: scale(1.15); }
+@keyframes reel-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-92px * 5)); }
+}
+
+/* ④ Nasheed toggle */
+.nasheed-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px; padding: 6px 14px; font-size: 0.78rem;
+  cursor: pointer; color: rgba(255,255,255,0.7); transition: background 0.2s; margin-top: 12px;
+}
+.nasheed-btn:hover   { background: rgba(255,255,255,0.12); }
+.nasheed-btn.active  { border-color: #2dd4c0; color: #2dd4c0; }
+
+/* ⑤ Occasion countdown */
+.occasion-countdown {
+  background: linear-gradient(135deg, rgba(13,13,43,0.9), rgba(64,64,192,0.3));
+  border: 1px solid rgba(240,208,128,0.3); border-radius: 12px;
+  padding: 14px 24px; text-align: center; margin: 0 auto 40px; max-width: 700px; cursor: pointer;
+}
+.occasion-countdown .occ-label { font-size: 1rem; color: rgba(255,255,255,0.88); }
+.occasion-countdown .occ-timer {
+  font-size: 1.25rem; font-weight: 700; color: #f0d080; margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ⑥ Mood filter tabs */
+.mood-filter-row {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;
+  margin-bottom: 24px; scrollbar-width: none;
+}
+.mood-filter-row::-webkit-scrollbar { display: none; }
+.mood-pill {
+  flex-shrink: 0; padding: 6px 16px; border-radius: 999px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.82rem; cursor: pointer; white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s; color: rgba(255,255,255,0.8);
+}
+.mood-pill:hover  { background: rgba(255,255,255,0.12); }
+.mood-pill.active { background: rgba(240,208,128,0.15); border-color: #f0d080; color: #f0d080; }
+
+/* ⑦ Masonry grid */
+.masonry-grid { columns: 4; column-gap: 16px; margin-bottom: 60px; }
+.masonry-card {
+  break-inside: avoid; margin-bottom: 16px; border-radius: 12px;
+  overflow: hidden; position: relative; cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.masonry-card:hover { transform: scale(1.03); box-shadow: 0 0 24px rgba(240,208,128,0.3); }
+.masonry-card.m-short  { height: 80px; }
+.masonry-card.m-medium { height: 110px; }
+.masonry-card.m-tall   { height: 160px; }
+.masonry-hover {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; color: rgba(255,255,255,0.85);
+  opacity: 0; transition: opacity 0.2s;
+}
+.masonry-card:hover .masonry-hover { opacity: 1; }
+
+/* ⑧ 3D flip modal */
+.flip-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.flip-overlay.open { opacity: 1; pointer-events: auto; }
+.flip-container { width: 280px; perspective: 1200px; cursor: pointer; }
+.flip-inner {
+  width: 100%; height: 380px;
+  transform-style: preserve-3d; transition: transform 0.6s ease; position: relative;
+}
+.flip-inner.flipped { transform: rotateY(180deg); }
+.flip-face {
+  position: absolute; inset: 0; border-radius: 16px;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg,#0d0d2b,#1a1a4a);
+  border: 1px solid rgba(240,208,128,0.3);
+  padding: 28px; display: flex; flex-direction: column; justify-content: space-between;
+}
+.flip-send-btn {
+  background: #f0d080; color: #0d0d2b; border: none;
+  border-radius: 8px; padding: 10px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 8px;
+}
+.flip-custom-btn {
+  background: transparent; color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+  padding: 8px; cursor: pointer; width: 100%;
+}
+.flip-hint {
+  font-size: 0.72rem; color: rgba(255,255,255,0.35); text-align: center; margin-top: 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-glow"></div>
+
+<!-- AURORA + STARS -->
+<div class="aurora" id="aurora"></div>
+<div id="stars"></div>
+
+<!-- ════════════════════════════════════════
+     STICKY NAV
+════════════════════════════════════════ -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo">☽</div>
+    <div class="nav-name">Noor Cards <span>Islamic Ecards</span></div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#">Eid</a></li>
+    <li><a href="#">Ramadan</a></li>
+    <li><a href="#">Jummah</a></li>
+    <li><a href="#">Occasions</a></li>
+    <li><a href="#">Quran Cards</a></li>
+    <li><a href="#">Pricing</a></li>
+  </ul>
+
+  <!-- ⑤ HIJRI DATE -->
+  <div class="hijri-pill">
+    <span class="moon-icon">🌙</span>
+    <span id="hijri-date">Loading…</span>
+  </div>
+
+  <div class="nav-actions">
+    <button class="btn-nav-ghost">Sign In</button>
+    <button class="btn-nav-cta">Start Free</button>
+  </div>
+</nav>
+
+<!-- ② SOCIAL PROOF TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-label">🔴 Live</div>
+  <div class="ticker-track-wrap">
+    <div class="ticker-track" id="ticker-track">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ Occasion countdown banner -->
+<div class="occasion-countdown" id="occ-countdown" style="display:none" onclick="v3ScrollToCards()">
+  <div class="occ-label" id="occ-label"></div>
+  <div class="occ-timer" id="occ-timer"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="moon-stage">
+    <div class="moon-halo"></div>
+    <div class="moon-halo2"></div>
+    <div class="moon-svg">☽</div>
+  </div>
+
+  <!-- ① Time-of-day greeting pill -->
+  <div class="greeting-pill">
+    <span class="greeting-dot"></span>
+    <span id="v3-greeting">Assalamu Alaykum</span>
+  </div>
+
+  <!-- ② Looping card reel -->
+  <div class="card-reel-wrapper">
+    <div class="card-reel-strip" id="reel-strip"></div>
+  </div>
+
+  <h1 class="hero-title">
+    <span class="line1">Send Noor to Every Heart</span>
+    <span class="line2">Beautiful Islamic Ecards for Every Occasion</span>
+  </h1>
+
+  <!-- ④ TYPEWRITER -->
+  <p class="hero-sub">
+    <span class="typewriter-wrap">
+      <span class="typewriter-text" id="typewriter"></span><span class="typewriter-cursor"></span>
+    </span>
+  </p>
+
+  <div class="hero-search">
+    <input type="text" placeholder="Search Eid, Ramadan, Nikah, Jummah…">
+    <button class="search-btn">Search Cards</button>
+  </div>
+
+  <div class="trending-tags">
+    <span class="tag">🌙 Eid Mubarak</span>
+    <a class="tag active" href="#">🌿 Ramadan</a>
+    <span class="tag">🕌 Jummah</span>
+    <span class="tag">💍 Nikah</span>
+    <span class="tag">👶 Aqiqah</span>
+    <span class="tag">📖 Quran Verses</span>
+    <span class="tag">🌅 New Year Hijri</span>
+    <span class="tag">✈️ Hajj & Umrah</span>
+  </div>
+  <!-- ④ Nasheed toggle -->
+  <button class="nasheed-btn" id="nasheed-btn" onclick="v3ToggleNasheed()">
+    🎵 Ambient Nasheed · <span id="nasheed-label">Off</span>
+  </button>
+</section>
+
+<!-- ③ TRUST BAR — animated counters -->
+<div class="trust-bar reveal">
+  <div class="trust-item">
+    <span class="icon">⭐</span>
+    <div><strong><span class="counter" data-target="4.9" data-decimals="1">0.0</span>/5</strong> rating</div>
+  </div>
+  <div class="dot-sep"></div>
+  <div class="trust-item">
+    <span class="icon">✉️</span>
+    <div><strong><span class="counter" data-target="2000000" data-suffix="+" data-format="compact">0</span></strong> cards sent</div>
+  </div>
+  <div class="dot-sep"></div>
+  <div class="trust-item">
+    <span class="icon">🎨</span>
+    <div><strong><span class="counter" data-target="500" data-suffix="+">0</span></strong> designs</div>
+  </div>
+  <div class="dot-sep"></div>
+  <div class="trust-item">
+    <span class="icon">🕌</span>
+    <div>Verified by <strong>Islamic scholars</strong></div>
+  </div>
+  <div class="dot-sep"></div>
+  <div class="trust-item">
+    <span class="icon">🆓</span>
+    <div>Always <strong>free to start</strong></div>
+  </div>
+</div>
+
+<!-- OCCASIONS -->
+<section class="section reveal">
+  <div class="section-header">
+    <h2 class="section-title">Browse by Occasion</h2>
+    <a class="section-link" href="#">All occasions →</a>
+  </div>
+  <div class="medallions" id="medallions"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURED -->
+<section class="section reveal">
+  <div class="section-header">
+    <h2 class="section-title">Featured This Week</h2>
+    <a class="section-link" href="#">View all →</a>
+  </div>
+  <div class="featured-row" id="featured-row"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- POPULAR -->
+<section class="section reveal">
+  <div class="section-header">
+    <h2 class="section-title">Popular Right Now</h2>
+    <a class="section-link" href="#">See more →</a>
+  </div>
+  <div class="popular-grid" id="popular-grid"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- NEW THIS WEEK -->
+<section class="section reveal">
+  <!-- ⑥ Mood filter tabs -->
+  <div class="mood-filter-row">
+    <button class="mood-pill active" data-mood="all"         onclick="v3FilterMood('all')">All</button>
+    <button class="mood-pill"        data-mood="joyful"      onclick="v3FilterMood('joyful')">Joyful</button>
+    <button class="mood-pill"        data-mood="peaceful"    onclick="v3FilterMood('peaceful')">Peaceful</button>
+    <button class="mood-pill"        data-mood="reverent"    onclick="v3FilterMood('reverent')">Reverent</button>
+    <button class="mood-pill"        data-mood="celebratory" onclick="v3FilterMood('celebratory')">Celebratory</button>
+    <button class="mood-pill"        data-mood="ramadan"     onclick="v3FilterMood('ramadan')">Ramadan</button>
+    <button class="mood-pill"        data-mood="eid"         onclick="v3FilterMood('eid')">Eid</button>
+    <button class="mood-pill"        data-mood="nikah"       onclick="v3FilterMood('nikah')">Nikah</button>
+  </div>
+  <div class="section-header">
+    <h2 class="section-title">New This Week</h2>
+    <a class="section-link" href="#">View all new →</a>
+  </div>
+  <!-- ⑦ Masonry grid -->
+  <div class="masonry-grid" id="masonry-grid"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TAG CLOUD -->
+<section class="section reveal">
+  <div class="section-header">
+    <h2 class="section-title">Browse by Tag</h2>
+  </div>
+  <div class="tag-cloud">
+    <span class="tag active">🌙 Eid ul Fitr</span>
+    <span class="tag">🐑 Eid ul Adha</span>
+    <span class="tag">🌙 Ramadan Kareem</span>
+    <span class="tag">🌙 Ramadan Mubarak</span>
+    <span class="tag">🕌 Jummah Mubarak</span>
+    <span class="tag">💍 Nikah</span>
+    <span class="tag">👶 Aqiqah</span>
+    <span class="tag">✈️ Hajj</span>
+    <span class="tag">🕋 Umrah</span>
+    <span class="tag">📖 Ayatul Kursi</span>
+    <span class="tag">📖 Surah Al-Fatiha</span>
+    <span class="tag">🌅 Islamic New Year</span>
+    <span class="tag">🌙 Mawlid</span>
+    <span class="tag">🌿 Laylatul Qadr</span>
+    <span class="tag">🙏 Dua Cards</span>
+    <span class="tag">💚 Get Well Soon</span>
+    <span class="tag">🎓 Graduation</span>
+    <span class="tag">🤲 Thank You</span>
+    <span class="tag">❤️ Islamic Love</span>
+    <span class="tag">🕊️ Condolences</span>
+    <span class="tag">🌸 New Baby</span>
+    <span class="tag">🏠 New Home</span>
+    <span class="tag">⭐ Animated</span>
+    <span class="tag">🎵 With Nasheed</span>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner reveal">
+  <p class="cta-eyebrow">Free to Start</p>
+  <h2 class="cta-title">Spread Blessings, Not Stress</h2>
+  <p class="cta-sub">Send beautiful, personalised Islamic ecards to anyone, anywhere — in seconds.</p>
+  <button class="cta-btn">✨ Create Your First Card</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="nav-brand" style="margin-bottom:8px">
+      <div class="nav-logo">☽</div>
+      <div class="nav-name">Noor Cards</div>
+    </div>
+    <p>Spreading light and blessings through beautiful Islamic ecards since 2024.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Occasions</h4>
+    <a href="#">Eid Mubarak</a><a href="#">Ramadan</a><a href="#">Jummah</a>
+    <a href="#">Nikah</a><a href="#">Aqiqah</a><a href="#">Hajj & Umrah</a>
+  </div>
+  <div class="footer-col">
+    <h4>Features</h4>
+    <a href="#">AI Messages</a><a href="#">Dua Audio</a><a href="#">Animations</a>
+    <a href="#">Personalise</a><a href="#">Schedule Send</a>
+  </div>
+  <div class="footer-col">
+    <h4>Company</h4>
+    <a href="#">About</a><a href="#">Pricing</a><a href="#">Blog</a>
+    <a href="#">Privacy</a><a href="#">Terms</a>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 Noor Cards. All rights reserved.</p>
+  <p>Made with ♥ for the Ummah</p>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   ① CUSTOM CURSOR
+══════════════════════════════════════════════════ */
+const dot  = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+const glow = document.getElementById('cursor-glow');
+let mx = -500, my = -500;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
+  ring.style.left = mx + 'px'; ring.style.top = my + 'px';
+  glow.style.left = mx + 'px'; glow.style.top = my + 'px';
+});
+document.addEventListener('mousedown', () => { dot.style.transform = 'translate(-50%,-50%) scale(0.7)'; });
+document.addEventListener('mouseup',   () => { dot.style.transform = 'translate(-50%,-50%) scale(1)'; });
+
+/* ══════════════════════════════════════════════════
+   ⑤ HIJRI DATE
+══════════════════════════════════════════════════ */
+function toHijri(date) {
+  // Accurate Hijri conversion algorithm (Kuwaiti algorithm)
+  const JD = Math.floor((14 + Math.floor((date.getMonth() + 1 + 9) / 12)) / 4)
+           + 367 * Math.floor((date.getMonth() + 1 + 9) / 12)
+           - Math.floor(3 * Math.floor((date.getFullYear() + Math.floor((date.getMonth() + 1 + 9) / 12) - 1) / 100 + 1) / 4)
+           + Math.floor(275 * (date.getMonth() + 1) / 9)
+           + date.getDate()
+           + date.getFullYear() * 365
+           + Math.floor(date.getFullYear() / 4)
+           + 1721028.5 - 0.5;
+
+  const Z = Math.floor(JD + 0.5);
+  const A = Math.floor((Z - 1867216.25) / 36524.25);
+  const AA = Z + 1 + A - Math.floor(A / 4);
+  const B = AA + 1524;
+  const C = Math.floor((B - 122.1) / 365.25);
+  const D = Math.floor(365.25 * C);
+  const E = Math.floor((B - D) / 30.6001);
+
+  const gDay   = B - D - Math.floor(30.6001 * E);
+  const gMonth = E < 14 ? E - 1 : E - 13;
+  const gYear  = gMonth > 2 ? C - 4716 : C - 4715;
+
+  let hYear  = Math.floor((11 * gYear + 3) / 30) + Math.floor(gYear / 4) - Math.floor(gYear / 100) + Math.floor(gYear / 400) + gDay + Math.floor(275 * gMonth / 9) - 38 - 1948440 + 385;
+  let hMonth = 0;
+
+  if (hYear < 0) { hYear = -1 - hYear; }
+
+  let hDay = hYear % 30;
+  hYear = Math.floor(hYear / 30);
+
+  // Simpler direct formula
+  const jd = Math.floor(JD) + 0.5;
+  const l  = Math.floor(jd) - 1948440 + 10632;
+  const n  = Math.floor((l - 1) / 10631);
+  const ll = l - 10631 * n + 354;
+  const jj = Math.floor((10985 - ll) / 5316) * Math.floor(50 * ll / 17719) + Math.floor(ll / 5670) * Math.floor(43 * ll / 15238);
+  const lll = ll - Math.floor((30 - jj) / 15) * Math.floor(17719 * jj / 50) - Math.floor(jj / 16) * Math.floor(15238 * jj / 43) + 29;
+  const mm  = Math.floor(24 * lll / 709);
+  const dd  = lll - Math.floor(709 * mm / 24);
+  const yy  = 30 * n + jj - 30;
+
+  const months = ['Muharram','Safar','Rabi\' al-Awwal','Rabi\' al-Thani','Jumada al-Awwal','Jumada al-Thani','Rajab','Sha\'ban','Ramadan','Shawwal','Dhul Qi\'dah','Dhul Hijjah'];
+  return `${dd} ${months[mm-1]} ${yy}`;
+}
+try { document.getElementById('hijri-date').textContent = toHijri(new Date()); } catch(e) { document.getElementById('hijri-date').textContent = ''; }
+
+/* ══════════════════════════════════════════════════
+   ② SOCIAL PROOF TICKER
+══════════════════════════════════════════════════ */
+const tickerEvents = [
+  { avatar:'🇸🇦', name:'Fatima A.',  card:'Ramadan Lantern',      where:'Riyadh',  ago:'2s' },
+  { avatar:'🇬🇧', name:'Yusuf K.',   card:'Eid Mubarak Starfield', where:'London',  ago:'8s' },
+  { avatar:'🇲🇾', name:'Aisyah R.',  card:'Jummah Light',          where:'Kuala Lumpur', ago:'14s' },
+  { avatar:'🇺🇸', name:'Omar H.',    card:'Ayatul Kursi Gold',     where:'Detroit', ago:'21s' },
+  { avatar:'🇦🇪', name:'Mariam N.',  card:'Nikah Roses',           where:'Dubai',   ago:'33s' },
+  { avatar:'🇵🇰', name:'Ibrahim Q.', card:'Surah Ar-Rahman',       where:'Lahore',  ago:'45s' },
+  { avatar:'🇿🇦', name:'Amina D.',   card:'Laylatul Qadr Blue',    where:'Cape Town', ago:'1m' },
+  { avatar:'🇧🇩', name:'Rashid M.',  card:'Eid al-Fitr Collection',where:'Dhaka',   ago:'1m' },
+  { avatar:'🇹🇷', name:'Zeynep A.',  card:'Hajj Mubarak',          where:'Istanbul',ago:'2m' },
+  { avatar:'🇮🇩', name:'Siti N.',    card:'Ramadan Kareem',        where:'Jakarta', ago:'2m' },
+  { avatar:'🇫🇷', name:'Khadija B.', card:'Jummah Masjid Dawn',   where:'Paris',   ago:'3m' },
+  { avatar:'🇳🇬', name:'Abubakar S.',card:'Aqiqah Welcome',        where:'Lagos',   ago:'3m' },
+];
+
+function buildTicker() {
+  const track = document.getElementById('ticker-track');
+  // double for seamless loop
+  [...tickerEvents, ...tickerEvents].forEach(ev => {
+    const el = document.createElement('span');
+    el.className = 'ticker-event';
+    el.innerHTML = `
+      <span class="avatar">${ev.avatar}</span>
+      <span class="name">${ev.name}</span>
+      <span style="opacity:0.4">sent</span>
+      <span class="card-name">"${ev.card}"</span>
+      <span style="opacity:0.4">·</span>
+      <span>${ev.where}</span>
+      <span class="time">${ev.ago} ago</span>
+      <span class="ticker-sep" style="margin-left:8px">✦</span>
+    `;
+    track.appendChild(el);
+  });
+}
+buildTicker();
+
+/* ══════════════════════════════════════════════════
+   ③ ANIMATED COUNTERS
+══════════════════════════════════════════════════ */
+function formatCompact(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(1).replace('.0','') + 'M';
+  if (n >= 1e3) return (n/1e3).toFixed(0) + 'K';
+  return n.toString();
+}
+
+function animateCounter(el) {
+  const target   = parseFloat(el.dataset.target);
+  const decimals = parseInt(el.dataset.decimals || '0');
+  const suffix   = el.dataset.suffix || '';
+  const compact  = el.dataset.format === 'compact';
+  const duration = 2000;
+  const start    = performance.now();
+
+  function step(now) {
+    const elapsed  = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // ease out quart
+    const eased = 1 - Math.pow(1 - progress, 4);
+    const value = eased * target;
+
+    if (compact) {
+      el.textContent = formatCompact(Math.round(value)) + suffix;
+    } else {
+      el.textContent = value.toFixed(decimals) + suffix;
+    }
+
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.counter').forEach(animateCounter);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.trust-bar').forEach(el => counterObserver.observe(el));
+
+/* ══════════════════════════════════════════════════
+   ④ TYPEWRITER
+══════════════════════════════════════════════════ */
+const phrases = [
+  'Send love on Eid to every corner of the Ummah.',
+  'Share the serenity of Ramadan with those you cherish.',
+  'Celebrate every Nikah with beautiful blessings.',
+  'Spread the light of Jummah Mubarak.',
+  'Mark every Aqiqah with heartfelt du\'a cards.',
+  'Send Quran verses that illuminate the heart.',
+  'Honour Laylatul Qadr with cards that glow.',
+];
+let phraseIndex = 0, charIndex = 0, isDeleting = false;
+const twEl = document.getElementById('typewriter');
+
+function typewrite() {
+  const phrase = phrases[phraseIndex];
+  if (!isDeleting) {
+    twEl.textContent = phrase.slice(0, ++charIndex);
+    if (charIndex === phrase.length) { isDeleting = true; setTimeout(typewrite, 2200); return; }
+  } else {
+    twEl.textContent = phrase.slice(0, --charIndex);
+    if (charIndex === 0) {
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      setTimeout(typewrite, 300); return;
+    }
+  }
+  setTimeout(typewrite, isDeleting ? 28 : 48);
+}
+typewrite();
+
+/* ══════════════════════════════════════════════════
+   AURORA BANDS
+══════════════════════════════════════════════════ */
+const auroras = [
+  { w:900, h:600, top:'-15%', left:'-10%', color:'#4a7c59', dur:'18s', tx:'60px', ty:'40px' },
+  { w:700, h:500, top:'20%',  left:'60%',  color:'#1a4a6b', dur:'22s', tx:'-80px',ty:'60px' },
+  { w:600, h:400, top:'55%',  left:'10%',  color:'#6b3a6b', dur:'15s', tx:'40px', ty:'-50px' },
+  { w:500, h:350, top:'70%',  left:'70%',  color:'#4ecdc4', dur:'20s', tx:'-50px',ty:'30px' },
+  { w:800, h:300, top:'-5%',  left:'40%',  color:'#c8a84b', dur:'25s', tx:'30px', ty:'50px' },
+];
+const aurEl = document.getElementById('aurora');
+auroras.forEach(a => {
+  const d = document.createElement('div'); d.className = 'aurora-band';
+  d.style.cssText = `width:${a.w}px;height:${a.h}px;top:${a.top};left:${a.left};
+    background:${a.color};--dur:${a.dur};--tx:${a.tx};--ty:${a.ty};`;
+  aurEl.appendChild(d);
+});
+
+/* STARFIELD */
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 160; i++) {
+  const s = document.createElement('div'); s.className = 's';
+  const sz = Math.random() * 1.8 + 0.4;
+  s.style.cssText = `width:${sz}px;height:${sz}px;
+    top:${Math.random()*100}%;left:${Math.random()*100}%;
+    --d:${(Math.random()*4+2).toFixed(1)}s;
+    --a:${(Math.random()*0.5+0.1).toFixed(2)};
+    --b:${(Math.random()*0.4+0.4).toFixed(2)};`;
+  starsEl.appendChild(s);
+}
+
+/* SHOOTING STARS */
+for (let i = 0; i < 8; i++) {
+  const sh = document.createElement('div'); sh.className = 'shoot';
+  const angle = -35 - Math.random() * 20, dist = 600 + Math.random() * 600;
+  const rad = angle * Math.PI / 180;
+  sh.style.cssText = `top:${Math.random()*60}%;left:${Math.random()*80+10}%;
+    --sd:${(6+Math.random()*10).toFixed(1)}s;--sdel:${(-Math.random()*12).toFixed(1)}s;
+    --sx:${(Math.cos(rad)*dist).toFixed(0)}px;--sy:${(Math.sin(rad)*dist).toFixed(0)}px;`;
+  document.body.appendChild(sh);
+}
+
+/* ══════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════ */
+const occasions = [
+  { icon:'🌙', label:'Eid ul Fitr',    glow:'rgba(240,208,128,0.4)' },
+  { icon:'🐑', label:'Eid ul Adha',    glow:'rgba(240,208,128,0.4)' },
+  { icon:'🌿', label:'Ramadan',        glow:'rgba(78,205,196,0.4)' },
+  { icon:'🕌', label:'Jummah',         glow:'rgba(78,180,100,0.4)' },
+  { icon:'💍', label:'Nikah',          glow:'rgba(255,107,157,0.4)' },
+  { icon:'👶', label:'Aqiqah',         glow:'rgba(255,180,100,0.4)' },
+  { icon:'✈️', label:'Hajj & Umrah',   glow:'rgba(167,139,250,0.4)' },
+  { icon:'📖', label:'Quran Verses',   glow:'rgba(100,180,255,0.4)' },
+  { icon:'🌙', label:'Laylatul Qadr',  glow:'rgba(200,100,255,0.4)' },
+  { icon:'🌅', label:'Islamic New Year',glow:'rgba(255,150,80,0.4)' },
+  { icon:'🕊️', label:'Condolences',    glow:'rgba(180,200,220,0.4)' },
+  { icon:'🌸', label:'New Baby',       glow:'rgba(255,200,220,0.4)' },
+];
+const featuredCards = [
+  { title:'Eid al-Fitr Collection', sub:'15 animated designs', gradient:'linear-gradient(135deg,#2d6a4f,#40916c,#74c69d)', glow:'rgba(64,145,108,0.4)', badge:'New' },
+  { title:'Ramadan Nights',         sub:'Aurora calligraphy', gradient:'linear-gradient(135deg,#1a1a4e,#2d2d8f,#4a4ae8)', glow:'rgba(74,74,232,0.4)', badge:'Popular' },
+  { title:'Jummah Mubarak',         sub:'Weekly blessings',  gradient:'linear-gradient(135deg,#6b3a6b,#9b59b6,#d7aefb)', glow:'rgba(155,89,182,0.4)', badge:null },
+  { title:'Nikah Blessings',        sub:'Wedding & celebration',gradient:'linear-gradient(135deg,#8b0000,#c0392b,#f39c12)',glow:'rgba(192,57,43,0.4)', badge:'Animated' },
+  { title:'Quran Light',            sub:'Ayah calligraphy',  gradient:'linear-gradient(135deg,#1a4a2a,#27ae60,#f0d080)', glow:'rgba(240,208,128,0.4)', badge:'Audio' },
+  { title:'Laylatul Qadr',          sub:'Night of Power',    gradient:'linear-gradient(135deg,#0d0d2b,#1a1a6b,#8080ff)', glow:'rgba(128,128,255,0.4)', badge:'Limited' },
+];
+const popularCards = [
+  { name:'Eid Mubarak Starfield', occasion:'Eid ul Fitr',gradient:'linear-gradient(160deg,#2d6a4f,#52b788,#f0d080)',c:'rgba(82,183,136,0.6)',glow:'rgba(82,183,136,0.3)',emoji:'🌙',badges:['popular','animated'],sent:847 },
+  { name:'Surah Al-Fatiha',       occasion:'Quran Card', gradient:'linear-gradient(160deg,#1a1a4e,#4a4ae8,#fff)',  c:'rgba(74,74,232,0.6)', glow:'rgba(74,74,232,0.3)', emoji:'📖',badges:['audio'],          sent:632 },
+  { name:'Ramadan Kareem',        occasion:'Ramadan',    gradient:'linear-gradient(160deg,#0d2b0d,#1a6b1a,#74c69d)',c:'rgba(26,107,26,0.6)',glow:'rgba(26,107,26,0.3)', emoji:'🌿',badges:['new','animated'],  sent:519 },
+  { name:'Jummah Light',          occasion:'Jummah',     gradient:'linear-gradient(160deg,#2b1a4e,#7b2d8b,#d7aefb)',c:'rgba(123,45,139,0.6)',glow:'rgba(123,45,139,0.3)',emoji:'🕌',badges:['popular'],         sent:411 },
+  { name:'Nikah Congratulations', occasion:'Nikah',      gradient:'linear-gradient(160deg,#4e1a2b,#c0392b,#f39c12)',c:'rgba(192,57,43,0.6)', glow:'rgba(192,57,43,0.3)', emoji:'💍',badges:['new','premium'],   sent:378 },
+  { name:'Hajj Mubarak',          occasion:'Hajj & Umrah',gradient:'linear-gradient(160deg,#2b2b1a,#8b6914,#f0d080)',c:'rgba(139,105,20,0.6)',glow:'rgba(139,105,20,0.3)',emoji:'✈️',badges:['animated'],        sent:290 },
+];
+const newCards = [
+  { name:'Aurora Eid Night',   occasion:'Eid ul Fitr', gradient:'linear-gradient(135deg,#0a0a2e,#1a1a6b,#4040c0,#8080ff)', c:'rgba(64,64,192,0.6)', glow:'rgba(64,64,192,0.3)', emoji:'🌙',badges:['new','animated'] },
+  { name:'Ramadan Lantern',    occasion:'Ramadan',     gradient:'linear-gradient(135deg,#1a0a00,#6b3500,#f0a030)',          c:'rgba(240,160,48,0.6)', glow:'rgba(240,160,48,0.3)',emoji:'🪔',badges:['new'] },
+  { name:'Ayatul Kursi Gold',  occasion:'Quran Card',  gradient:'linear-gradient(135deg,#1a1500,#4a4000,#f0d080)',          c:'rgba(240,208,128,0.6)',glow:'rgba(240,208,128,0.3)',emoji:'📖',badges:['new','audio','premium'] },
+  { name:'Laylatul Qadr Blue', occasion:'Ramadan',     gradient:'linear-gradient(135deg,#000a1a,#001a6b,#0050c0)',          c:'rgba(0,80,192,0.6)',   glow:'rgba(0,80,192,0.3)',  emoji:'🌌',badges:['new','animated'] },
+  { name:'Aqiqah Welcome',     occasion:'Aqiqah',      gradient:'linear-gradient(135deg,#1a0a10,#6b1a40,#ff6b9d)',          c:'rgba(255,107,157,0.6)',glow:'rgba(255,107,157,0.3)',emoji:'👶',badges:['new'] },
+  { name:'Jummah Masjid Dawn', occasion:'Jummah',      gradient:'linear-gradient(135deg,#0a1a0a,#1a6b2d,#52b788)',          c:'rgba(82,183,136,0.6)', glow:'rgba(82,183,136,0.3)',emoji:'🕌',badges:['new','animated'] },
+  { name:'Nikah Roses',        occasion:'Nikah',       gradient:'linear-gradient(135deg,#1a0505,#8b0000,#e74c3c)',          c:'rgba(231,76,60,0.6)',  glow:'rgba(231,76,60,0.3)', emoji:'🌹',badges:['new','premium'] },
+  { name:'Surah Ar-Rahman',    occasion:'Quran Card',  gradient:'linear-gradient(135deg,#0a1a10,#1a5a2a,#52b788)',          c:'rgba(82,183,136,0.6)', glow:'rgba(82,183,136,0.3)',emoji:'📿',badges:['new','audio'] },
+];
+
+/* ══════════════════════════════════════════════════
+   RENDER HELPERS
+══════════════════════════════════════════════════ */
+const badgeMap   = { popular:'badge-popular', animated:'badge-animated', new:'badge-new', audio:'badge-audio', premium:'badge-premium', hot:'badge-hot' };
+const badgeLabel = { popular:'🔥 Popular', animated:'✨ Animated', new:'New', audio:'🎵 Audio', premium:'⭐ Premium', hot:'🔥 Hot' };
+const badgeHtml  = b => b.map(x => `<span class="badge ${badgeMap[x]}">${badgeLabel[x]}</span>`).join('');
+
+/* OCCASIONS */
+document.getElementById('medallions').innerHTML = occasions.map((o,i) => `
+  <div class="medallion ${i===0?'active':''}" style="--med-glow:${o.glow}" onclick="
+    document.querySelectorAll('.medallion').forEach(m=>m.classList.remove('active'));
+    this.classList.add('active');">
+    <div class="med-circle">${o.icon}</div>
+    <div class="med-label">${o.label}</div>
+  </div>`).join('');
+
+/* FEATURED */
+document.getElementById('featured-row').innerHTML = featuredCards.map(fc => `
+  <div class="featured-card" style="--card-gradient:${fc.gradient};--card-glow:${fc.glow}">
+    <div class="card-bg"></div>
+    <div class="card-content">
+      <div class="card-title">${fc.title}</div>
+      <div class="card-sub">${fc.sub}</div>
+    </div>
+    ${fc.badge ? `<div class="featured-badge">${fc.badge}</div>` : ''}
+  </div>`).join('');
+
+/* POPULAR */
+document.getElementById('popular-grid').innerHTML = popularCards.map((c,i) => `
+  <div class="popular-card" style="--card-gradient:${c.gradient};--card-glow:${c.glow};--card-c:${c.c};">
+    <div class="card-visual" style="background:${c.gradient}">${c.emoji}</div>
+    <div class="card-badges">${badgeHtml(c.badges)}</div>
+    <div class="sent-today"><span class="fire">🔥</span>${c.sent} sent today</div>
+    <div class="card-meta"><div class="card-name">${c.name}</div><div class="card-occasion">${c.occasion}</div></div>
+    <div class="rank-badge">#${i+1}</div>
+  </div>`).join('');
+
+/* NEW THIS WEEK */
+document.getElementById('cards-grid').innerHTML = newCards.map(c => `
+  <div class="ecard" style="--card-gradient:${c.gradient};--card-glow:${c.glow};--card-c:${c.c};">
+    <div class="card-visual" style="background:${c.gradient}">${c.emoji}</div>
+    <div class="card-overlay"></div>
+    <div class="card-badges">${badgeHtml(c.badges)}</div>
+    <div class="card-actions">
+      <button class="btn-preview">Preview</button>
+      <button class="btn-send">Send ✉</button>
+    </div>
+    <div class="card-meta"><div class="card-name">${c.name}</div><div class="card-occasion">${c.occasion}</div></div>
+  </div>`).join('');
+
+/* ══════════════════════════════════════════════════
+   3D TILT
+══════════════════════════════════════════════════ */
+function addTilt(sel) {
+  document.querySelectorAll(sel).forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = `perspective(600px) rotateY(${x*14}deg) rotateX(${-y*14}deg) scale(1.04)`;
+      card.style.boxShadow = `${-x*20}px ${-y*20}px 40px rgba(0,0,0,0.4), 0 0 30px var(--card-glow)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; card.style.boxShadow = ''; });
+  });
+}
+addTilt('.ecard'); addTilt('.popular-card');
+
+/* TAG TOGGLE */
+document.querySelectorAll('.tag').forEach(t => t.addEventListener('click', () => t.classList.toggle('active')));
+
+/* SCROLL REVEAL */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+/* ====================================================================
+   V3 JS — paste before </script>
+   ==================================================================== */
+
+// ① Time-of-day Islamic greeting
+(function v3InitGreeting() {
+  const h = new Date().getHours();
+  let label;
+  if      (h >= 4  && h < 6)  label = 'Assalamu Alaykum · Good Fajr';
+  else if (h >= 6  && h < 12) label = 'Assalamu Alaykum · Good Morning';
+  else if (h >= 12 && h < 14) label = 'Assalamu Alaykum · Good Dhuhr';
+  else if (h >= 14 && h < 17) label = 'Assalamu Alaykum · Good Asr';
+  else if (h >= 17 && h < 20) label = 'Assalamu Alaykum · Good Maghrib';
+  else                         label = 'Assalamu Alaykum · Good Isha';
+  const el = document.getElementById('v3-greeting');
+  if (el) el.textContent = label;
+})();
+
+// ② Card reel — uses featuredCards array (already defined in v2 script)
+(function v3InitReel() {
+  const strip = document.getElementById('reel-strip');
+  if (!strip || typeof featuredCards === 'undefined') return;
+  const items = [...featuredCards.slice(0,5), ...featuredCards.slice(0,5)]; // doubled for seamless loop
+  items.forEach(function(card, i) {
+    const d = document.createElement('div');
+    d.className = 'reel-card' + (i % 5 === 2 ? ' reel-center' : '');
+    d.style.background = card.gradient || 'linear-gradient(135deg,#1a3a5c,#0d1b2a)';
+    d.textContent = card.emoji || '🌙';
+    strip.appendChild(d);
+  });
+})();
+
+// ③ Parallax depth layers
+(function v3InitParallax() {
+  var stars    = document.getElementById('stars');
+  var aurora   = document.querySelector('.aurora');
+  var heroInner = document.querySelector('.hero-content') || document.querySelector('.hero > div');
+  window.addEventListener('scroll', function() {
+    var y = window.scrollY;
+    if (stars)     stars.style.transform     = 'translateY(' + (y * 0.2)  + 'px)';
+    if (aurora)    aurora.style.transform    = 'translateY(' + (y * 0.35) + 'px)';
+    if (heroInner) heroInner.style.transform = 'translateY(' + (y * 0.55) + 'px)';
+  }, { passive: true });
+})();
+
+// ④ Ambient nasheed (Web Audio API oscillator)
+var _nasheedCtx = null, _nasheedOscs = [];
+function v3ToggleNasheed() {
+  var btn   = document.getElementById('nasheed-btn');
+  var label = document.getElementById('nasheed-label');
+  if (_nasheedOscs.length) {
+    _nasheedOscs.forEach(function(o) { try { o.stop(); } catch(e){} });
+    _nasheedOscs = [];
+    if (btn)   btn.classList.remove('active');
+    if (label) label.textContent = 'Off';
+    sessionStorage.removeItem('nasheedOn');
+    return;
+  }
+  _nasheedCtx = _nasheedCtx || new (window.AudioContext || window.webkitAudioContext)();
+  [[220, 0.05],[330, 0.025],[440, 0.012]].forEach(function(pair) {
+    var osc  = _nasheedCtx.createOscillator();
+    var gain = _nasheedCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = pair[0];
+    gain.gain.value = pair[1];
+    osc.connect(gain);
+    gain.connect(_nasheedCtx.destination);
+    osc.start();
+    _nasheedOscs.push(osc);
+  });
+  if (btn)   btn.classList.add('active');
+  if (label) label.textContent = 'On';
+  sessionStorage.setItem('nasheedOn', '1');
+}
+// Restore state across page loads
+if (sessionStorage.getItem('nasheedOn') === '1') {
+  document.addEventListener('DOMContentLoaded', function() { v3ToggleNasheed(); });
+}
+
+// ⑤ Occasion countdown
+(function v3InitCountdown() {
+  function toHijriParts(date) {
+    var jd = Math.floor((14 + 11*(date.getFullYear() + Math.floor((date.getMonth()+10)/12)))/30)
+           + Math.floor(275*(date.getMonth()+1)/9) - Math.floor(3*(Math.floor((date.getFullYear()
+           + Math.floor((date.getMonth()+10)/12))/100)+1)/4) + date.getDate() + 1721028.5 - 1867216.25;
+    var l = Math.floor(jd) - 1948440 + 10632;
+    var n = Math.floor((l-1)/10631);
+    l = l - 10631*n + 354;
+    var j = Math.floor((10985-l)/5316)*Math.floor((50*l)/17719)
+          + Math.floor(l/5670)*Math.floor((43*l)/15238);
+    l = l - Math.floor((30-j)/15)*Math.floor((17719*j)/50)
+        - Math.floor(j/16)*Math.floor((15238*j)/43) + 29;
+    var month = Math.floor((24 + 29.5001*(j-1))/29.5);
+    var day   = l - Math.floor(29.5001 * Math.floor((24+29.5001*(j-1))/29.5));
+    if (day < 1) day += 29;
+    return { month: month, day: day };
+  }
+
+  var OCCASIONS = [
+    { name:'Ramadan',          month:9,  day:1  },
+    { name:'Eid ul Fitr',      month:10, day:1  },
+    { name:'Eid ul Adha',      month:12, day:10 },
+    { name:'Laylatul Qadr',    month:9,  day:27 },
+    { name:'Islamic New Year', month:1,  day:1  },
+    { name:'Mawlid',           month:3,  day:12 },
+  ];
+
+  var now = new Date();
+  var nearest = null;
+  for (var offset = 0; offset <= 365; offset++) {
+    var d = new Date(now.getTime() + offset * 86400000);
+    try {
+      var parts = toHijriParts(d);
+      for (var i = 0; i < OCCASIONS.length; i++) {
+        var occ = OCCASIONS[i];
+        if (occ.month === parts.month && occ.day === parts.day) {
+          var diff = d.getTime() - now.getTime();
+          if (!nearest && diff < 90 * 86400000) {
+            nearest = { name: occ.name, date: d };
+          }
+        }
+      }
+    } catch(e) {}
+    if (nearest) break;
+  }
+  if (!nearest) return;
+
+  var banner = document.getElementById('occ-countdown');
+  var labelEl = document.getElementById('occ-label');
+  var timerEl = document.getElementById('occ-timer');
+  if (!banner) return;
+  banner.style.display = 'block';
+  if (labelEl) labelEl.textContent = '🌙 ' + nearest.name + ' begins in';
+
+  function tick() {
+    var ms = nearest.date.getTime() - Date.now();
+    if (ms <= 0) { if (timerEl) timerEl.textContent = 'Today! 🎉'; return; }
+    var dd = Math.floor(ms / 86400000);
+    var hh = Math.floor((ms % 86400000) / 3600000);
+    var mm = Math.floor((ms % 3600000)  / 60000);
+    var ss = Math.floor((ms % 60000)    / 1000);
+    var pad = function(n) { return String(n).padStart(2,'0'); };
+    if (timerEl) timerEl.textContent = dd + 'd ' + pad(hh) + 'h ' + pad(mm) + 'm ' + pad(ss) + 's';
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+function v3ScrollToCards() {
+  var el = document.querySelector('[id*="cards"], .cards-section, .section-cards');
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ⑥ Mood filter
+function v3FilterMood(mood) {
+  document.querySelectorAll('.mood-pill').forEach(function(p) {
+    p.classList.toggle('active', p.getAttribute('data-mood') === mood);
+  });
+  document.querySelectorAll('.masonry-card[data-mood]').forEach(function(card) {
+    card.style.display = (mood === 'all' || card.getAttribute('data-mood') === mood) ? '' : 'none';
+  });
+}
+
+// ⑦ Masonry grid — uses popularCards or newCards array (defined in v2 script)
+(function v3InitMasonry() {
+  var grid = document.getElementById('masonry-grid');
+  if (!grid) return;
+  var source = (typeof popularCards !== 'undefined' && popularCards.length)
+             ? popularCards
+             : (typeof newCards !== 'undefined' ? newCards : []);
+  var heights = ['m-short','m-medium','m-tall'];
+  var moods   = ['joyful','peaceful','reverent','celebratory','ramadan','eid','nikah'];
+  source.forEach(function(card, i) {
+    var div = document.createElement('div');
+    div.className = 'masonry-card ' + heights[i % 3];
+    div.setAttribute('data-mood', moods[i % moods.length]);
+    div.style.background = card.gradient || 'linear-gradient(135deg,#1a3a5c,#0d1b2a)';
+    div.innerHTML =
+      '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem">' +
+        (card.emoji || '🌙') +
+      '</div>' +
+      '<div class="masonry-hover">Click to preview →</div>';
+    div.addEventListener('click', function() { v3OpenFlip(card); });
+    grid.appendChild(div);
+  });
+})();
+
+// ⑧ 3D flip modal
+var _flipCard = null;
+function v3OpenFlip(card) {
+  _flipCard = card;
+  var front  = document.getElementById('flip-front');
+  var titleEl = document.getElementById('flip-card-title');
+  var occEl   = document.getElementById('flip-card-occ');
+  if (front) {
+    front.style.background = card.gradient || 'linear-gradient(135deg,#1a3a5c,#0d1b2a)';
+    front.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem">' + (card.emoji||'🌙') + '</div>';
+  }
+  if (titleEl) titleEl.textContent = card.title || card.name || 'Islamic Card';
+  if (occEl)   occEl.textContent   = card.occasion || '';
+  var inner = document.getElementById('flip-inner');
+  if (inner) inner.classList.remove('flipped');
+  var overlay = document.getElementById('flip-overlay');
+  if (overlay) overlay.classList.add('open');
+}
+function v3FlipOverlayClick(e) {
+  if (e.target === document.getElementById('flip-overlay')) {
+    document.getElementById('flip-overlay').classList.remove('open');
+  } else {
+    var inner = document.getElementById('flip-inner');
+    if (inner) inner.classList.toggle('flipped');
+  }
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var overlay = document.getElementById('flip-overlay');
+    if (overlay) overlay.classList.remove('open');
+  }
+});
+function v3FlipSend()      { if (_flipCard) window.location.href = '/send?card=' + (_flipCard.id||''); }
+function v3FlipCustomise() { if (_flipCard) window.location.href = '/en/customize/' + (_flipCard.id||''); }
+
+</script>
+<!-- ⑧ 3D flip modal -->
+<div class="flip-overlay" id="flip-overlay" onclick="v3FlipOverlayClick(event)">
+  <div class="flip-container">
+    <div class="flip-inner" id="flip-inner">
+      <div class="flip-face flip-front" id="flip-front">
+      </div>
+      <div class="flip-face flip-back" id="flip-back">
+        <div>
+          <div id="flip-card-title" style="font-size:1.1rem;font-weight:700;margin-bottom:6px;color:#fff"></div>
+          <div id="flip-card-occ"   style="font-size:0.82rem;opacity:0.55;color:#fff;margin-bottom:18px"></div>
+        </div>
+        <div>
+          <button class="flip-send-btn"   onclick="v3FlipSend()">Send Card</button>
+          <button class="flip-custom-btn" onclick="v3FlipCustomise()">Customise</button>
+        </div>
+      </div>
+    </div>
+    <div class="flip-hint">Tap card to flip · Esc to close</div>
+  </div>
+</div>
+</body>
+</html>
