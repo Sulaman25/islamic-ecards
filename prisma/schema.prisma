@@ -87,6 +87,18 @@ model CardTemplate {
   sortOrder     Int      @default(0)
   createdAt     DateTime @default(now())
 
+  // AI generation fields (v3)
+  status         String    @default("published")  // "pending_review" | "published" | "rejected"
+  publishAt      DateTime?
+  rejectedAt     DateTime?
+  isAiGenerated  Boolean   @default(false)
+  accentCss      String?   @db.Text
+  accentJs       String?   @db.Text
+  shapeSvg       String?   @db.Text
+  mood           String?
+  animationStyle String?
+  generatedAt    DateTime?
+
   occasion  Occasion   @relation(fields: [occasionId], references: [id])
   sentCards SentCard[]
 }
