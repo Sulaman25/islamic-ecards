@@ -11,7 +11,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "agents:run": "curl -s -X POST http://localhost:3000/api/agents/daily-cards -H 'Content-Type: application/json' | jq ."
+    "agents:run": "curl -s -X POST http://localhost:3000/api/agents/daily-cards -H 'Content-Type: application/json' -H \"x-cron-secret: $CRON_SECRET\" | jq ."
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",

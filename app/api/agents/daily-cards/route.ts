@@ -29,7 +29,7 @@ async function setRateLimitRecord() {
 export async function POST(request: Request) {
   // Verify cron secret (Vercel sets this automatically; we check for local dev too)
   const cronSecret = request.headers.get('x-cron-secret');
-  if (process.env.CRON_SECRET && cronSecret !== process.env.CRON_SECRET) {
+  if (cronSecret !== process.env.CRON_SECRET) {
     return new Response('Forbidden', { status: 403 });
   }
 
