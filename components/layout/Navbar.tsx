@@ -4,6 +4,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/lib/i18n-navigation";
+import { HijriPill } from "@/components/home/HijriPill";
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -37,14 +38,14 @@ export function Navbar() {
   );
 
   return (
-    <nav className="bg-white border-b border-amber-100 shadow-sm sticky top-0 z-50">
+    <nav className="sticky top-0 z-50" style={{ background: "rgba(3,2,10,0.85)", backdropFilter: "blur(24px)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl">🌙</span>
-          <span className="font-bold text-stone-800 text-lg">Islamic Ecards</span>
+          <span className="font-bold text-amber-300 text-lg">Islamic Ecards</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 text-sm text-stone-600">
+        <div className="hidden md:flex items-center gap-6 text-sm text-stone-100">
           <Link href="/cards" className="hover:text-amber-700 transition-colors font-medium">
             {t("browseCards")}
           </Link>
@@ -59,13 +60,14 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          <HijriPill />
           <LocaleToggle />
           {session ? (
             <>
-              <span className="text-sm text-stone-500">{session.user?.name}</span>
+              <span className="text-sm text-stone-300">{session.user?.name}</span>
               <button
                 onClick={() => signOut()}
-                className="text-sm text-stone-500 hover:text-stone-800 transition-colors"
+                className="text-sm text-stone-300 hover:text-white transition-colors"
               >
                 {t("signOut")}
               </button>
@@ -81,7 +83,7 @@ export function Navbar() {
         </div>
 
         <button
-          className="md:hidden flex items-center justify-center w-10 h-10 text-stone-700 hover:text-amber-700 transition-colors text-xl"
+          className="md:hidden flex items-center justify-center w-10 h-10 text-stone-300 hover:text-amber-400 transition-colors text-xl"
           onClick={() => setMenuOpen((prev) => !prev)}
           aria-label={menuOpen ? t("closeMenu") : t("openMenu")}
           aria-expanded={menuOpen}
