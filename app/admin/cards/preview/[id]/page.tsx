@@ -103,8 +103,8 @@ function buildCardPreviewDoc(card: {
 </style>
 </head>
 <body>
-  ${card.shapeSvg ?? ''}
   <div class="card-root">
+    ${card.shapeSvg ?? ''}
     <div class="accent-container"></div>
   </div>
   ${card.accentJs ? `<script>${card.accentJs}</script>` : ''}
