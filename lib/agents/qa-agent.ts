@@ -42,13 +42,16 @@ export async function runQAAgent(
   const verseKnown  = localVerseValid(designer.verse.reference);
 
   if (!cssValid) {
-    return { pass: false, checks: { cssValid, jsValid: true, islamicAppropriate: true, noConflicts: true }, failedCheck: 'cssValid', note: 'Unmatched braces in accentCss' };
+    return { pass: false, checks: { cssValid, jsValid: true, islamicAppropriate: true, noConflicts: true, verseValid: true }, failedCheck: 'cssValid', note: 'Unmatched braces in accentCss' };
   }
   if (!jsValid) {
-    return { pass: false, checks: { cssValid: true, jsValid, islamicAppropriate: true, noConflicts: true }, failedCheck: 'jsValid', note: 'Unmatched brackets in accentJs' };
+    return { pass: false, checks: { cssValid: true, jsValid, islamicAppropriate: true, noConflicts: true, verseValid: true }, failedCheck: 'jsValid', note: 'Unmatched brackets in accentJs' };
   }
   if (!noConflicts) {
-    return { pass: false, checks: { cssValid: true, jsValid: true, islamicAppropriate: true, noConflicts }, failedCheck: 'noConflicts', note: 'CSS selectors must all be prefixed .accent-' };
+    return { pass: false, checks: { cssValid: true, jsValid: true, islamicAppropriate: true, noConflicts, verseValid: true }, failedCheck: 'noConflicts', note: 'CSS selectors must all be prefixed .accent-' };
+  }
+  if (!verseKnown) {
+    return { pass: false, checks: { cssValid: true, jsValid: true, islamicAppropriate: true, noConflicts: true, verseValid: false }, failedCheck: 'verseValid', note: 'Verse reference not found in QURAN_VERSES database' };
   }
 
   // Ask Claude to check Islamic appropriateness
@@ -80,7 +83,7 @@ Return ONLY JSON:
   if (!islamicAppropriate) {
     return {
       pass: false,
-      checks: { cssValid: true, jsValid: true, islamicAppropriate: false, noConflicts: true },
+      checks: { cssValid: true, jsValid: true, islamicAppropriate: false, noConflicts: true, verseValid: true },
       failedCheck: 'islamicAppropriate',
       note,
     };
@@ -88,6 +91,6 @@ Return ONLY JSON:
 
   return {
     pass: true,
-    checks: { cssValid: true, jsValid: true, islamicAppropriate: true, noConflicts: true },
+    checks: { cssValid: true, jsValid: true, islamicAppropriate: true, noConflicts: true, verseValid: true },
   };
 }

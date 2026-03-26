@@ -41,6 +41,7 @@ export interface QAResult {
     jsValid:            boolean;
     islamicAppropriate: boolean;
     noConflicts:        boolean;
+    verseValid:         boolean;
   };
   failedCheck?: string;
   note?: string;
