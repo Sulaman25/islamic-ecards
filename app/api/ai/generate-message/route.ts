@@ -63,11 +63,25 @@ export async function POST(request: Request) {
 
   const prompt = buildIslamicGreetingPrompt(params);
 
-  const stream = anthropic.messages.stream({
-    model: "claude-sonnet-4-6",
-    max_tokens: 400,
-    messages: [{ role: "user", content: prompt }],
-  });
+  const stream = anthropic.messages.stream(
+    {
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 400,
+      system: [
+        {
+          type: "text",
+          text: "You are a gifted Islamic greeting card writer with deep knowledge of Islamic tradition, Quranic wisdom, and heartfelt expression. You write concise, sincere, and beautifully worded card messages rooted in authentic Islamic values.",
+          cache_control: { type: "ephemeral" },
+        },
+      ],
+      messages: [{ role: "user", content: prompt }],
+    },
+    {
+      headers: {
+        "anthropic-beta": "prompt-caching-2024-07-31",
+      },
+    }
+  );
 
   const readable = new ReadableStream({
     async start(controller) {

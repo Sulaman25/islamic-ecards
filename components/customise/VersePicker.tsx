@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { QuranVerse } from "@/lib/verses/quran-data";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 
 export function VersePicker({ verses, onSelect, onClose }: Props) {
   const [query, setQuery] = useState("");
+  const t = useTranslations("versePicker");
 
   const filtered = query
     ? verses.filter(
@@ -27,10 +29,10 @@ export function VersePicker({ verses, onSelect, onClose }: Props) {
         <div className="p-5 border-b border-stone-100 flex items-center justify-between">
           <div>
             <h2 className="font-bold text-stone-800 text-lg">
-              Choose a Quranic Verse
+              {t("title")}
             </h2>
             <p className="text-stone-400 text-sm">
-              Include a verse of meaning on your card
+              {t("subtitle")}
             </p>
           </div>
           <button
@@ -46,7 +48,7 @@ export function VersePicker({ verses, onSelect, onClose }: Props) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by surah name, keywords, or ref (e.g. 2:286)..."
+            placeholder={t("searchPlaceholder")}
             className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400"
             autoFocus
           />
@@ -54,7 +56,7 @@ export function VersePicker({ verses, onSelect, onClose }: Props) {
 
         <div className="overflow-y-auto flex-1 p-2">
           {filtered.length === 0 ? (
-            <p className="text-center text-stone-400 py-8">No verses found</p>
+            <p className="text-center text-stone-400 py-8">{t("noResults")}</p>
           ) : (
             filtered.map((verse) => (
               <button

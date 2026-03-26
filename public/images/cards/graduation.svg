@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#070d24"/>
+  <defs>
+    <pattern id="navyDots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="0.7" fill="#6366f1" opacity="0.2"/>
+      <circle cx="0" cy="0" r="0.4" fill="#6366f1" opacity="0.12"/>
+      <circle cx="40" cy="0" r="0.4" fill="#6366f1" opacity="0.12"/>
+      <circle cx="0" cy="40" r="0.4" fill="#6366f1" opacity="0.12"/>
+      <circle cx="40" cy="40" r="0.4" fill="#6366f1" opacity="0.12"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#navyDots)"/>
+
+  <!-- Radial knowledge rays emanating from center top (like dawn/achievement) -->
+  <g transform="translate(300,180)" opacity="0.1" stroke="#fcd34d">
+    <line x1="0" y1="0" x2="0" y2="650" stroke-width="2" opacity="0.08"/>
+    <line x1="0" y1="0" x2="60" y2="650" stroke-width="1.5" opacity="0.07"/>
+    <line x1="0" y1="0" x2="-60" y2="650" stroke-width="1.5" opacity="0.07"/>
+    <line x1="0" y1="0" x2="130" y2="650" stroke-width="1" opacity="0.06"/>
+    <line x1="0" y1="0" x2="-130" y2="650" stroke-width="1" opacity="0.06"/>
+    <line x1="0" y1="0" x2="210" y2="650" stroke-width="0.7" opacity="0.05"/>
+    <line x1="0" y1="0" x2="-210" y2="650" stroke-width="0.7" opacity="0.05"/>
+    <line x1="0" y1="0" x2="300" y2="650" stroke-width="0.5" opacity="0.04"/>
+    <line x1="0" y1="0" x2="-300" y2="650" stroke-width="0.5" opacity="0.04"/>
+  </g>
+
+  <!-- Book motif - open book shape -->
+  <g transform="translate(300,440)" opacity="0.13" stroke="#fcd34d" fill="none">
+    <!-- Left page -->
+    <path d="M-5,-60 C-5,-65 -80,-65 -90,-60 L-90,60 C-80,55 -5,55 -5,60 Z"
+      stroke-width="1.2"/>
+    <!-- Right page -->
+    <path d="M5,-60 C5,-65 80,-65 90,-60 L90,60 C80,55 5,55 5,60 Z"
+      stroke-width="1.2"/>
+    <!-- Spine line -->
+    <line x1="0" y1="-60" x2="0" y2="60" stroke-width="1.5"/>
+    <!-- Text lines on left page -->
+    <line x1="-80" y1="-30" x2="-15" y2="-30" stroke-width="0.6" opacity="0.7"/>
+    <line x1="-80" y1="-15" x2="-15" y2="-15" stroke-width="0.6" opacity="0.7"/>
+    <line x1="-80" y1="0" x2="-15" y2="0" stroke-width="0.6" opacity="0.7"/>
+    <line x1="-80" y1="15" x2="-15" y2="15" stroke-width="0.6" opacity="0.7"/>
+    <line x1="-80" y1="30" x2="-15" y2="30" stroke-width="0.6" opacity="0.7"/>
+    <!-- Text lines on right page -->
+    <line x1="15" y1="-30" x2="80" y2="-30" stroke-width="0.6" opacity="0.7"/>
+    <line x1="15" y1="-15" x2="80" y2="-15" stroke-width="0.6" opacity="0.7"/>
+    <line x1="15" y1="0" x2="80" y2="0" stroke-width="0.6" opacity="0.7"/>
+    <line x1="15" y1="15" x2="80" y2="15" stroke-width="0.6" opacity="0.7"/>
+    <line x1="15" y1="30" x2="80" y2="30" stroke-width="0.6" opacity="0.7"/>
+  </g>
+
+  <!-- Graduation cap / mortar board outline above book -->
+  <g transform="translate(300,310)" opacity="0.13" stroke="#fcd34d" fill="none">
+    <!-- Diamond top of mortarboard -->
+    <polygon points="0,-20 70,5 0,30 -70,5" stroke-width="1.2"/>
+    <!-- Tassel line -->
+    <line x1="70" y1="5" x2="70" y2="35" stroke-width="0.9"/>
+    <line x1="62" y1="35" x2="78" y2="35" stroke-width="0.7"/>
+  </g>
+
+  <!-- Decorative star ring around book area -->
+  <g transform="translate(300,440)" opacity="0.1" fill="none" stroke="#6366f1">
+    <circle cx="0" cy="0" r="130" stroke-width="0.7" stroke-dasharray="4,6"/>
+    <circle cx="0" cy="0" r="170" stroke-width="0.5" stroke-dasharray="3,8"/>
+    <circle cx="0" cy="0" r="220" stroke-width="0.4" stroke-dasharray="2,10"/>
+  </g>
+
+  <!-- 8-pointed stars scattered - sapphire -->
+  <g fill="none" stroke="#6366f1" opacity="0.18" stroke-width="0.7">
+    <polygon points="80,100 83,110 93,113 83,116 80,126 77,116 67,113 77,110"/>
+    <polygon points="500,80 503,90 513,93 503,96 500,106 497,96 487,93 497,90"/>
+    <polygon points="60,650 63,660 73,663 63,666 60,676 57,666 47,663 57,660"/>
+    <polygon points="540,620 543,630 553,633 543,636 540,646 537,636 527,633 537,630"/>
+  </g>
+
+  <!-- Gold star accents for achievement -->
+  <g fill="none" stroke="#fcd34d" opacity="0.15" stroke-width="0.8">
+    <polygon points="150,200 153,212 165,215 153,218 150,230 147,218 135,215 147,212"/>
+    <polygon points="450,180 453,192 465,195 453,198 450,210 447,198 435,195 447,192"/>
+    <polygon points="100,520 103,532 115,535 103,538 100,550 97,538 85,535 97,532"/>
+    <polygon points="500,500 503,512 515,515 503,518 500,530 497,518 485,515 497,512"/>
+  </g>
+
+  <!-- Top arc ornament -->
+  <g transform="translate(300,180)" opacity="0.13" fill="none" stroke="#6366f1">
+    <circle cx="0" cy="0" r="55" stroke-width="0.8"/>
+    <circle cx="0" cy="0" r="40" stroke-width="0.6" stroke-dasharray="3,4"/>
+    <circle cx="0" cy="0" r="22" stroke-width="0.5"/>
+  </g>
+
+  <!-- Border frame -->
+  <rect x="18" y="18" width="564" height="764" rx="4" fill="none" stroke="#6366f1" stroke-width="0.8" opacity="0.15"/>
+  <rect x="26" y="26" width="548" height="748" rx="2" fill="none" stroke="#fcd34d" stroke-width="0.3" stroke-dasharray="4,8" opacity="0.1"/>
+</svg>

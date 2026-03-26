@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#0d1a0d"/>
+  <defs>
+    <pattern id="subtleGrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="40" height="40" fill="none" stroke="#fcd34d" stroke-width="0.25" opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#subtleGrid)"/>
+
+  <!-- Kaaba cube representation -->
+  <g transform="translate(300,380)" opacity="0.16" stroke="#fcd34d" fill="none">
+    <!-- Front face -->
+    <rect x="-55" y="-65" width="110" height="120" stroke-width="1.5"/>
+    <!-- Top face (trapezoid perspective) -->
+    <polygon points="-55,-65 -80,-88 80,-88 55,-65" stroke-width="1.2"/>
+    <!-- Right side face -->
+    <polygon points="55,-65 80,-88 80,32 55,55" stroke-width="1"/>
+    <!-- Kiswa horizontal bands -->
+    <line x1="-55" y1="-20" x2="55" y2="-20" stroke-width="0.7" opacity="0.8"/>
+    <line x1="-55" y1="10" x2="55" y2="10" stroke-width="0.5" opacity="0.6"/>
+    <!-- Gold band (hizam) at top third -->
+    <rect x="-55" y="-40" width="110" height="12" stroke-width="0.8" opacity="0.7"/>
+    <!-- Door -->
+    <path d="M-18,-65 L-18,-20 A18,18 0 0,0 18,-20 L18,-65" stroke-width="0.9"/>
+    <!-- Door frame decorative -->
+    <rect x="-22" y="-65" width="44" height="50" stroke-width="0.5" opacity="0.5"/>
+  </g>
+
+  <!-- Tawaf circumambulation rings -->
+  <g transform="translate(300,380)" fill="none" stroke="#fcd34d">
+    <ellipse cx="0" cy="0" rx="100" ry="75" stroke-width="0.9" opacity="0.16"/>
+    <ellipse cx="0" cy="0" rx="140" ry="105" stroke-width="0.8" opacity="0.14"/>
+    <ellipse cx="0" cy="0" rx="180" ry="135" stroke-width="0.7" opacity="0.12"/>
+    <ellipse cx="0" cy="0" rx="220" ry="165" stroke-width="0.6" opacity="0.10"/>
+    <ellipse cx="0" cy="0" rx="260" ry="195" stroke-width="0.5" opacity="0.08"/>
+  </g>
+
+  <!-- Pilgrim figures on rings (simplified dots + lines) -->
+  <g opacity="0.13" stroke="#fcd34d" fill="#fcd34d">
+    <!-- Ring 1 pilgrims -->
+    <circle cx="400" cy="380" r="2"/>
+    <circle cx="385" cy="348" r="2"/>
+    <circle cx="350" cy="318" r="2"/>
+    <circle cx="300" cy="305" r="2"/>
+    <circle cx="250" cy="318" r="2"/>
+    <circle cx="215" cy="350" r="2"/>
+    <circle cx="200" cy="383" r="2"/>
+    <circle cx="216" cy="416" r="2"/>
+    <circle cx="252" cy="443" r="2"/>
+    <circle cx="300" cy="455" r="2"/>
+    <circle cx="349" cy="443" r="2"/>
+    <circle cx="385" cy="415" r="2"/>
+    <!-- Ring 2 pilgrims -->
+    <circle cx="440" cy="380" r="1.5"/>
+    <circle cx="418" cy="330" r="1.5"/>
+    <circle cx="370" cy="288" r="1.5"/>
+    <circle cx="300" cy="275" r="1.5"/>
+    <circle cx="230" cy="290" r="1.5"/>
+    <circle cx="183" cy="332" r="1.5"/>
+    <circle cx="160" cy="382" r="1.5"/>
+    <circle cx="182" cy="432" r="1.5"/>
+  </g>
+
+  <!-- Decorative corner triangles -->
+  <g opacity="0.12" stroke="#fcd34d" fill="none" stroke-width="0.7">
+    <polygon points="0,0 60,0 0,60" transform="translate(15,15)"/>
+    <polygon points="60,0 0,0 60,60" transform="translate(525,15)"/>
+    <polygon points="0,60 60,60 0,0" transform="translate(15,725)"/>
+    <polygon points="60,60 0,60 60,0" transform="translate(525,725)"/>
+  </g>
+
+  <!-- Border frame -->
+  <rect x="18" y="18" width="564" height="764" rx="3" fill="none" stroke="#fcd34d" stroke-width="0.8" opacity="0.16"/>
+</svg>

@@ -1,7 +1,8 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db/prisma";
 import { sendCardEmail } from "@/lib/delivery/email";
-import { canSendCard } from "@/lib/stripe/plans";
+import { scheduleCardDelivery } from "@/lib/queue/card-queue";
+import { canSendCard, canSchedule } from "@/lib/stripe/plans";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -9,13 +10,14 @@ const sendSchema = z.object({
   templateId: z.string(),
   senderName: z.string().min(1),
   recipientName: z.string().min(1),
-  recipientEmail: z.string().email(),
+  recipientEmail: z.string().email().transform(v => v.toLowerCase()),
   customMessage: z.string().min(1),
   selectedVerse: z.string().optional(),
   verseTextEn: z.string().optional(),
   verseTextAr: z.string().optional(),
-  fontStyle: z.string().default("amiri"),
+  fontStyle: z.enum(["amiri", "noto-naskh", "serif"]).default("amiri"),
   aiGenerated: z.boolean().default(false),
+  scheduledAt: z.string().datetime().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -32,26 +34,18 @@ export async function POST(request: NextRequest) {
 
   const data = parsed.data;
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { plan: true },
-  });
-
-  if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
-  }
-
-  // Check monthly send count for free users
   const startOfMonth = new Date();
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
 
-  const monthlyCount = await prisma.sentCard.count({
-    where: {
-      senderId: session.user.id,
-      createdAt: { gte: startOfMonth },
-    },
-  });
+  const [user, monthlyCount] = await Promise.all([
+    prisma.user.findUnique({ where: { id: session.user.id }, select: { plan: true } }),
+    prisma.sentCard.count({ where: { senderId: session.user.id, createdAt: { gte: startOfMonth }, status: { in: ["SENT", "VIEWED"] } } }),
+  ]);
+
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
 
   if (!canSendCard(user.plan, monthlyCount)) {
     return NextResponse.json(
@@ -72,7 +66,30 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Card template not found" }, { status: 404 });
   }
 
-  // Create sent card record
+  if (data.scheduledAt) {
+    const scheduledDate = new Date(data.scheduledAt);
+    if (scheduledDate > new Date()) {
+      if (!canSchedule(user.plan)) {
+        return NextResponse.json({ error: "Scheduled delivery requires a paid plan.", upgradeRequired: true }, { status: 403 });
+      }
+      const viewToken = await scheduleCardDelivery({
+        senderId: session.user.id,
+        templateId: data.templateId,
+        senderName: data.senderName,
+        recipientName: data.recipientName,
+        recipientEmail: data.recipientEmail,
+        customMessage: data.customMessage,
+        selectedVerse: data.selectedVerse,
+        verseTextEn: data.verseTextEn,
+        verseTextAr: data.verseTextAr,
+        fontStyle: data.fontStyle,
+        aiGenerated: data.aiGenerated,
+        channel: "EMAIL",
+      }, scheduledDate);
+      return NextResponse.json({ scheduled: true, scheduledAt: data.scheduledAt, viewToken });
+    }
+  }
+
   const sentCard = await prisma.sentCard.create({
     data: {
       senderId: session.user.id,
@@ -91,7 +108,6 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // Send email
   try {
     await sendCardEmail({
       to: data.recipientEmail,

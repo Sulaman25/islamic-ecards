@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#071a0d"/>
+  <defs>
+    <pattern id="greenGrid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="60" height="60" fill="none" stroke="#34d399" stroke-width="0.3" opacity="0.12"/>
+      <circle cx="30" cy="30" r="1" fill="none" stroke="#34d399" stroke-width="0.3" opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#greenGrid)"/>
+
+  <!-- Large 12-pointed Islamic star - the main motif -->
+  <g transform="translate(300,400)" opacity="0.15">
+    <g stroke="#34d399" fill="none">
+      <!-- 12-pointed star constructed from two hexagons -->
+      <polygon points="0,-160 46,-138 80,-80 138,-46 160,0 138,46 80,80 46,138 0,160 -46,138 -80,80 -138,46 -160,0 -138,-46 -80,-80 -46,-138"
+        stroke-width="1.3"/>
+      <!-- Inner hexagon 1 -->
+      <polygon points="0,-130 113,-65 113,65 0,130 -113,65 -113,-65"
+        stroke-width="1"/>
+      <!-- Inner hexagon 2 rotated 30 degrees -->
+      <polygon points="0,-130 113,-65 113,65 0,130 -113,65 -113,-65"
+        stroke-width="1" transform="rotate(30)"/>
+      <!-- Inner 12-pt star smaller -->
+      <polygon points="0,-90 26,-78 45,-45 78,-26 90,0 78,26 45,45 26,78 0,90 -26,78 -45,45 -78,26 -90,0 -78,-26 -45,-45 -26,-78"
+        stroke-width="0.8"/>
+      <!-- Center hex -->
+      <polygon points="0,-50 43,-25 43,25 0,50 -43,25 -43,-25"
+        stroke-width="0.7"/>
+      <!-- Rings -->
+      <circle cx="0" cy="0" r="30" stroke-width="0.7"/>
+      <circle cx="0" cy="0" r="170" stroke-width="0.5" stroke-dasharray="4,6"/>
+      <circle cx="0" cy="0" r="220" stroke-width="0.4" stroke-dasharray="2,8"/>
+      <!-- Center dot -->
+      <circle cx="0" cy="0" r="8" stroke-width="0.6"/>
+    </g>
+  </g>
+
+  <!-- Corner 6-pointed stars -->
+  <g opacity="0.12" stroke="#34d399" fill="none" stroke-width="0.7">
+    <g transform="translate(70,80)">
+      <polygon points="0,-35 30,-17 30,17 0,35 -30,17 -30,-17" transform="rotate(0)"/>
+      <polygon points="0,-35 30,-17 30,17 0,35 -30,17 -30,-17" transform="rotate(30)"/>
+      <circle cx="0" cy="0" r="12" stroke-width="0.5"/>
+    </g>
+    <g transform="translate(530,80)">
+      <polygon points="0,-35 30,-17 30,17 0,35 -30,17 -30,-17" transform="rotate(0)"/>
+      <polygon points="0,-35 30,-17 30,17 0,35 -30,17 -30,-17" transform="rotate(30)"/>
+      <circle cx="0" cy="0" r="12" stroke-width="0.5"/>
+    </g>
+    <g transform="translate(70,720)">
+      <polygon points="0,-35 30,-17 30,17 0,35 -30,17 -30,-17" transform="rotate(0)"/>
+      <polygon points="0,-35 30,-17 30,17 0,35 -30,17 -30,-17" transform="rotate(30)"/>
+      <circle cx="0" cy="0" r="12" stroke-width="0.5"/>
+    </g>
+    <g transform="translate(530,720)">
+      <polygon points="0,-35 30,-17 30,17 0,35 -30,17 -30,-17" transform="rotate(0)"/>
+      <polygon points="0,-35 30,-17 30,17 0,35 -30,17 -30,-17" transform="rotate(30)"/>
+      <circle cx="0" cy="0" r="12" stroke-width="0.5"/>
+    </g>
+  </g>
+
+  <!-- Decorative border with scallops -->
+  <g opacity="0.14" stroke="#34d399" fill="none">
+    <rect x="20" y="20" width="560" height="760" rx="4" stroke-width="0.8"/>
+    <!-- Top scallop -->
+    <path d="M20,20 Q45,40 70,20 Q95,40 120,20 Q145,40 170,20 Q195,40 220,20 Q245,40 270,20 Q295,40 320,20 Q345,40 370,20 Q395,40 420,20 Q445,40 470,20 Q495,40 520,20 Q545,40 570,20 Q580,30 580,20"
+      stroke-width="0.5" opacity="0.5"/>
+  </g>
+</svg>

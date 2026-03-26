@@ -1,7 +1,8 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db/prisma";
 import { generateWhatsAppShareUrl } from "@/lib/delivery/whatsapp";
-import { canSendCard } from "@/lib/stripe/plans";
+import { scheduleCardDelivery } from "@/lib/queue/card-queue";
+import { canSendCard, canSchedule } from "@/lib/stripe/plans";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -13,8 +14,9 @@ const sendSchema = z.object({
   selectedVerse: z.string().optional(),
   verseTextEn: z.string().optional(),
   verseTextAr: z.string().optional(),
-  fontStyle: z.string().default("amiri"),
+  fontStyle: z.enum(["amiri", "noto-naskh", "serif"]).default("amiri"),
   aiGenerated: z.boolean().default(false),
+  scheduledAt: z.string().datetime().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -26,30 +28,26 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const parsed = sendSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: parsed.error.issues[0]?.message ?? "Invalid request" },
+      { status: 400 }
+    );
   }
 
   const data = parsed.data;
-
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { plan: true },
-  });
-
-  if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
-  }
 
   const startOfMonth = new Date();
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
 
-  const monthlyCount = await prisma.sentCard.count({
-    where: {
-      senderId: session.user.id,
-      createdAt: { gte: startOfMonth },
-    },
-  });
+  const [user, monthlyCount] = await Promise.all([
+    prisma.user.findUnique({ where: { id: session.user.id }, select: { plan: true } }),
+    prisma.sentCard.count({ where: { senderId: session.user.id, createdAt: { gte: startOfMonth }, status: { in: ["SENT", "VIEWED"] } } }),
+  ]);
+
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
 
   if (!canSendCard(user.plan, monthlyCount)) {
     return NextResponse.json(
@@ -65,6 +63,29 @@ export async function POST(request: NextRequest) {
 
   if (!template) {
     return NextResponse.json({ error: "Template not found" }, { status: 404 });
+  }
+
+  if (data.scheduledAt) {
+    const scheduledDate = new Date(data.scheduledAt);
+    if (scheduledDate > new Date()) {
+      if (!canSchedule(user.plan)) {
+        return NextResponse.json({ error: "Scheduled delivery requires a paid plan.", upgradeRequired: true }, { status: 403 });
+      }
+      const viewToken = await scheduleCardDelivery({
+        senderId: session.user.id,
+        templateId: data.templateId,
+        senderName: data.senderName,
+        recipientName: data.recipientName,
+        customMessage: data.customMessage,
+        selectedVerse: data.selectedVerse,
+        verseTextEn: data.verseTextEn,
+        verseTextAr: data.verseTextAr,
+        fontStyle: data.fontStyle,
+        aiGenerated: data.aiGenerated,
+        channel: "WHATSAPP",
+      }, scheduledDate);
+      return NextResponse.json({ scheduled: true, scheduledAt: data.scheduledAt, viewToken });
+    }
   }
 
   const sentCard = await prisma.sentCard.create({
@@ -85,12 +106,17 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  const shareUrl = generateWhatsAppShareUrl({
-    viewToken: sentCard.viewToken,
-    senderName: data.senderName,
-    recipientName: data.recipientName,
-    occasionTitle: template.occasion.nameEn,
-  });
+  let shareUrl: string | undefined;
+  try {
+    shareUrl = generateWhatsAppShareUrl({
+      viewToken: sentCard.viewToken,
+      senderName: data.senderName,
+      recipientName: data.recipientName,
+      occasionTitle: template.occasion.nameEn,
+    });
+  } catch {
+    // URL generation failed; card is saved but WhatsApp link unavailable
+  }
 
   return NextResponse.json({
     success: true,

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#2d1b0e"/>
+  <defs>
+    <pattern id="floralArab" x="0" y="0" width="70" height="70" patternUnits="userSpaceOnUse">
+      <!-- Arabesque floral cell -->
+      <path d="M35,5 C42,15 50,22 42,35 C50,48 42,55 35,65 C28,55 20,48 28,35 C20,22 28,15 35,5 Z"
+        fill="none" stroke="#fca5a5" stroke-width="0.6" opacity="0.35"/>
+      <path d="M5,35 C15,28 22,20 35,28 C48,20 55,28 65,35 C55,42 48,50 35,42 C22,50 15,42 5,35 Z"
+        fill="none" stroke="#fca5a5" stroke-width="0.6" opacity="0.35"/>
+      <!-- Center circle -->
+      <circle cx="35" cy="35" r="6" fill="none" stroke="#fca5a5" stroke-width="0.5" opacity="0.3"/>
+      <circle cx="35" cy="35" r="2" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.25"/>
+      <!-- Diagonal petals -->
+      <path d="M12,12 C18,20 18,20 25,25" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.2"/>
+      <path d="M58,12 C52,20 52,20 45,25" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.2"/>
+      <path d="M12,58 C18,50 18,50 25,45" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.2"/>
+      <path d="M58,58 C52,50 52,50 45,45" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.2"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#floralArab)"/>
+
+  <!-- Central arabesque mandala -->
+  <g transform="translate(300,400)" opacity="0.14">
+    <!-- 8-petal rose mandala -->
+    <g stroke="#fca5a5" fill="none">
+      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(0)"/>
+      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(45)"/>
+      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(135)"/>
+      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(225)"/>
+      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(270)"/>
+      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(315)"/>
+      <!-- Rings -->
+      <circle cx="0" cy="0" r="35" stroke-width="0.7"/>
+      <circle cx="0" cy="0" r="55" stroke-width="0.5" stroke-dasharray="3,4"/>
+      <circle cx="0" cy="0" r="95" stroke-width="0.5" stroke-dasharray="2,6"/>
+      <circle cx="0" cy="0" r="140" stroke-width="0.4" stroke-dasharray="1,8"/>
+      <circle cx="0" cy="0" r="200" stroke-width="0.3" stroke-dasharray="1,10"/>
+    </g>
+  </g>
+
+  <!-- Floating rose petals scattered -->
+  <g opacity="0.1" stroke="#fca5a5" fill="none" stroke-width="0.7">
+    <!-- Petal shapes at various positions -->
+    <ellipse cx="90" cy="150" rx="8" ry="18" transform="rotate(-30,90,150)"/>
+    <ellipse cx="120" cy="170" rx="6" ry="14" transform="rotate(20,120,170)"/>
+    <ellipse cx="480" cy="200" rx="8" ry="18" transform="rotate(40,480,200)"/>
+    <ellipse cx="510" cy="180" rx="6" ry="14" transform="rotate(-15,510,180)"/>
+    <ellipse cx="70" cy="620" rx="7" ry="16" transform="rotate(15,70,620)"/>
+    <ellipse cx="530" cy="580" rx="8" ry="18" transform="rotate(-25,530,580)"/>
+    <ellipse cx="150" cy="700" rx="6" ry="14" transform="rotate(35,150,700)"/>
+    <ellipse cx="440" cy="680" rx="7" ry="16" transform="rotate(-10,440,680)"/>
+    <!-- Small rose clusters -->
+    <circle cx="90" cy="150" r="4"/>
+    <circle cx="480" cy="200" r="4"/>
+    <circle cx="70" cy="620" r="3.5"/>
+    <circle cx="530" cy="580" r="4"/>
+  </g>
+
+  <!-- Elegant border frame -->
+  <g opacity="0.15" stroke="#fca5a5" fill="none">
+    <rect x="22" y="22" width="556" height="756" rx="5" stroke-width="0.8"/>
+    <rect x="30" y="30" width="540" height="740" rx="3" stroke-width="0.4" stroke-dasharray="3,5"/>
+  </g>
+
+  <!-- Corner rosettes -->
+  <g opacity="0.13" stroke="#fca5a5" fill="none" stroke-width="0.7">
+    <circle cx="55" cy="55" r="20"/>
+    <circle cx="55" cy="55" r="12"/>
+    <circle cx="545" cy="55" r="20"/>
+    <circle cx="545" cy="55" r="12"/>
+    <circle cx="55" cy="745" r="20"/>
+    <circle cx="55" cy="745" r="12"/>
+    <circle cx="545" cy="745" r="20"/>
+    <circle cx="545" cy="745" r="12"/>
+  </g>
+</svg>

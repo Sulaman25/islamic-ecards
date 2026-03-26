@@ -17,7 +17,7 @@ export async function sendCardEmail(params: SendCardEmailParams) {
   const viewUrl = `${process.env.NEXT_PUBLIC_APP_URL}/view/${params.viewToken}`;
 
   const { data, error } = await resend.emails.send({
-    from: `Islamic Ecards <cards@${process.env.RESEND_DOMAIN ?? "islamicecards.app"}>`,
+    from: `Islamic Ecards <onboarding@${process.env.RESEND_DOMAIN ?? "resend.dev"}>`,
     to: params.to,
     subject: `${params.senderName} sent you an Islamic card for ${params.occasionTitle}`,
     html: buildEmailHtml({ ...params, viewUrl }),

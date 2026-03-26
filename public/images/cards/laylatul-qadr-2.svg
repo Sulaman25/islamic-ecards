@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#1e1040"/>
+  <defs>
+    <pattern id="denseStars" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="12" r="0.9" fill="#a78bfa" opacity="0.4"/>
+      <circle cx="35" cy="5" r="0.7" fill="#a78bfa" opacity="0.32"/>
+      <circle cx="52" cy="22" r="1" fill="#a78bfa" opacity="0.36"/>
+      <circle cx="18" cy="40" r="0.8" fill="#a78bfa" opacity="0.3"/>
+      <circle cx="48" cy="48" r="0.7" fill="#a78bfa" opacity="0.28"/>
+      <circle cx="28" cy="55" r="1.1" fill="#a78bfa" opacity="0.35"/>
+      <circle cx="55" cy="35" r="0.6" fill="#a78bfa" opacity="0.25"/>
+      <!-- Tiny cross star -->
+      <polygon points="44,14 45,19 50,20 45,21 44,26 43,21 38,20 43,19"
+        fill="none" stroke="#a78bfa" stroke-width="0.4" opacity="0.3"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#denseStars)"/>
+
+  <!-- Descending light rays (Laylatul Qadr - Night of Decree - angels descend) -->
+  <g opacity="0.11" stroke="#a78bfa">
+    <!-- Wide central beam -->
+    <line x1="300" y1="0" x2="300" y2="800" stroke-width="3" opacity="0.08"/>
+    <!-- Secondary beams -->
+    <line x1="260" y1="0" x2="280" y2="800" stroke-width="1.5" opacity="0.07"/>
+    <line x1="340" y1="0" x2="320" y2="800" stroke-width="1.5" opacity="0.07"/>
+    <!-- Outer beams -->
+    <line x1="180" y1="0" x2="240" y2="800" stroke-width="1" opacity="0.06"/>
+    <line x1="420" y1="0" x2="360" y2="800" stroke-width="1" opacity="0.06"/>
+    <line x1="100" y1="0" x2="200" y2="800" stroke-width="0.7" opacity="0.05"/>
+    <line x1="500" y1="0" x2="400" y2="800" stroke-width="0.7" opacity="0.05"/>
+    <line x1="20" y1="0" x2="160" y2="800" stroke-width="0.5" opacity="0.04"/>
+    <line x1="580" y1="0" x2="440" y2="800" stroke-width="0.5" opacity="0.04"/>
+  </g>
+
+  <!-- Dense star field (more concentrated) -->
+  <g fill="#a78bfa">
+    <circle cx="75" cy="40" r="1.3" opacity="0.5"/>
+    <circle cx="200" cy="25" r="1" opacity="0.45"/>
+    <circle cx="350" cy="60" r="1.2" opacity="0.4"/>
+    <circle cx="500" cy="35" r="0.9" opacity="0.42"/>
+    <circle cx="140" cy="120" r="0.8" opacity="0.35"/>
+    <circle cx="420" cy="100" r="1.1" opacity="0.38"/>
+    <circle cx="30" cy="180" r="0.9" opacity="0.3"/>
+    <circle cx="570" cy="150" r="1" opacity="0.35"/>
+    <circle cx="240" cy="200" r="0.7" opacity="0.32"/>
+    <circle cx="460" cy="250" r="0.8" opacity="0.3"/>
+    <circle cx="80" cy="320" r="1" opacity="0.28"/>
+    <circle cx="530" cy="300" r="0.9" opacity="0.3"/>
+    <circle cx="160" cy="430" r="0.8" opacity="0.28"/>
+    <circle cx="440" cy="400" r="1.1" opacity="0.32"/>
+    <circle cx="300" cy="500" r="0.7" opacity="0.25"/>
+    <circle cx="120" cy="580" r="1" opacity="0.3"/>
+    <circle cx="480" cy="550" r="0.8" opacity="0.28"/>
+    <circle cx="220" cy="650" r="0.9" opacity="0.3"/>
+    <circle cx="380" cy="680" r="1" opacity="0.28"/>
+    <circle cx="60" cy="700" r="0.8" opacity="0.32"/>
+    <circle cx="540" cy="720" r="1.1" opacity="0.3"/>
+    <circle cx="300" cy="750" r="0.7" opacity="0.25"/>
+  </g>
+
+  <!-- 4-pointed stars scattered -->
+  <g fill="none" stroke="#a78bfa" opacity="0.2" stroke-width="0.7">
+    <polygon points="150,160 153,172 165,175 153,178 150,190 147,178 135,175 147,172"/>
+    <polygon points="450,140 453,152 465,155 453,158 450,170 447,158 435,155 447,152"/>
+    <polygon points="80,450 83,462 95,465 83,468 80,480 77,468 65,465 77,462"/>
+    <polygon points="520,420 523,432 535,435 523,438 520,450 517,438 505,435 517,432"/>
+    <polygon points="270,600 273,612 285,615 273,618 270,630 267,618 255,615 267,612"/>
+  </g>
+
+  <!-- Central 8-pointed star - prominent -->
+  <g transform="translate(300,300)" opacity="0.15" fill="none" stroke="#a78bfa">
+    <polygon points="0,-50 14,-14 50,0 14,14 0,50 -14,14 -50,0 -14,-14"
+      stroke-width="1" transform="rotate(22.5)"/>
+    <polygon points="0,-80 22,-22 80,0 22,22 0,80 -22,22 -80,0 -22,-22"
+      stroke-width="0.8" transform="rotate(22.5)"/>
+    <circle cx="0" cy="0" r="22" stroke-width="0.7"/>
+    <circle cx="0" cy="0" r="95" stroke-width="0.5" stroke-dasharray="3,6"/>
+    <circle cx="0" cy="0" r="130" stroke-width="0.4" stroke-dasharray="2,8"/>
+  </g>
+
+  <!-- Horizontal separator bands suggesting veils of night -->
+  <g opacity="0.07" stroke="#a78bfa" fill="none">
+    <line x1="0" y1="200" x2="600" y2="200" stroke-width="30" opacity="0.03"/>
+    <line x1="0" y1="500" x2="600" y2="500" stroke-width="20" opacity="0.03"/>
+  </g>
+</svg>

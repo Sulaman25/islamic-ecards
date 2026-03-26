@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#150a24"/>
+  <defs>
+    <pattern id="softPattern" x="0" y="0" width="70" height="70" patternUnits="userSpaceOnUse">
+      <!-- Soft 4-petal flower -->
+      <circle cx="35" cy="35" r="10" fill="none" stroke="#c4b5fd" stroke-width="0.5" opacity="0.28"/>
+      <circle cx="35" cy="35" r="4" fill="none" stroke="#c4b5fd" stroke-width="0.4" opacity="0.2"/>
+      <!-- Petals -->
+      <ellipse cx="35" cy="22" rx="5" ry="10" fill="none" stroke="#c4b5fd" stroke-width="0.4" opacity="0.22"/>
+      <ellipse cx="35" cy="48" rx="5" ry="10" fill="none" stroke="#c4b5fd" stroke-width="0.4" opacity="0.22"/>
+      <ellipse cx="22" cy="35" rx="10" ry="5" fill="none" stroke="#c4b5fd" stroke-width="0.4" opacity="0.22"/>
+      <ellipse cx="48" cy="35" rx="10" ry="5" fill="none" stroke="#c4b5fd" stroke-width="0.4" opacity="0.22"/>
+      <!-- Tiny corner stars -->
+      <circle cx="8" cy="8" r="0.7" fill="#f9a8d4" opacity="0.25"/>
+      <circle cx="62" cy="8" r="0.7" fill="#f9a8d4" opacity="0.25"/>
+      <circle cx="8" cy="62" r="0.7" fill="#f9a8d4" opacity="0.25"/>
+      <circle cx="62" cy="62" r="0.7" fill="#f9a8d4" opacity="0.25"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#softPattern)"/>
+
+  <!-- Large soft crescent - welcoming new baby -->
+  <g transform="translate(300,300)" opacity="0.14">
+    <circle cx="0" cy="0" r="120" fill="none" stroke="#c4b5fd" stroke-width="1.4"/>
+    <circle cx="32" cy="-18" r="101" fill="#150a24"/>
+    <path d="M-85,-85 A 120,120 0 1,1 -85,85 A 101,101 0 1,0 -85,-85 Z"
+      fill="none" stroke="#c4b5fd" stroke-width="1.3"/>
+  </g>
+
+  <!-- Soft rose 4-pointed stars - lavender -->
+  <g fill="none" stroke="#c4b5fd" opacity="0.18" stroke-width="0.8">
+    <polygon points="120,140 124,154 138,158 124,162 120,176 116,162 102,158 116,154"/>
+    <polygon points="480,160 484,174 498,178 484,182 480,196 476,182 462,178 476,174"/>
+    <polygon points="70,460 74,474 88,478 74,482 70,496 66,482 52,478 66,474"/>
+    <polygon points="530,440 534,454 548,458 534,462 530,476 526,462 512,458 526,454"/>
+    <polygon points="200,680 204,694 218,698 204,702 200,716 196,702 182,698 196,694"/>
+    <polygon points="400,660 404,674 418,678 404,682 400,696 396,682 382,678 396,674"/>
+  </g>
+
+  <!-- Rose-colored small stars -->
+  <g fill="none" stroke="#f9a8d4" opacity="0.16" stroke-width="0.7">
+    <polygon points="180,100 183,109 192,112 183,115 180,124 177,115 168,112 177,109"/>
+    <polygon points="420,80 423,89 432,92 423,95 420,104 417,95 408,92 417,89"/>
+    <polygon points="50,280 53,289 62,292 53,295 50,304 47,295 38,292 47,289"/>
+    <polygon points="550,300 553,309 562,312 553,315 550,324 547,315 538,312 547,309"/>
+    <polygon points="310,730 313,739 322,742 313,745 310,754 307,745 298,742 307,739"/>
+  </g>
+
+  <!-- Tiny floating dots like bubbles / baby stars -->
+  <g fill="#c4b5fd" opacity="0.22">
+    <circle cx="90" cy="60" r="1.3"/>
+    <circle cx="230" cy="40" r="0.9"/>
+    <circle cx="400" cy="50" r="1.1"/>
+    <circle cx="540" cy="80" r="0.8"/>
+    <circle cx="30" cy="190" r="1"/>
+    <circle cx="570" cy="220" r="0.9"/>
+    <circle cx="120" cy="380" r="0.8"/>
+    <circle cx="490" cy="360" r="1"/>
+    <circle cx="160" cy="550" r="1.1"/>
+    <circle cx="440" cy="530" r="0.8"/>
+    <circle cx="60" cy="700" r="1"/>
+    <circle cx="520" cy="710" r="0.9"/>
+    <circle cx="280" cy="760" r="0.7"/>
+    <circle cx="350" cy="770" r="0.8"/>
+  </g>
+  <g fill="#f9a8d4" opacity="0.18">
+    <circle cx="170" cy="80" r="0.9"/>
+    <circle cx="450" cy="130" r="1"/>
+    <circle cx="30" cy="420" r="0.8"/>
+    <circle cx="570" cy="460" r="0.9"/>
+    <circle cx="240" cy="640" r="1"/>
+    <circle cx="380" cy="620" r="0.8"/>
+  </g>
+
+  <!-- Gentle outer rings at center -->
+  <g transform="translate(300,380)" opacity="0.08" fill="none">
+    <circle cx="0" cy="0" r="160" stroke="#c4b5fd" stroke-width="0.6" stroke-dasharray="3,8"/>
+    <circle cx="0" cy="0" r="220" stroke="#f9a8d4" stroke-width="0.5" stroke-dasharray="2,10"/>
+    <circle cx="0" cy="0" r="280" stroke="#c4b5fd" stroke-width="0.4" stroke-dasharray="1,12"/>
+  </g>
+
+  <!-- Soft rounded border -->
+  <rect x="18" y="18" width="564" height="764" rx="16" fill="none" stroke="#c4b5fd" stroke-width="0.7" opacity="0.14"/>
+  <rect x="26" y="26" width="548" height="748" rx="12" fill="none" stroke="#f9a8d4" stroke-width="0.4" stroke-dasharray="3,7" opacity="0.1"/>
+</svg>

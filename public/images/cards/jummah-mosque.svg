@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#0a1a0a"/>
+  <defs>
+    <pattern id="gridGreen" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="50" height="50" fill="none" stroke="#6ee7b7" stroke-width="0.3" opacity="0.12"/>
+      <circle cx="25" cy="25" r="1" fill="#6ee7b7" opacity="0.15"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#gridGreen)"/>
+
+  <!-- Vertical light rays emanating upward -->
+  <g opacity="0.09" stroke="#6ee7b7">
+    <line x1="300" y1="800" x2="300" y2="0" stroke-width="2"/>
+    <line x1="300" y1="800" x2="240" y2="0" stroke-width="1.2"/>
+    <line x1="300" y1="800" x2="360" y2="0" stroke-width="1.2"/>
+    <line x1="300" y1="800" x2="180" y2="0" stroke-width="0.8"/>
+    <line x1="300" y1="800" x2="420" y2="0" stroke-width="0.8"/>
+    <line x1="300" y1="800" x2="120" y2="0" stroke-width="0.5"/>
+    <line x1="300" y1="800" x2="480" y2="0" stroke-width="0.5"/>
+    <line x1="300" y1="800" x2="50" y2="0" stroke-width="0.3"/>
+    <line x1="300" y1="800" x2="550" y2="0" stroke-width="0.3"/>
+  </g>
+
+  <!-- Mosque silhouette -->
+  <g opacity="0.17" stroke="#6ee7b7" fill="none">
+    <!-- Main central dome -->
+    <path d="M 200,560 A 100,100 0 0,1 400,560" stroke-width="1.5"/>
+    <!-- Main building body -->
+    <rect x="160" y="560" width="280" height="160" stroke-width="1.3"/>
+    <!-- Central door arch -->
+    <path d="M 270,720 L 270,670 A 30,30 0 0,1 330,670 L 330,720" stroke-width="1"/>
+    <!-- Side windows with arches -->
+    <path d="M 195,610 A 20,15 0 0,1 235,610" stroke-width="0.8"/>
+    <path d="M 365,610 A 20,15 0 0,1 405,610" stroke-width="0.8"/>
+    <!-- Decorative band -->
+    <line x1="160" y1="600" x2="440" y2="600" stroke-width="0.6" opacity="0.7"/>
+    <!-- Left minaret tall -->
+    <rect x="125" y="480" width="30" height="120" stroke-width="1.1"/>
+    <path d="M 125,480 A 15,35 0 0,1 155,480" stroke-width="1"/>
+    <line x1="140" y1="445" x2="140" y2="475" stroke-width="0.9"/>
+    <!-- Right minaret tall -->
+    <rect x="445" y="480" width="30" height="120" stroke-width="1.1"/>
+    <path d="M 445,480 A 15,35 0 0,1 475,480" stroke-width="1"/>
+    <line x1="460" y1="445" x2="460" y2="475" stroke-width="0.9"/>
+    <!-- Small domes flanking -->
+    <path d="M 162,560 A 28,28 0 0,1 218,560" stroke-width="0.9"/>
+    <path d="M 382,560 A 28,28 0 0,1 438,560" stroke-width="0.9"/>
+    <!-- Crescent atop main dome -->
+    <path d="M 289,455 A 11,11 0 1,1 311,455 A 8.5,8.5 0 1,0 289,455 Z" stroke-width="0.8"/>
+    <!-- Crescent finials on minarets -->
+    <path d="M 132,442 A 8,8 0 1,1 148,442 A 6,6 0 1,0 132,442 Z" stroke-width="0.6"/>
+    <path d="M 452,442 A 8,8 0 1,1 468,442 A 6,6 0 1,0 452,442 Z" stroke-width="0.6"/>
+  </g>
+
+  <!-- Ground reflection line -->
+  <line x1="0" y1="720" x2="600" y2="720" stroke="#6ee7b7" stroke-width="0.5" opacity="0.1"/>
+  <ellipse cx="300" cy="730" rx="220" ry="15" fill="none" stroke="#6ee7b7" stroke-width="0.5" opacity="0.08"/>
+
+  <!-- Top arc ornament row -->
+  <g opacity="0.1" stroke="#6ee7b7" fill="none" stroke-width="0.5">
+    <path d="M0,50 A25,25 0 0,1 50,50"/>
+    <path d="M50,50 A25,25 0 0,1 100,50"/>
+    <path d="M100,50 A25,25 0 0,1 150,50"/>
+    <path d="M150,50 A25,25 0 0,1 200,50"/>
+    <path d="M200,50 A25,25 0 0,1 250,50"/>
+    <path d="M250,50 A25,25 0 0,1 300,50"/>
+    <path d="M300,50 A25,25 0 0,1 350,50"/>
+    <path d="M350,50 A25,25 0 0,1 400,50"/>
+    <path d="M400,50 A25,25 0 0,1 450,50"/>
+    <path d="M450,50 A25,25 0 0,1 500,50"/>
+    <path d="M500,50 A25,25 0 0,1 550,50"/>
+    <path d="M550,50 A25,25 0 0,1 600,50"/>
+    <line x1="0" y1="50" x2="600" y2="50"/>
+  </g>
+</svg>

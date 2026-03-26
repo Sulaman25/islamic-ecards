@@ -1,6 +1,9 @@
+import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const prisma = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   // Seed Occasions
@@ -119,9 +122,11 @@ async function main() {
     where: { slug: "aqiqah" },
   });
   const hajj = await prisma.occasion.findUnique({ where: { slug: "hajj" } });
-  const general = await prisma.occasion.findUnique({
-    where: { slug: "general" },
-  });
+  const laylatul = await prisma.occasion.findUnique({ where: { slug: "laylatul-qadr" } });
+  const mawlid = await prisma.occasion.findUnique({ where: { slug: "mawlid" } });
+  const islamicNewYear = await prisma.occasion.findUnique({ where: { slug: "islamic-new-year" } });
+  const graduation = await prisma.occasion.findUnique({ where: { slug: "graduation" } });
+  const general = await prisma.occasion.findUnique({ where: { slug: "general" } });
 
   const templates = [
     // Eid ul-Fitr
@@ -131,7 +136,7 @@ async function main() {
       titleAr: "عيد الفطر الذهبي",
       occasionId: eidFitr!.id,
       animationFile: "/animations/eid-geometric.json",
-      bgImageUrl: "/images/cards/eid-gold-geometric.jpg",
+      bgImageUrl: "/images/cards/eid-gold-geometric.svg",
       bgColor: "#2d1b0e",
       isPremium: false,
       sortOrder: 1,
@@ -142,7 +147,7 @@ async function main() {
       titleAr: "عيد الهلال",
       occasionId: eidFitr!.id,
       animationFile: "/animations/eid-geometric.json",
-      bgImageUrl: "/images/cards/eid-crescent.jpg",
+      bgImageUrl: "/images/cards/eid-crescent.svg",
       bgColor: "#0f1f3d",
       isPremium: false,
       sortOrder: 2,
@@ -153,7 +158,7 @@ async function main() {
       titleAr: "عيد مبارك الأرابيسك",
       occasionId: eidFitr!.id,
       animationFile: "/animations/eid-geometric.json",
-      bgImageUrl: "/images/cards/eid-arabesque.jpg",
+      bgImageUrl: "/images/cards/eid-arabesque.svg",
       bgColor: "#1a0a2e",
       isPremium: true,
       sortOrder: 3,
@@ -165,7 +170,7 @@ async function main() {
       titleAr: "عيد الأضحى المبارك",
       occasionId: eidAdha!.id,
       animationFile: "/animations/eid-geometric.json",
-      bgImageUrl: "/images/cards/eid-adha.jpg",
+      bgImageUrl: "/images/cards/eid-adha.svg",
       bgColor: "#1a2e0a",
       isPremium: false,
       sortOrder: 1,
@@ -176,7 +181,7 @@ async function main() {
       titleAr: "رحلة مباركة",
       occasionId: eidAdha!.id,
       animationFile: "/animations/hajj-kaaba.json",
-      bgImageUrl: "/images/cards/eid-adha-kaaba.jpg",
+      bgImageUrl: "/images/cards/eid-adha-kaaba.svg",
       bgColor: "#0d1a0d",
       isPremium: true,
       sortOrder: 2,
@@ -188,7 +193,7 @@ async function main() {
       titleAr: "فانوس رمضان",
       occasionId: ramadan!.id,
       animationFile: "/animations/ramadan-crescent.json",
-      bgImageUrl: "/images/cards/ramadan-lantern.jpg",
+      bgImageUrl: "/images/cards/ramadan-lantern.svg",
       bgColor: "#1a0a0a",
       isPremium: false,
       sortOrder: 1,
@@ -199,7 +204,7 @@ async function main() {
       titleAr: "المسجد في الليل",
       occasionId: ramadan!.id,
       animationFile: "/animations/ramadan-crescent.json",
-      bgImageUrl: "/images/cards/ramadan-mosque.jpg",
+      bgImageUrl: "/images/cards/ramadan-mosque.svg",
       bgColor: "#0a0a1a",
       isPremium: false,
       sortOrder: 2,
@@ -210,7 +215,7 @@ async function main() {
       titleAr: "رمضان كريم",
       occasionId: ramadan!.id,
       animationFile: "/animations/ramadan-crescent.json",
-      bgImageUrl: "/images/cards/ramadan-pattern.jpg",
+      bgImageUrl: "/images/cards/ramadan-pattern.svg",
       bgColor: "#1a1a0a",
       isPremium: true,
       sortOrder: 3,
@@ -222,7 +227,7 @@ async function main() {
       titleAr: "مبارك النكاح الذهبي",
       occasionId: nikah!.id,
       animationFile: "/animations/nikah-arabesque.json",
-      bgImageUrl: "/images/cards/nikah-gold.jpg",
+      bgImageUrl: "/images/cards/nikah-gold.svg",
       bgColor: "#2d1b0e",
       isPremium: false,
       sortOrder: 1,
@@ -233,7 +238,7 @@ async function main() {
       titleAr: "بركات النكاح",
       occasionId: nikah!.id,
       animationFile: "/animations/nikah-arabesque.json",
-      bgImageUrl: "/images/cards/nikah-white.jpg",
+      bgImageUrl: "/images/cards/nikah-white.svg",
       bgColor: "#f5f0e8",
       isPremium: true,
       sortOrder: 2,
@@ -245,7 +250,7 @@ async function main() {
       titleAr: "جمعة مباركة",
       occasionId: jummah!.id,
       animationFile: "/animations/jummah-mosque.json",
-      bgImageUrl: "/images/cards/jummah-mosque.jpg",
+      bgImageUrl: "/images/cards/jummah-mosque.svg",
       bgColor: "#0a1a0a",
       isPremium: false,
       sortOrder: 1,
@@ -256,7 +261,7 @@ async function main() {
       titleAr: "يوم الجمعة المبارك",
       occasionId: jummah!.id,
       animationFile: "/animations/jummah-mosque.json",
-      bgImageUrl: "/images/cards/jummah-green.jpg",
+      bgImageUrl: "/images/cards/jummah-green.svg",
       bgColor: "#0d2b0d",
       isPremium: false,
       sortOrder: 2,
@@ -268,7 +273,7 @@ async function main() {
       titleAr: "مرحباً بالمولود",
       occasionId: aqiqah!.id,
       animationFile: "/animations/aqiqah-stars.json",
-      bgImageUrl: "/images/cards/aqiqah-stars.jpg",
+      bgImageUrl: "/images/cards/aqiqah-stars.svg",
       bgColor: "#1a0a2e",
       isPremium: false,
       sortOrder: 1,
@@ -280,7 +285,7 @@ async function main() {
       titleAr: "حج مبرور",
       occasionId: hajj!.id,
       animationFile: "/animations/hajj-kaaba.json",
-      bgImageUrl: "/images/cards/hajj-kaaba.jpg",
+      bgImageUrl: "/images/cards/hajj-kaaba.svg",
       bgColor: "#0d1a0d",
       isPremium: false,
       sortOrder: 1,
@@ -292,17 +297,110 @@ async function main() {
       titleAr: "البركات الإسلامية",
       occasionId: general!.id,
       animationFile: "/animations/eid-geometric.json",
-      bgImageUrl: "/images/cards/general-dua.jpg",
+      bgImageUrl: "/images/cards/general-dua.svg",
       bgColor: "#1a1a0a",
       isPremium: false,
       sortOrder: 1,
+    },
+    // Laylatul Qadr — theme: laylatul-qadr (#0d0a1a deep indigo)
+    {
+      slug: "laylatul-qadr-night-power",
+      titleEn: "Night of Power",
+      titleAr: "ليلة القدر",
+      occasionId: laylatul!.id,
+      animationFile: "/animations/ramadan-crescent.json",
+      bgImageUrl: "/images/cards/laylatul-qadr.svg",
+      bgColor: "#0d0a1a",
+      isPremium: false,
+      sortOrder: 1,
+    },
+    {
+      slug: "laylatul-qadr-thousand-months",
+      titleEn: "Better Than a Thousand Months",
+      titleAr: "خيرٌ من ألف شهر",
+      occasionId: laylatul!.id,
+      animationFile: "/animations/ramadan-crescent.json",
+      bgImageUrl: "/images/cards/laylatul-qadr-2.svg",
+      bgColor: "#1e1040",
+      isPremium: true,
+      sortOrder: 2,
+    },
+    // Mawlid — theme: mawlid (#071a0d forest deep)
+    {
+      slug: "mawlid-mercy-worlds",
+      titleEn: "Mercy to All the Worlds",
+      titleAr: "رحمةً للعالمين",
+      occasionId: mawlid!.id,
+      animationFile: "/animations/eid-geometric.json",
+      bgImageUrl: "/images/cards/mawlid.svg",
+      bgColor: "#071a0d",
+      isPremium: false,
+      sortOrder: 1,
+    },
+    {
+      slug: "mawlid-nabi-mubarak",
+      titleEn: "Mawlid Mubarak",
+      titleAr: "مولد النبي مبارك",
+      occasionId: mawlid!.id,
+      animationFile: "/animations/eid-geometric.json",
+      bgImageUrl: "/images/cards/mawlid-2.svg",
+      bgColor: "#0f3320",
+      isPremium: true,
+      sortOrder: 2,
+    },
+    // Islamic New Year — theme: islamic-new-year (#051318 midnight teal)
+    {
+      slug: "islamic-new-year-hijri",
+      titleEn: "Happy New Hijri Year",
+      titleAr: "عام هجري سعيد",
+      occasionId: islamicNewYear!.id,
+      animationFile: "/animations/eid-geometric.json",
+      bgImageUrl: "/images/cards/islamic-new-year.svg",
+      bgColor: "#051318",
+      isPremium: false,
+      sortOrder: 1,
+    },
+    // Graduation — theme: graduation (#070d24 deep navy)
+    {
+      slug: "graduation-ilm-blessing",
+      titleEn: "Mabrook on Your Graduation",
+      titleAr: "مبروك تخرجك",
+      occasionId: graduation!.id,
+      animationFile: "/animations/eid-geometric.json",
+      bgImageUrl: "/images/cards/graduation.svg",
+      bgColor: "#070d24",
+      isPremium: false,
+      sortOrder: 1,
+    },
+    {
+      slug: "graduation-seek-knowledge",
+      titleEn: "Seek Knowledge",
+      titleAr: "اطلب العلم",
+      occasionId: graduation!.id,
+      animationFile: "/animations/eid-geometric.json",
+      bgImageUrl: "/images/cards/graduation-2.svg",
+      bgColor: "#0f1a40",
+      isPremium: true,
+      sortOrder: 2,
+    },
+    // Aqiqah second variant — theme: aqiqah-soft (#150a24 deep plum)
+    {
+      slug: "aqiqah-soft-lavender",
+      titleEn: "Blessed New Arrival",
+      titleAr: "مبارك المولود",
+      occasionId: (await prisma.occasion.findUnique({ where: { slug: "aqiqah" } }))!.id,
+      animationFile: "/animations/aqiqah-stars.json",
+      bgImageUrl: "/images/cards/aqiqah-lavender.svg",
+      bgColor: "#150a24",
+      isPremium: true,
+      sortOrder: 2,
     },
   ];
 
   for (const template of templates) {
     await prisma.cardTemplate.upsert({
       where: { slug: template.slug },
-      update: {},
+      update: { bgImageUrl: template.bgImageUrl },
       create: template,
     });
   }

@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { CardCanvas } from "@/components/cards/CardCanvas";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { VersePicker } from "./VersePicker";
 import type { QuranVerse } from "@/lib/verses/quran-data";
+import { getMessagesForOccasion } from "@/lib/messages/preset-messages";
 
 interface CardTemplate {
   id: string;
@@ -35,6 +38,7 @@ const FONTS = [
 export function CustomiseStudio({ template, verses }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
+  const t = useTranslations("studio");
 
   const [senderName, setSenderName] = useState(session?.user?.name ?? "");
   const [recipientName, setRecipientName] = useState("");
@@ -42,21 +46,19 @@ export function CustomiseStudio({ template, verses }: Props) {
   const [selectedVerse, setSelectedVerse] = useState<QuranVerse | null>(null);
   const [fontStyle, setFontStyle] = useState("amiri");
   const [showVersePicker, setShowVersePicker] = useState(false);
+  const [showMessagePicker, setShowMessagePicker] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
   const abortRef = useRef<AbortController | null>(null);
 
-  const generateAIMessage = useCallback(async () => {
-    if (!session) {
-      router.push("/sign-in");
-      return;
-    }
+  const presetMessages = getMessagesForOccasion(template.occasion.slug);
 
+  const generateAIMessage = useCallback(async () => {
+    if (!session) { router.push("/sign-in"); return; }
     setAiLoading(true);
     setAiError("");
     setMessage("");
     abortRef.current = new AbortController();
-
     try {
       const res = await fetch("/api/ai/generate-message", {
         method: "POST",
@@ -68,28 +70,15 @@ export function CustomiseStudio({ template, verses }: Props) {
           tone: "warm",
           language: "en",
           includeVerse: !!selectedVerse,
-          selectedVerse: selectedVerse
-            ? `${selectedVerse.ref} — ${selectedVerse.textEn}`
-            : undefined,
+          selectedVerse: selectedVerse ? `${selectedVerse.ref} — ${selectedVerse.textEn}` : undefined,
         }),
         signal: abortRef.current.signal,
       });
-
-      if (res.status === 403) {
-        const data = await res.json();
-        setAiError(data.error ?? "Upgrade to use AI message generation.");
-        return;
-      }
-
-      if (!res.ok || !res.body) {
-        setAiError("Failed to generate message. Please try again.");
-        return;
-      }
-
+      if (res.status === 403) { const data = await res.json(); setAiError(data.error ?? t("aiUpgrade")); return; }
+      if (!res.ok || !res.body) { setAiError(t("aiFailed")); return; }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let text = "";
-
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -97,13 +86,19 @@ export function CustomiseStudio({ template, verses }: Props) {
         setMessage(text);
       }
     } catch (err) {
-      if ((err as Error).name !== "AbortError") {
-        setAiError("Something went wrong. Please try again.");
-      }
+      if ((err as Error).name !== "AbortError") setAiError(t("aiError"));
     } finally {
       setAiLoading(false);
     }
-  }, [session, template, recipientName, senderName, selectedVerse, router]);
+  }, [session, template, recipientName, senderName, selectedVerse, router, t]);
+
+  const pickMessage = useCallback((text: string) => {
+    const personalised = text
+      .replace(/your recipient/gi, recipientName || "Dear Friend")
+      .replace(/dear friend/gi, recipientName || "Dear Friend");
+    setMessage(personalised);
+    setShowMessagePicker(false);
+  }, [recipientName]);
 
   const handleNext = () => {
     if (!message.trim() || !recipientName.trim()) return;
@@ -130,68 +125,15 @@ export function CustomiseStudio({ template, verses }: Props) {
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Card Preview */}
       <div className="sticky top-24">
-        <div
-          className="rounded-2xl overflow-hidden shadow-xl aspect-[3/4] flex flex-col items-center justify-center p-8 relative"
-          style={{ backgroundColor: template.bgColor }}
-        >
-          {/* Geometric overlay */}
-          <div className="absolute inset-0 opacity-10 pointer-events-none">
-            <svg viewBox="0 0 200 300" className="w-full h-full" fill="none">
-              <polygon
-                points="100,10 190,55 190,145 100,190 10,145 10,55"
-                stroke="#c9a84c"
-                strokeWidth="2"
-                fill="none"
-              />
-              <circle cx="100" cy="100" r="60" stroke="#c9a84c" strokeWidth="1.5" fill="none" />
-              <circle cx="100" cy="100" r="40" stroke="#c9a84c" strokeWidth="1" fill="none" />
-              <line x1="100" y1="10" x2="100" y2="290" stroke="#c9a84c" strokeWidth="0.5" />
-              <line x1="10" y1="150" x2="190" y2="150" stroke="#c9a84c" strokeWidth="0.5" />
-            </svg>
-          </div>
-
-          {/* Bismillah */}
-          <p className="font-arabic text-amber-300 text-lg mb-6 relative z-10">
-            بسم الله الرحمن الرحيم
-          </p>
-
-          {/* Recipient */}
-          <p className="text-white/60 text-sm relative z-10">To</p>
-          <p className="text-white text-2xl font-semibold mb-4 relative z-10">
-            {recipientName || "Your Recipient"}
-          </p>
-
-          {/* Card title in Arabic */}
-          <p className="font-arabic text-amber-300 text-2xl mb-4 relative z-10">
-            {template.titleAr}
-          </p>
-
-          {/* Message */}
-          <p
-            className={`text-white/90 text-sm leading-relaxed text-center mb-4 relative z-10 max-w-xs ${
-              fontStyle === "amiri" ? "font-arabic" : ""
-            }`}
-          >
-            {message || "Your personalised message will appear here..."}
-          </p>
-
-          {/* Verse */}
-          {selectedVerse && (
-            <div className="border-t border-amber-400/30 pt-3 mt-2 relative z-10 text-center">
-              <p className="font-arabic text-amber-300 text-sm">
-                {selectedVerse.textAr}
-              </p>
-              <p className="text-white/60 text-xs mt-1">
-                — Quran {selectedVerse.ref}
-              </p>
-            </div>
-          )}
-
-          {/* From */}
-          <p className="text-white/50 text-xs mt-4 relative z-10">
-            From: {senderName || "You"}
-          </p>
-        </div>
+        <CardCanvas
+          template={template}
+          recipientName={recipientName}
+          senderName={senderName}
+          message={message}
+          selectedVerse={selectedVerse}
+          fontStyle={fontStyle}
+          mode="preview"
+        />
       </div>
 
       {/* Editor Panel */}
@@ -199,29 +141,29 @@ export function CustomiseStudio({ template, verses }: Props) {
         {/* Names */}
         <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4">
           <h2 className="font-semibold text-stone-700 text-lg">
-            1. Names
+            {t("sectionNames")}
           </h2>
           <div>
             <label className="text-sm text-stone-500 block mb-1">
-              Recipient&apos;s Name *
+              {t("recipientNameLabel")}
             </label>
             <input
               type="text"
               value={recipientName}
               onChange={(e) => setRecipientName(e.target.value)}
-              placeholder="e.g. Sister Fatima"
+              placeholder={t("recipientNamePlaceholder")}
               className="w-full border border-stone-200 rounded-lg px-3 py-2 text-stone-800 focus:outline-none focus:border-amber-400"
             />
           </div>
           <div>
             <label className="text-sm text-stone-500 block mb-1">
-              Your Name
+              {t("senderNameLabel")}
             </label>
             <input
               type="text"
               value={senderName}
               onChange={(e) => setSenderName(e.target.value)}
-              placeholder="e.g. Brother Ahmed"
+              placeholder={t("senderNamePlaceholder")}
               className="w-full border border-stone-200 rounded-lg px-3 py-2 text-stone-800 focus:outline-none focus:border-amber-400"
             />
           </div>
@@ -230,38 +172,49 @@ export function CustomiseStudio({ template, verses }: Props) {
         {/* Message */}
         <div className="bg-white rounded-2xl p-6 shadow-sm space-y-3">
           <h2 className="font-semibold text-stone-700 text-lg">
-            2. Your Message
+            {t("sectionMessage")}
           </h2>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={5}
-            placeholder="Write your heartfelt message here..."
+            placeholder={t("messagePlaceholder")}
             className="w-full border border-stone-200 rounded-lg px-3 py-2 text-stone-800 text-sm focus:outline-none focus:border-amber-400 resize-none"
           />
-          {/* AI Generate */}
+          {/* Preset message picker */}
+          <button
+            onClick={() => setShowMessagePicker(true)}
+            className="w-full py-2.5 rounded-lg border-2 border-amber-400 text-amber-700 font-semibold text-sm hover:bg-amber-50 transition-colors flex items-center justify-center gap-2"
+          >
+            {t("pickMessage")}
+          </button>
+          {/* AI generate button */}
           <button
             onClick={generateAIMessage}
             disabled={aiLoading}
-            className="w-full py-2.5 rounded-lg border-2 border-amber-400 text-amber-700 font-semibold text-sm hover:bg-amber-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-2.5 rounded-lg border-2 border-indigo-400 text-indigo-700 font-semibold text-sm hover:bg-indigo-50 disabled:opacity-60 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {aiLoading ? (
               <>
-                <span className="animate-spin">✨</span> Generating...
+                <svg className="animate-spin h-4 w-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                </svg>
+                {t("generating")}
               </>
             ) : (
-              <>✨ Generate with AI</>
+              t("generateAI")
             )}
           </button>
           {aiError && (
-            <p className="text-red-500 text-sm">{aiError}</p>
+            <p className="text-red-500 text-xs text-center">{aiError}</p>
           )}
         </div>
 
         {/* Quranic Verse */}
         <div className="bg-white rounded-2xl p-6 shadow-sm">
           <h2 className="font-semibold text-stone-700 text-lg mb-3">
-            3. Quranic Verse (optional)
+            {t("sectionVerse")}
           </h2>
           {selectedVerse ? (
             <div className="bg-amber-50 rounded-lg p-3 flex items-start justify-between gap-2">
@@ -288,7 +241,7 @@ export function CustomiseStudio({ template, verses }: Props) {
               onClick={() => setShowVersePicker(true)}
               className="w-full py-2.5 rounded-lg border-2 border-dashed border-stone-200 text-stone-400 text-sm hover:border-amber-300 hover:text-amber-600 transition-colors"
             >
-              📖 Pick a Quranic Verse
+              {t("pickVerse")}
             </button>
           )}
         </div>
@@ -296,7 +249,7 @@ export function CustomiseStudio({ template, verses }: Props) {
         {/* Font */}
         <div className="bg-white rounded-2xl p-6 shadow-sm">
           <h2 className="font-semibold text-stone-700 text-lg mb-3">
-            4. Font Style
+            {t("sectionFont")}
           </h2>
           <div className="grid grid-cols-3 gap-2">
             {FONTS.map((f) => (
@@ -326,14 +279,42 @@ export function CustomiseStudio({ template, verses }: Props) {
           disabled={!message.trim() || !recipientName.trim()}
           className="w-full py-4 bg-amber-600 hover:bg-amber-500 disabled:bg-stone-300 text-white font-bold text-lg rounded-xl transition-colors shadow-lg"
         >
-          Next: Send Your Card →
+          {t("nextButton")}
         </button>
         {(!message.trim() || !recipientName.trim()) && (
           <p className="text-center text-stone-400 text-sm">
-            Add a recipient name and message to continue.
+            {t("nextHint")}
           </p>
         )}
       </div>
+
+      {/* Preset Message Picker Modal */}
+      {showMessagePicker && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between p-5 border-b border-stone-100">
+              <h3 className="font-bold text-stone-800 text-lg">{t("pickerTitle")}</h3>
+              <button
+                onClick={() => setShowMessagePicker(false)}
+                className="text-stone-400 hover:text-stone-700 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+            <div className="overflow-y-auto p-4 space-y-3">
+              {presetMessages.map((msg) => (
+                <button
+                  key={msg.id}
+                  onClick={() => pickMessage(msg.text)}
+                  className="w-full text-left p-4 rounded-xl border border-stone-200 hover:border-amber-400 hover:bg-amber-50 transition-colors text-stone-700 text-sm leading-relaxed"
+                >
+                  {msg.text}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Verse Picker Modal */}
       {showVersePicker && (

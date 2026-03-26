@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#0f3320"/>
+  <defs>
+    <!-- Dense arabesque lattice tile -->
+    <pattern id="arabesqueGreen" x="0" y="0" width="90" height="90" patternUnits="userSpaceOnUse">
+      <!-- Outer star outline -->
+      <polygon points="45,5 55,30 80,20 70,45 95,55 70,65 80,90 55,80 45,105 35,80 10,90 20,65 -5,55 20,45 10,20 35,30"
+        fill="none" stroke="#34d399" stroke-width="0.7" opacity="0.35"/>
+      <!-- Inner arabesque curve -->
+      <path d="M45,22 C55,30 65,30 65,45 C65,60 55,60 45,68 C35,60 25,60 25,45 C25,30 35,30 45,22 Z"
+        fill="none" stroke="#34d399" stroke-width="0.6" opacity="0.28"/>
+      <!-- Center four-leaf -->
+      <path d="M45,33 C50,38 50,38 45,45 C40,38 40,38 45,33 Z"
+        fill="none" stroke="#34d399" stroke-width="0.5" opacity="0.25"/>
+      <path d="M33,45 C38,40 38,40 45,45 C38,50 38,50 33,45 Z"
+        fill="none" stroke="#34d399" stroke-width="0.5" opacity="0.25"/>
+      <path d="M45,57 C50,52 50,52 45,45 C40,52 40,52 45,57 Z"
+        fill="none" stroke="#34d399" stroke-width="0.5" opacity="0.25"/>
+      <path d="M57,45 C52,40 52,40 45,45 C52,50 52,50 57,45 Z"
+        fill="none" stroke="#34d399" stroke-width="0.5" opacity="0.25"/>
+      <!-- Center circle -->
+      <circle cx="45" cy="45" r="4" fill="none" stroke="#34d399" stroke-width="0.4" opacity="0.3"/>
+      <!-- Cross lines -->
+      <line x1="45" y1="0" x2="45" y2="90" stroke="#34d399" stroke-width="0.25" opacity="0.12"/>
+      <line x1="0" y1="45" x2="90" y2="45" stroke="#34d399" stroke-width="0.25" opacity="0.12"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#arabesqueGreen)"/>
+
+  <!-- Central medallion -->
+  <g transform="translate(300,400)" opacity="0.15">
+    <g stroke="#34d399" fill="none">
+      <!-- 8-petal flower -->
+      <ellipse cx="0" cy="-75" rx="20" ry="40" stroke-width="0.9" transform="rotate(0)"/>
+      <ellipse cx="0" cy="-75" rx="20" ry="40" stroke-width="0.9" transform="rotate(45)"/>
+      <ellipse cx="0" cy="-75" rx="20" ry="40" stroke-width="0.9" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-75" rx="20" ry="40" stroke-width="0.9" transform="rotate(135)"/>
+      <ellipse cx="0" cy="-75" rx="20" ry="40" stroke-width="0.9" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-75" rx="20" ry="40" stroke-width="0.9" transform="rotate(225)"/>
+      <ellipse cx="0" cy="-75" rx="20" ry="40" stroke-width="0.9" transform="rotate(270)"/>
+      <ellipse cx="0" cy="-75" rx="20" ry="40" stroke-width="0.9" transform="rotate(315)"/>
+      <!-- Concentric rings -->
+      <circle cx="0" cy="0" r="38" stroke-width="0.8"/>
+      <circle cx="0" cy="0" r="60" stroke-width="0.6" stroke-dasharray="4,4"/>
+      <circle cx="0" cy="0" r="100" stroke-width="0.5" stroke-dasharray="3,5"/>
+      <circle cx="0" cy="0" r="148" stroke-width="0.4" stroke-dasharray="2,7"/>
+      <circle cx="0" cy="0" r="200" stroke-width="0.3" stroke-dasharray="1,9"/>
+    </g>
+  </g>
+
+  <!-- Side panel ornamental strips -->
+  <g opacity="0.13" stroke="#34d399" fill="none" stroke-width="0.6">
+    <!-- Left strip -->
+    <line x1="28" y1="0" x2="28" y2="800"/>
+    <line x1="38" y1="0" x2="38" y2="800" stroke-width="0.3" stroke-dasharray="4,8"/>
+    <!-- Right strip -->
+    <line x1="572" y1="0" x2="572" y2="800"/>
+    <line x1="562" y1="0" x2="562" y2="800" stroke-width="0.3" stroke-dasharray="4,8"/>
+  </g>
+
+  <!-- Top and bottom banner ornamental -->
+  <g opacity="0.13" stroke="#34d399" fill="none" stroke-width="0.6">
+    <line x1="0" y1="30" x2="600" y2="30"/>
+    <line x1="0" y1="40" x2="600" y2="40" stroke-width="0.3" stroke-dasharray="4,8"/>
+    <line x1="0" y1="760" x2="600" y2="760"/>
+    <line x1="0" y1="770" x2="600" y2="770" stroke-width="0.3" stroke-dasharray="4,8"/>
+  </g>
+
+  <!-- Mid-band ornamental row of diamonds -->
+  <g opacity="0.11" stroke="#34d399" fill="none" stroke-width="0.5">
+    <polygon points="300,195 310,205 300,215 290,205"/>
+    <polygon points="270,195 280,205 270,215 260,205"/>
+    <polygon points="330,195 340,205 330,215 320,205"/>
+    <polygon points="240,195 250,205 240,215 230,205"/>
+    <polygon points="360,195 370,205 360,215 350,205"/>
+    <polygon points="210,195 220,205 210,215 200,205"/>
+    <polygon points="390,195 400,205 390,215 380,205"/>
+    <!-- Lower band -->
+    <polygon points="300,585 310,595 300,605 290,595"/>
+    <polygon points="270,585 280,595 270,605 260,595"/>
+    <polygon points="330,585 340,595 330,605 320,595"/>
+    <polygon points="240,585 250,595 240,605 230,595"/>
+    <polygon points="360,585 370,595 360,605 350,595"/>
+  </g>
+</svg>

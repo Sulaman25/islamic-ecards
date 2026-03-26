@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#0a0a1a"/>
+  <defs>
+    <pattern id="nightStars" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="18" r="0.9" fill="#e0f2fe" opacity="0.4"/>
+      <circle cx="48" cy="8" r="1.1" fill="#e0f2fe" opacity="0.35"/>
+      <circle cx="78" cy="30" r="0.7" fill="#e0f2fe" opacity="0.28"/>
+      <circle cx="25" cy="55" r="1" fill="#e0f2fe" opacity="0.32"/>
+      <circle cx="60" cy="48" r="0.6" fill="#e0f2fe" opacity="0.22"/>
+      <circle cx="88" cy="70" r="0.9" fill="#e0f2fe" opacity="0.38"/>
+      <circle cx="35" cy="82" r="0.7" fill="#e0f2fe" opacity="0.3"/>
+      <circle cx="70" cy="90" r="1" fill="#e0f2fe" opacity="0.25"/>
+      <circle cx="5" cy="92" r="0.8" fill="#e0f2fe" opacity="0.28"/>
+    </pattern>
+  </defs>
+  <!-- Night sky star field -->
+  <rect width="600" height="800" fill="url(#nightStars)"/>
+
+  <!-- Crescent moon top right -->
+  <g transform="translate(490,90)" opacity="0.16">
+    <circle cx="0" cy="0" r="45" fill="none" stroke="#e0f2fe" stroke-width="1.2"/>
+    <circle cx="14" cy="-8" r="37" fill="#0a0a1a"/>
+    <!-- Outline the crescent shape -->
+    <path d="M -32,-32 A 45,45 0 1,1 -32,32 A 37,37 0 1,0 -32,-32 Z"
+      fill="none" stroke="#e0f2fe" stroke-width="1"/>
+    <!-- Star near crescent -->
+    <polygon points="48,5 51,14 60,17 51,20 48,29 45,20 36,17 45,14"
+      fill="none" stroke="#e0f2fe" stroke-width="0.7" opacity="0.9"/>
+  </g>
+
+  <!-- Mosque silhouette at bottom -->
+  <g opacity="0.16" fill="none" stroke="#e0f2fe">
+    <!-- Main dome -->
+    <path d="M 220,600 A 80,80 0 0,1 380,600"
+      stroke-width="1.5"/>
+    <!-- Main dome outline -->
+    <line x1="220" y1="600" x2="220" y2="680" stroke-width="1.2"/>
+    <line x1="380" y1="600" x2="380" y2="680" stroke-width="1.2"/>
+    <!-- Main building -->
+    <rect x="180" y="650" width="240" height="80" stroke-width="1.2"/>
+    <!-- Door arch -->
+    <path d="M 275,730 L 275,690 A 25,25 0 0,1 325,690 L 325,730"
+      stroke-width="0.9"/>
+    <!-- Windows -->
+    <path d="M 210,680 A 15,12 0 0,1 240,680" stroke-width="0.7"/>
+    <path d="M 360,680 A 15,12 0 0,1 390,680" stroke-width="0.7"/>
+    <!-- Left minaret -->
+    <rect x="155" y="570" width="28" height="110" stroke-width="1"/>
+    <!-- Left minaret top -->
+    <path d="M 155,570 A 14,30 0 0,1 183,570" stroke-width="0.9"/>
+    <line x1="169" y1="540" x2="169" y2="565" stroke-width="0.8"/>
+    <!-- Right minaret -->
+    <rect x="417" y="570" width="28" height="110" stroke-width="1"/>
+    <!-- Right minaret top -->
+    <path d="M 417,570 A 14,30 0 0,1 445,570" stroke-width="0.9"/>
+    <line x1="431" y1="540" x2="431" y2="565" stroke-width="0.8"/>
+    <!-- Small dome left -->
+    <path d="M 175,650 A 22,22 0 0,1 219,650" stroke-width="0.9"/>
+    <!-- Small dome right -->
+    <path d="M 381,650 A 22,22 0 0,1 425,650" stroke-width="0.9"/>
+    <!-- Crescent finials -->
+    <path d="M 163,538 A 8,8 0 1,1 175,538 A 6,6 0 1,0 163,538 Z" stroke-width="0.6"/>
+    <path d="M 425,538 A 8,8 0 1,1 437,538 A 6,6 0 1,0 425,538 Z" stroke-width="0.6"/>
+    <path d="M 291,565 A 9,9 0 1,1 309,565 A 7,7 0 1,0 291,565 Z" stroke-width="0.7"/>
+  </g>
+
+  <!-- Reflection / ground glow -->
+  <ellipse cx="300" cy="760" rx="200" ry="20" fill="none" stroke="#e0f2fe" stroke-width="0.6" opacity="0.08"/>
+
+  <!-- Top decorative arch row -->
+  <g opacity="0.1" stroke="#e0f2fe" fill="none" stroke-width="0.6">
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(0,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(60,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(120,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(180,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(240,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(300,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(360,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(420,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(480,0)"/>
+    <path d="M0,60 A30,30 0 0,1 60,60" transform="translate(540,0)"/>
+    <line x1="0" y1="60" x2="600" y2="60" stroke-width="0.5"/>
+  </g>
+</svg>

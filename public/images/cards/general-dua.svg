@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#1a1a0a"/>
+  <defs>
+    <pattern id="goldenHex" x="0" y="0" width="80" height="69.3" patternUnits="userSpaceOnUse">
+      <!-- Hexagonal tile -->
+      <polygon points="40,2 78,23 78,66 40,87 2,66 2,23"
+        fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.22"/>
+      <polygon points="40,14 66,29 66,60 40,75 14,60 14,29"
+        fill="none" stroke="#c9a84c" stroke-width="0.4" opacity="0.15"/>
+      <circle cx="40" cy="44" r="3" fill="none" stroke="#c9a84c" stroke-width="0.35" opacity="0.18"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#goldenHex)"/>
+
+  <!-- Central 6-fold geometric mandala -->
+  <g transform="translate(300,400)" opacity="0.14">
+    <g stroke="#c9a84c" fill="none">
+      <!-- Outermost 12-point ring -->
+      <polygon points="0,-185 30,-90 90,-160 60,-65 155,-95 100,-20 185,0 100,20 155,95 60,65 90,160 30,90 0,185 -30,90 -90,160 -60,65 -155,95 -100,20 -185,0 -100,-20 -155,-95 -60,-65 -90,-160 -30,-90"
+        stroke-width="0.8"/>
+      <!-- 6-fold star layer 1 -->
+      <polygon points="0,-140 80,-80 80,80 0,140 -80,80 -80,-80"
+        stroke-width="1"/>
+      <!-- 6-fold star layer 2 -->
+      <polygon points="0,-140 121,0 0,140 -121,0"
+        stroke-width="0.9" transform="rotate(30)"/>
+      <!-- Concentric rings -->
+      <circle cx="0" cy="0" r="60" stroke-width="0.8"/>
+      <circle cx="0" cy="0" r="90" stroke-width="0.6" stroke-dasharray="4,5"/>
+      <circle cx="0" cy="0" r="120" stroke-width="0.5" stroke-dasharray="3,6"/>
+      <circle cx="0" cy="0" r="155" stroke-width="0.4" stroke-dasharray="2,8"/>
+      <circle cx="0" cy="0" r="200" stroke-width="0.3" stroke-dasharray="1,10"/>
+      <!-- Center rosette -->
+      <circle cx="0" cy="0" r="25" stroke-width="0.7"/>
+      <polygon points="0,-25 7,-8 25,0 7,8 0,25 -7,8 -25,0 -7,-8"
+        stroke-width="0.6"/>
+      <!-- Spokes -->
+      <line x1="0" y1="-185" x2="0" y2="-25" stroke-width="0.4" opacity="0.6"/>
+      <line x1="0" y1="25" x2="0" y2="185" stroke-width="0.4" opacity="0.6"/>
+      <line x1="-185" y1="0" x2="-25" y2="0" stroke-width="0.4" opacity="0.6" transform="rotate(0)"/>
+      <line x1="25" y1="0" x2="185" y2="0" stroke-width="0.4" opacity="0.6" transform="rotate(0)"/>
+      <line x1="-160" y1="-92" x2="-21" y2="-12" stroke-width="0.35" opacity="0.5" transform="rotate(0)"/>
+      <line x1="21" y1="12" x2="160" y2="92" stroke-width="0.35" opacity="0.5" transform="rotate(0)"/>
+      <line x1="160" y1="-92" x2="21" y2="-12" stroke-width="0.35" opacity="0.5" transform="rotate(0)"/>
+      <line x1="-21" y1="12" x2="-160" y2="92" stroke-width="0.35" opacity="0.5" transform="rotate(0)"/>
+    </g>
+  </g>
+
+  <!-- Four smaller mandalas at corners -->
+  <g opacity="0.1" stroke="#c9a84c" fill="none">
+    <g transform="translate(80,100)">
+      <circle cx="0" cy="0" r="40" stroke-width="0.5"/>
+      <polygon points="0,-40 23,-23 40,0 23,23 0,40 -23,23 -40,0 -23,-23" stroke-width="0.4"/>
+      <circle cx="0" cy="0" r="20" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(520,100)">
+      <circle cx="0" cy="0" r="40" stroke-width="0.5"/>
+      <polygon points="0,-40 23,-23 40,0 23,23 0,40 -23,23 -40,0 -23,-23" stroke-width="0.4"/>
+      <circle cx="0" cy="0" r="20" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(80,700)">
+      <circle cx="0" cy="0" r="40" stroke-width="0.5"/>
+      <polygon points="0,-40 23,-23 40,0 23,23 0,40 -23,23 -40,0 -23,-23" stroke-width="0.4"/>
+      <circle cx="0" cy="0" r="20" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(520,700)">
+      <circle cx="0" cy="0" r="40" stroke-width="0.5"/>
+      <polygon points="0,-40 23,-23 40,0 23,23 0,40 -23,23 -40,0 -23,-23" stroke-width="0.4"/>
+      <circle cx="0" cy="0" r="20" stroke-width="0.4"/>
+    </g>
+  </g>
+
+  <!-- Elegant border -->
+  <rect x="22" y="22" width="556" height="756" rx="4" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.18"/>
+  <rect x="30" y="30" width="540" height="740" rx="2" fill="none" stroke="#c9a84c" stroke-width="0.4" stroke-dasharray="4,6" opacity="0.12"/>
+</svg>

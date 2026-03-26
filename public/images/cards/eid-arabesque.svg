@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#1a0a2e"/>
+  <defs>
+    <pattern id="arabesque" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+      <!-- Interlocking floral arabesque cell -->
+      <!-- Central 4-petal flower -->
+      <path d="M40,20 C50,20 60,30 60,40 C60,50 50,60 40,60 C30,60 20,50 20,40 C20,30 30,20 40,20 Z"
+        fill="none" stroke="#a78bfa" stroke-width="0.7" opacity="0.45"/>
+      <!-- Petal curves -->
+      <path d="M40,5 C45,15 55,20 40,30 C25,20 35,15 40,5 Z"
+        fill="none" stroke="#a78bfa" stroke-width="0.6" opacity="0.35"/>
+      <path d="M40,55 C45,65 55,70 40,80 C25,70 35,65 40,55 Z"
+        fill="none" stroke="#a78bfa" stroke-width="0.6" opacity="0.35"/>
+      <path d="M5,40 C15,35 20,25 30,40 C20,55 15,45 5,40 Z"
+        fill="none" stroke="#a78bfa" stroke-width="0.6" opacity="0.35"/>
+      <path d="M55,40 C65,35 70,25 80,40 C70,55 65,45 55,40 Z"
+        fill="none" stroke="#a78bfa" stroke-width="0.6" opacity="0.35"/>
+      <!-- Corner diamond connector -->
+      <path d="M0,0 C10,10 10,10 20,20" fill="none" stroke="#a78bfa" stroke-width="0.4" opacity="0.25"/>
+      <path d="M80,0 C70,10 70,10 60,20" fill="none" stroke="#a78bfa" stroke-width="0.4" opacity="0.25"/>
+      <path d="M0,80 C10,70 10,70 20,60" fill="none" stroke="#a78bfa" stroke-width="0.4" opacity="0.25"/>
+      <path d="M80,80 C70,70 70,70 60,60" fill="none" stroke="#a78bfa" stroke-width="0.4" opacity="0.25"/>
+      <!-- Center dot -->
+      <circle cx="40" cy="40" r="2.5" fill="none" stroke="#a78bfa" stroke-width="0.5" opacity="0.4"/>
+    </pattern>
+    <pattern id="arabesque2" x="40" y="40" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M40,20 C55,25 60,35 55,45 C50,55 35,60 25,55 C15,50 12,38 18,28 C24,18 35,15 40,20 Z"
+        fill="none" stroke="#a78bfa" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="800" fill="url(#arabesque)"/>
+  <rect width="600" height="800" fill="url(#arabesque2)"/>
+
+  <!-- Central mandala -->
+  <g transform="translate(300,400)" opacity="0.13">
+    <!-- 12-petal mandala -->
+    <g stroke="#a78bfa" fill="none">
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(0)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(30)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(60)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(120)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(150)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(210)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(240)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(270)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(300)"/>
+      <ellipse cx="0" cy="-80" rx="18" ry="40" stroke-width="0.9" opacity="0.9" transform="rotate(330)"/>
+      <!-- Inner rings -->
+      <circle cx="0" cy="0" r="40" stroke-width="0.8"/>
+      <circle cx="0" cy="0" r="55" stroke-width="0.6" stroke-dasharray="3,5"/>
+      <circle cx="0" cy="0" r="110" stroke-width="0.6" stroke-dasharray="2,8"/>
+      <circle cx="0" cy="0" r="160" stroke-width="0.4" stroke-dasharray="1,10"/>
+    </g>
+  </g>
+
+  <!-- Corner ornaments -->
+  <g opacity="0.12" stroke="#a78bfa" fill="none" stroke-width="0.7">
+    <path d="M20,20 C40,20 40,40 20,40 C40,40 40,60 20,60" transform="translate(10,10)"/>
+    <path d="M20,20 C40,20 40,40 20,40 C40,40 40,60 20,60" transform="translate(560,10) scale(-1,1)"/>
+    <path d="M20,20 C40,20 40,40 20,40 C40,40 40,60 20,60" transform="translate(10,770) scale(1,-1)"/>
+    <path d="M20,20 C40,20 40,40 20,40 C40,40 40,60 20,60" transform="translate(560,770) scale(-1,-1)"/>
+  </g>
+</svg>

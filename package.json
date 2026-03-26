@@ -11,7 +11,11 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "agents:run": "curl -s -X POST http://localhost:3000/api/agents/daily-cards -H 'Content-Type: application/json' -H \"x-cron-secret: $CRON_SECRET\" | jq ."
+    "agents:run": "curl -s -X POST http://localhost:3000/api/agents/daily-cards -H 'Content-Type: application/json' -H \"x-cron-secret: $CRON_SECRET\" | jq .",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "worker": "tsx workers/card-delivery.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
@@ -43,6 +47,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
     "@types/fabric": "^5.3.11",
     "@types/node": "^20",
