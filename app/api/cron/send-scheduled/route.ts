@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     take: 50,
   });
 
-  const templateIds = [...new Set(pendingCards.map((c) => c.templateId))];
+  const templateIds = [...new Set(pendingCards.map((c: { templateId: string }) => c.templateId))];
   const templates = await prisma.cardTemplate.findMany({
     where: { id: { in: templateIds } },
     select: { id: true, bgColor: true, occasion: { select: { nameEn: true } } },
