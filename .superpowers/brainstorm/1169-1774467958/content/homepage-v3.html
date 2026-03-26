@@ -587,6 +587,7 @@ footer {
 }
 .nasheed-btn:hover   { background: rgba(255,255,255,0.12); }
 .nasheed-btn.active  { border-color: #2dd4c0; color: #2dd4c0; }
+@media (prefers-reduced-motion: reduce) { .nasheed-btn { display: none !important; } }
 
 /* ⑤ Occasion countdown */
 .occasion-countdown {
@@ -733,6 +734,7 @@ footer {
      HERO
 ════════════════════════════════════════ -->
 <section class="hero">
+  <div id="time-tint-overlay" style="position:absolute;inset:0;pointer-events:none;z-index:0;transition:background 2s ease;"></div>
   <div class="hero-glow"></div>
   <div class="moon-stage">
     <div class="moon-halo"></div>
@@ -1182,30 +1184,30 @@ const occasions = [
   { icon:'🌸', label:'New Baby',       glow:'rgba(255,200,220,0.4)' },
 ];
 const featuredCards = [
-  { title:'Eid al-Fitr Collection', sub:'15 animated designs', gradient:'linear-gradient(135deg,#2d6a4f,#40916c,#74c69d)', glow:'rgba(64,145,108,0.4)', badge:'New' },
-  { title:'Ramadan Nights',         sub:'Aurora calligraphy', gradient:'linear-gradient(135deg,#1a1a4e,#2d2d8f,#4a4ae8)', glow:'rgba(74,74,232,0.4)', badge:'Popular' },
-  { title:'Jummah Mubarak',         sub:'Weekly blessings',  gradient:'linear-gradient(135deg,#6b3a6b,#9b59b6,#d7aefb)', glow:'rgba(155,89,182,0.4)', badge:null },
-  { title:'Nikah Blessings',        sub:'Wedding & celebration',gradient:'linear-gradient(135deg,#8b0000,#c0392b,#f39c12)',glow:'rgba(192,57,43,0.4)', badge:'Animated' },
-  { title:'Quran Light',            sub:'Ayah calligraphy',  gradient:'linear-gradient(135deg,#1a4a2a,#27ae60,#f0d080)', glow:'rgba(240,208,128,0.4)', badge:'Audio' },
-  { title:'Laylatul Qadr',          sub:'Night of Power',    gradient:'linear-gradient(135deg,#0d0d2b,#1a1a6b,#8080ff)', glow:'rgba(128,128,255,0.4)', badge:'Limited' },
+  { title:'Eid al-Fitr Collection', sub:'15 animated designs', gradient:'linear-gradient(135deg,#2d6a4f,#40916c,#74c69d)', glow:'rgba(64,145,108,0.4)', badge:'New',     emoji:'🌙' },
+  { title:'Ramadan Nights',         sub:'Aurora calligraphy', gradient:'linear-gradient(135deg,#1a1a4e,#2d2d8f,#4a4ae8)', glow:'rgba(74,74,232,0.4)', badge:'Popular', emoji:'🌙' },
+  { title:'Jummah Mubarak',         sub:'Weekly blessings',  gradient:'linear-gradient(135deg,#6b3a6b,#9b59b6,#d7aefb)', glow:'rgba(155,89,182,0.4)', badge:null,      emoji:'🤲' },
+  { title:'Nikah Blessings',        sub:'Wedding & celebration',gradient:'linear-gradient(135deg,#8b0000,#c0392b,#f39c12)',glow:'rgba(192,57,43,0.4)', badge:'Animated', emoji:'💍' },
+  { title:'Quran Light',            sub:'Ayah calligraphy',  gradient:'linear-gradient(135deg,#1a4a2a,#27ae60,#f0d080)', glow:'rgba(240,208,128,0.4)', badge:'Audio',    emoji:'🤲' },
+  { title:'Laylatul Qadr',          sub:'Night of Power',    gradient:'linear-gradient(135deg,#0d0d2b,#1a1a6b,#8080ff)', glow:'rgba(128,128,255,0.4)', badge:'Limited',  emoji:'✨' },
 ];
 const popularCards = [
-  { name:'Eid Mubarak Starfield', occasion:'Eid ul Fitr',gradient:'linear-gradient(160deg,#2d6a4f,#52b788,#f0d080)',c:'rgba(82,183,136,0.6)',glow:'rgba(82,183,136,0.3)',emoji:'🌙',badges:['popular','animated'],sent:847 },
-  { name:'Surah Al-Fatiha',       occasion:'Quran Card', gradient:'linear-gradient(160deg,#1a1a4e,#4a4ae8,#fff)',  c:'rgba(74,74,232,0.6)', glow:'rgba(74,74,232,0.3)', emoji:'📖',badges:['audio'],          sent:632 },
-  { name:'Ramadan Kareem',        occasion:'Ramadan',    gradient:'linear-gradient(160deg,#0d2b0d,#1a6b1a,#74c69d)',c:'rgba(26,107,26,0.6)',glow:'rgba(26,107,26,0.3)', emoji:'🌿',badges:['new','animated'],  sent:519 },
-  { name:'Jummah Light',          occasion:'Jummah',     gradient:'linear-gradient(160deg,#2b1a4e,#7b2d8b,#d7aefb)',c:'rgba(123,45,139,0.6)',glow:'rgba(123,45,139,0.3)',emoji:'🕌',badges:['popular'],         sent:411 },
-  { name:'Nikah Congratulations', occasion:'Nikah',      gradient:'linear-gradient(160deg,#4e1a2b,#c0392b,#f39c12)',c:'rgba(192,57,43,0.6)', glow:'rgba(192,57,43,0.3)', emoji:'💍',badges:['new','premium'],   sent:378 },
-  { name:'Hajj Mubarak',          occasion:'Hajj & Umrah',gradient:'linear-gradient(160deg,#2b2b1a,#8b6914,#f0d080)',c:'rgba(139,105,20,0.6)',glow:'rgba(139,105,20,0.3)',emoji:'✈️',badges:['animated'],        sent:290 },
+  { name:'Eid Mubarak Starfield', occasion:'Eid ul Fitr',gradient:'linear-gradient(160deg,#2d6a4f,#52b788,#f0d080)',c:'rgba(82,183,136,0.6)',glow:'rgba(82,183,136,0.3)',emoji:'🌙',badges:['popular','animated'],sent:847, mood:'eid' },
+  { name:'Surah Al-Fatiha',       occasion:'Quran Card', gradient:'linear-gradient(160deg,#1a1a4e,#4a4ae8,#fff)',  c:'rgba(74,74,232,0.6)', glow:'rgba(74,74,232,0.3)', emoji:'📖',badges:['audio'],          sent:632, mood:'reverent' },
+  { name:'Ramadan Kareem',        occasion:'Ramadan',    gradient:'linear-gradient(160deg,#0d2b0d,#1a6b1a,#74c69d)',c:'rgba(26,107,26,0.6)',glow:'rgba(26,107,26,0.3)', emoji:'🌿',badges:['new','animated'],  sent:519, mood:'ramadan' },
+  { name:'Jummah Light',          occasion:'Jummah',     gradient:'linear-gradient(160deg,#2b1a4e,#7b2d8b,#d7aefb)',c:'rgba(123,45,139,0.6)',glow:'rgba(123,45,139,0.3)',emoji:'🕌',badges:['popular'],         sent:411, mood:'peaceful' },
+  { name:'Nikah Congratulations', occasion:'Nikah',      gradient:'linear-gradient(160deg,#4e1a2b,#c0392b,#f39c12)',c:'rgba(192,57,43,0.6)', glow:'rgba(192,57,43,0.3)', emoji:'💍',badges:['new','premium'],   sent:378, mood:'nikah' },
+  { name:'Hajj Mubarak',          occasion:'Hajj & Umrah',gradient:'linear-gradient(160deg,#2b2b1a,#8b6914,#f0d080)',c:'rgba(139,105,20,0.6)',glow:'rgba(139,105,20,0.3)',emoji:'✈️',badges:['animated'],        sent:290, mood:'celebratory' },
 ];
 const newCards = [
-  { name:'Aurora Eid Night',   occasion:'Eid ul Fitr', gradient:'linear-gradient(135deg,#0a0a2e,#1a1a6b,#4040c0,#8080ff)', c:'rgba(64,64,192,0.6)', glow:'rgba(64,64,192,0.3)', emoji:'🌙',badges:['new','animated'] },
-  { name:'Ramadan Lantern',    occasion:'Ramadan',     gradient:'linear-gradient(135deg,#1a0a00,#6b3500,#f0a030)',          c:'rgba(240,160,48,0.6)', glow:'rgba(240,160,48,0.3)',emoji:'🪔',badges:['new'] },
-  { name:'Ayatul Kursi Gold',  occasion:'Quran Card',  gradient:'linear-gradient(135deg,#1a1500,#4a4000,#f0d080)',          c:'rgba(240,208,128,0.6)',glow:'rgba(240,208,128,0.3)',emoji:'📖',badges:['new','audio','premium'] },
-  { name:'Laylatul Qadr Blue', occasion:'Ramadan',     gradient:'linear-gradient(135deg,#000a1a,#001a6b,#0050c0)',          c:'rgba(0,80,192,0.6)',   glow:'rgba(0,80,192,0.3)',  emoji:'🌌',badges:['new','animated'] },
-  { name:'Aqiqah Welcome',     occasion:'Aqiqah',      gradient:'linear-gradient(135deg,#1a0a10,#6b1a40,#ff6b9d)',          c:'rgba(255,107,157,0.6)',glow:'rgba(255,107,157,0.3)',emoji:'👶',badges:['new'] },
-  { name:'Jummah Masjid Dawn', occasion:'Jummah',      gradient:'linear-gradient(135deg,#0a1a0a,#1a6b2d,#52b788)',          c:'rgba(82,183,136,0.6)', glow:'rgba(82,183,136,0.3)',emoji:'🕌',badges:['new','animated'] },
-  { name:'Nikah Roses',        occasion:'Nikah',       gradient:'linear-gradient(135deg,#1a0505,#8b0000,#e74c3c)',          c:'rgba(231,76,60,0.6)',  glow:'rgba(231,76,60,0.3)', emoji:'🌹',badges:['new','premium'] },
-  { name:'Surah Ar-Rahman',    occasion:'Quran Card',  gradient:'linear-gradient(135deg,#0a1a10,#1a5a2a,#52b788)',          c:'rgba(82,183,136,0.6)', glow:'rgba(82,183,136,0.3)',emoji:'📿',badges:['new','audio'] },
+  { name:'Aurora Eid Night',   occasion:'Eid ul Fitr', gradient:'linear-gradient(135deg,#0a0a2e,#1a1a6b,#4040c0,#8080ff)', c:'rgba(64,64,192,0.6)', glow:'rgba(64,64,192,0.3)', emoji:'🌙',badges:['new','animated'], mood:'eid' },
+  { name:'Ramadan Lantern',    occasion:'Ramadan',     gradient:'linear-gradient(135deg,#1a0a00,#6b3500,#f0a030)',          c:'rgba(240,160,48,0.6)', glow:'rgba(240,160,48,0.3)',emoji:'🪔',badges:['new'], mood:'ramadan' },
+  { name:'Ayatul Kursi Gold',  occasion:'Quran Card',  gradient:'linear-gradient(135deg,#1a1500,#4a4000,#f0d080)',          c:'rgba(240,208,128,0.6)',glow:'rgba(240,208,128,0.3)',emoji:'📖',badges:['new','audio','premium'], mood:'reverent' },
+  { name:'Laylatul Qadr Blue', occasion:'Ramadan',     gradient:'linear-gradient(135deg,#000a1a,#001a6b,#0050c0)',          c:'rgba(0,80,192,0.6)',   glow:'rgba(0,80,192,0.3)',  emoji:'🌌',badges:['new','animated'], mood:'ramadan' },
+  { name:'Aqiqah Welcome',     occasion:'Aqiqah',      gradient:'linear-gradient(135deg,#1a0a10,#6b1a40,#ff6b9d)',          c:'rgba(255,107,157,0.6)',glow:'rgba(255,107,157,0.3)',emoji:'👶',badges:['new'], mood:'joyful' },
+  { name:'Jummah Masjid Dawn', occasion:'Jummah',      gradient:'linear-gradient(135deg,#0a1a0a,#1a6b2d,#52b788)',          c:'rgba(82,183,136,0.6)', glow:'rgba(82,183,136,0.3)',emoji:'🕌',badges:['new','animated'], mood:'peaceful' },
+  { name:'Nikah Roses',        occasion:'Nikah',       gradient:'linear-gradient(135deg,#1a0505,#8b0000,#e74c3c)',          c:'rgba(231,76,60,0.6)',  glow:'rgba(231,76,60,0.3)', emoji:'🌹',badges:['new','premium'], mood:'nikah' },
+  { name:'Surah Ar-Rahman',    occasion:'Quran Card',  gradient:'linear-gradient(135deg,#0a1a10,#1a5a2a,#52b788)',          c:'rgba(82,183,136,0.6)', glow:'rgba(82,183,136,0.3)',emoji:'📿',badges:['new','audio'], mood:'reverent' },
 ];
 
 /* ══════════════════════════════════════════════════
@@ -1290,15 +1292,25 @@ document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 // ① Time-of-day Islamic greeting
 (function v3InitGreeting() {
   const h = new Date().getHours();
-  let label;
-  if      (h >= 4  && h < 6)  label = 'Assalamu Alaykum · Good Fajr';
-  else if (h >= 6  && h < 12) label = 'Assalamu Alaykum · Good Morning';
-  else if (h >= 12 && h < 14) label = 'Assalamu Alaykum · Good Dhuhr';
-  else if (h >= 14 && h < 17) label = 'Assalamu Alaykum · Good Asr';
-  else if (h >= 17 && h < 20) label = 'Assalamu Alaykum · Good Maghrib';
-  else                         label = 'Assalamu Alaykum · Good Isha';
+  let label, period;
+  if      (h >= 4  && h < 6)  { label = 'Assalamu Alaykum · Good Fajr';    period = 'Fajr'; }
+  else if (h >= 6  && h < 12) { label = 'Assalamu Alaykum · Good Morning';  period = 'morning'; }
+  else if (h >= 12 && h < 14) { label = 'Assalamu Alaykum · Good Dhuhr';   period = 'Dhuhr'; }
+  else if (h >= 14 && h < 17) { label = 'Assalamu Alaykum · Good Asr';     period = 'Asr'; }
+  else if (h >= 17 && h < 20) { label = 'Assalamu Alaykum · Good Maghrib'; period = 'Maghrib'; }
+  else                         { label = 'Assalamu Alaykum · Good Isha';    period = 'Isha'; }
   const el = document.getElementById('v3-greeting');
   if (el) el.textContent = label;
+  const tints = {
+    Fajr:    'rgba(255,200,100,0.06)',
+    morning: 'rgba(180,220,255,0.04)',
+    Dhuhr:   'rgba(180,220,255,0.05)',
+    Asr:     'rgba(255,180,80,0.05)',
+    Maghrib: 'rgba(255,130,60,0.07)',
+    Isha:    'rgba(60,60,160,0.07)'
+  };
+  const overlay = document.getElementById('time-tint-overlay');
+  if (overlay) overlay.style.background = tints[period] || '';
 })();
 
 // ② Card reel — uses featuredCards array (already defined in v2 script)
@@ -1458,7 +1470,7 @@ function v3FilterMood(mood) {
   source.forEach(function(card, i) {
     var div = document.createElement('div');
     div.className = 'masonry-card ' + heights[i % 3];
-    div.setAttribute('data-mood', moods[i % moods.length]);
+    div.setAttribute('data-mood', card.mood || moods[i % moods.length]);
     div.style.background = card.gradient || 'linear-gradient(135deg,#1a3a5c,#0d1b2a)';
     div.innerHTML =
       '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem">' +
