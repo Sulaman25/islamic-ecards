@@ -4,6 +4,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/lib/i18n-navigation";
+import { HijriPill } from "@/components/home/HijriPill";
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -37,7 +38,7 @@ export function Navbar() {
   );
 
   return (
-    <nav className="bg-white border-b border-amber-100 shadow-sm sticky top-0 z-50">
+    <nav className="sticky top-0 z-50" style={{ background: "rgba(3,2,10,0.85)", backdropFilter: "blur(24px)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl">🌙</span>
@@ -59,6 +60,7 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          <HijriPill />
           <LocaleToggle />
           {session ? (
             <>
