@@ -6,12 +6,13 @@ export function CustomCursor() {
   const ringRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
 
+  const rafRef = useRef<number>(0);
+
   useEffect(() => {
     // Only on pointer-fine devices (real mouse)
     if (!window.matchMedia("(pointer: fine)").matches) return;
     document.body.classList.add("v3-page");
 
-    let raf: number = 0;
     let gx = 0, gy = 0;
 
     const onMove = (e: MouseEvent) => {
@@ -19,7 +20,7 @@ export function CustomCursor() {
       if (dotRef.current)  dotRef.current.style.transform  = `translate(${x}px,${y}px) translate(-50%,-50%)`;
       if (ringRef.current) ringRef.current.style.transform = `translate(${x}px,${y}px) translate(-50%,-50%)`;
       // Glow follows with lag
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(rafRef.current);
       gx += (x - gx) * 0.12;
       gy += (y - gy) * 0.12;
       if (glowRef.current) glowRef.current.style.transform = `translate(${gx}px,${gy}px) translate(-50%,-50%)`;
@@ -29,7 +30,7 @@ export function CustomCursor() {
     return () => {
       window.removeEventListener("mousemove", onMove);
       document.body.classList.remove("v3-page");
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
