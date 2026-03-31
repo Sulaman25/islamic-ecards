@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Navbar } from "@/components/layout/Navbar";
+import { AuroraBackground } from "@/components/home/AuroraBackground";
+import { CustomCursor } from "@/components/home/CustomCursor";
 
 export default function PricingPage() {
   const { data: session } = useSession();
@@ -69,72 +71,97 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#0a1a0d" }}>
+    <div style={{ background: "var(--v3-bg)", color: "var(--v3-text)", minHeight: "100vh", overflowX: "hidden" }}>
+      <AuroraBackground />
+      <CustomCursor />
       <Navbar />
 
-      <main className="flex-1 py-16 px-4 relative overflow-hidden">
-        {/* Subtle radial glow */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%)" }}
-        />
+      <main style={{ position: "relative", zIndex: 2, padding: "64px 24px", overflow: "hidden" }}>
+        <div style={{ maxWidth: "1024px", margin: "0 auto" }}>
 
-        <div className="relative z-10 max-w-5xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <p className="font-arabic text-[#c9a84c] text-2xl mb-3 tracking-widest" style={{ textShadow: "0 0 20px rgba(201,168,76,0.3)" }}>
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
+            <p style={{
+              fontFamily:   "var(--font-amiri, serif)",
+              fontSize:     "1.5rem",
+              color:        "var(--gold)",
+              marginBottom: "12px",
+              textShadow:   "0 0 20px rgba(240,208,128,0.3)",
+              letterSpacing: "2px",
+            }}>
               خير الناس أنفعهم للناس
             </p>
-            <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#c9a84c]/40" />
-              <span style={{ color: "#c9a84c", fontSize: "0.6rem" }}>✦</span>
-              <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a84c]/40" />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", marginBottom: "20px" }}>
+              <div style={{ height: "1px", width: "64px", background: "linear-gradient(to right, transparent, rgba(240,208,128,0.4))" }} />
+              <span style={{ color: "var(--gold)", fontSize: "0.6rem" }}>✦</span>
+              <div style={{ height: "1px", width: "64px", background: "linear-gradient(to left, transparent, rgba(240,208,128,0.4))" }} />
             </div>
-            <h1 className="text-4xl font-bold text-white mb-3">{t("title")}</h1>
-            <p className="text-stone-400">{t("subtitle")}</p>
+            <h1 style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, color: "#fff", marginBottom: "12px" }}>
+              {t("title")}
+            </h1>
+            <p style={{ color: "var(--v3-text-dim)", fontSize: "1rem" }}>{t("subtitle")}</p>
           </div>
 
           {/* Plans */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
             {PLANS.map((plan) => (
               <div
                 key={plan.id}
-                className="relative rounded-2xl p-6 flex flex-col transition-all duration-300"
                 style={{
+                  position:   "relative",
+                  borderRadius: "20px",
+                  padding:    "28px 24px",
+                  display:    "flex",
+                  flexDirection: "column",
                   background: plan.highlight
-                    ? "linear-gradient(135deg, #1a1208 0%, #2d1b0e 100%)"
+                    ? "linear-gradient(135deg, rgba(30,20,8,0.9) 0%, rgba(45,27,14,0.9) 100%)"
                     : "rgba(255,255,255,0.04)",
-                  border: plan.highlight
-                    ? "1px solid rgba(201,168,76,0.6)"
-                    : "1px solid rgba(255,255,255,0.08)",
+                  border:     plan.highlight
+                    ? "1px solid rgba(240,208,128,0.5)"
+                    : "1px solid var(--v3-border)",
+                  backdropFilter: "blur(12px)",
+                  transition: "transform 0.2s",
                 }}
               >
                 {plan.highlight && (
-                  <span
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold px-4 py-1 rounded-full"
-                    style={{ background: "#c9a84c", color: "#1a1208" }}
-                  >
+                  <span style={{
+                    position:     "absolute",
+                    top:          "-14px",
+                    left:         "50%",
+                    transform:    "translateX(-50%)",
+                    fontSize:     "0.72rem",
+                    fontWeight:   700,
+                    padding:      "4px 16px",
+                    borderRadius: "40px",
+                    background:   "linear-gradient(135deg, #b8860b, var(--gold))",
+                    color:        "#1a1208",
+                    whiteSpace:   "nowrap",
+                  }}>
                     {t("mostPopular")}
                   </span>
                 )}
 
-                <h2 className="text-xl font-bold text-white mb-1">{plan.name}</h2>
+                <h2 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
+                  {plan.name}
+                </h2>
 
-                <div className="mb-5 mt-1">
-                  <span className="text-4xl font-bold" style={{ color: plan.highlight ? "#c9a84c" : "white" }}>
+                <div style={{ marginBottom: "24px", marginTop: "4px" }}>
+                  <span style={{ fontSize: "2.6rem", fontWeight: 800, color: plan.highlight ? "var(--gold)" : "#fff" }}>
                     {plan.price}
                   </span>
-                  <span className="text-stone-500 text-sm ml-1">/ {plan.period}</span>
+                  <span style={{ color: "var(--v3-text-dim)", fontSize: "0.85rem", marginLeft: "6px" }}>
+                    / {plan.period}
+                  </span>
                 </div>
 
-                <ul className="space-y-2.5 flex-1 mb-6">
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px 0", flex: 1, display: "flex", flexDirection: "column", gap: "10px" }}>
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-stone-300">
-                      <span style={{ color: "#c9a84c" }}>✓</span> {f}
+                    <li key={f} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.88rem", color: "var(--v3-text)" }}>
+                      <span style={{ color: "var(--gold)" }}>✓</span> {f}
                     </li>
                   ))}
                   {plan.missing.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-stone-600">
+                    <li key={f} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.88rem", color: "rgba(255,255,255,0.2)" }}>
                       <span>✗</span> {f}
                     </li>
                   ))}
@@ -143,12 +170,19 @@ export default function PricingPage() {
                 <button
                   onClick={() => handleSubscribe(plan.id)}
                   disabled={loading === plan.id}
-                  className="w-full py-3 rounded-xl font-semibold transition-all duration-200 disabled:opacity-50"
-                  style={
-                    plan.highlight
-                      ? { background: "#c9a84c", color: "#1a1208" }
-                      : { border: "1px solid rgba(201,168,76,0.3)", color: "#c9a84c", background: "transparent" }
-                  }
+                  style={{
+                    width:        "100%",
+                    padding:      "14px",
+                    borderRadius: "14px",
+                    fontWeight:   700,
+                    fontSize:     "0.95rem",
+                    cursor:       "pointer",
+                    transition:   "all 0.2s",
+                    opacity:      loading === plan.id ? 0.5 : 1,
+                    ...(plan.highlight
+                      ? { background: "linear-gradient(135deg, #b8860b, var(--gold))", color: "#1a1208", border: "none" }
+                      : { background: "transparent", border: "1px solid rgba(240,208,128,0.3)", color: "var(--gold)" }),
+                  }}
                 >
                   {loading === plan.id ? t("loading") : plan.cta}
                 </button>
@@ -156,7 +190,9 @@ export default function PricingPage() {
             ))}
           </div>
 
-          <p className="text-center text-stone-600 text-sm mt-8">{t("disclaimer")}</p>
+          <p style={{ textAlign: "center", color: "var(--v3-text-dim)", fontSize: "0.82rem", marginTop: "32px" }}>
+            {t("disclaimer")}
+          </p>
         </div>
       </main>
     </div>

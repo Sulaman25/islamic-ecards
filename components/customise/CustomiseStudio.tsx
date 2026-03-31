@@ -3,11 +3,15 @@
 import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { CardCanvas } from "@/components/cards/CardCanvas";
+import { BookCanvas } from "@/components/cards/BookCanvas";
+import { GoldenBookCanvas } from "@/components/cards/GoldenBookCanvas";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { VersePicker } from "./VersePicker";
 import type { QuranVerse } from "@/lib/verses/quran-data";
 import { getMessagesForOccasion } from "@/lib/messages/preset-messages";
+import { resolveTemplateAnimationStyle } from "@/lib/card-themes/animation-style";
+import { applySpecialTemplateArtwork } from "@/lib/card-themes/special-template-artwork";
 
 interface CardTemplate {
   id: string;
@@ -16,6 +20,7 @@ interface CardTemplate {
   bgColor: string;
   bgImageUrl: string;
   animationFile: string;
+  animationStyle?: string | null;
   isPremium: boolean;
   occasion: {
     slug: string;
@@ -39,8 +44,9 @@ export function CustomiseStudio({ template, verses }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
   const t = useTranslations("studio");
+  const defaultSenderName = session?.user?.name ?? "";
 
-  const [senderName, setSenderName] = useState(session?.user?.name ?? "");
+  const [senderName, setSenderName] = useState(defaultSenderName);
   const [recipientName, setRecipientName] = useState("");
   const [message, setMessage] = useState("");
   const [selectedVerse, setSelectedVerse] = useState<QuranVerse | null>(null);
@@ -52,6 +58,29 @@ export function CustomiseStudio({ template, verses }: Props) {
   const abortRef = useRef<AbortController | null>(null);
 
   const presetMessages = getMessagesForOccasion(template.occasion.slug);
+  const animationStyle = resolveTemplateAnimationStyle({
+    animationStyle: template.animationStyle,
+    bgImageUrl: template.bgImageUrl,
+    titleEn: template.titleEn,
+    occasionSlug: template.occasion.slug,
+  });
+  const previewTemplate = applySpecialTemplateArtwork({
+    bgColor: template.bgColor,
+    bgImageUrl: template.bgImageUrl,
+    titleAr: template.titleAr,
+    titleEn: template.titleEn,
+    animationFile: template.animationFile,
+    animationStyle: template.animationStyle,
+    occasion: {
+      slug: template.occasion.slug,
+      nameEn: template.occasion.nameEn,
+    },
+  });
+  const hasCustomSender = senderName.trim() !== defaultSenderName.trim();
+  const previewContentMode =
+    recipientName.trim() || message.trim() || selectedVerse || hasCustomSender
+      ? "personalized"
+      : "template";
 
   const generateAIMessage = useCallback(async () => {
     if (!session) { router.push("/sign-in"); return; }
@@ -125,15 +154,42 @@ export function CustomiseStudio({ template, verses }: Props) {
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Card Preview */}
       <div className="sticky top-24">
-        <CardCanvas
-          template={template}
-          recipientName={recipientName}
-          senderName={senderName}
-          message={message}
-          selectedVerse={selectedVerse}
-          fontStyle={fontStyle}
-          mode="preview"
-        />
+        {animationStyle === "pageflip" ? (
+          <GoldenBookCanvas
+            template={previewTemplate}
+            recipientName={recipientName}
+            senderName={senderName}
+            message={message}
+            selectedVerse={selectedVerse}
+            fontStyle={fontStyle}
+            mode="preview"
+            contentMode={previewContentMode}
+            autoOpen={false}
+          />
+        ) : animationStyle === "book" ? (
+          <BookCanvas
+            template={previewTemplate}
+            recipientName={recipientName}
+            senderName={senderName}
+            message={message}
+            selectedVerse={selectedVerse}
+            fontStyle={fontStyle}
+            mode="preview"
+            contentMode={previewContentMode}
+            autoOpen={false}
+          />
+        ) : (
+          <CardCanvas
+            template={previewTemplate}
+            recipientName={recipientName}
+            senderName={senderName}
+            message={message}
+            selectedVerse={selectedVerse}
+            fontStyle={fontStyle}
+            mode="preview"
+            contentMode={previewContentMode}
+          />
+        )}
       </div>
 
       {/* Editor Panel */}

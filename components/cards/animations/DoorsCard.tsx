@@ -25,24 +25,64 @@ export function DoorsCard({ card, isOpen, onToggle }: Props) {
         transition={{ duration: 0.5, delay: isOpen ? 0.4 : 0 }}
         style={{
           position: "absolute", inset: 0,
-          background: `linear-gradient(160deg, ${palette.background}, color-mix(in srgb, ${palette.background} 60%, #120e04))`,
-          border: `1px solid ${palette.primary}30`,
           borderRadius: "4px",
-          display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center",
-          gap: "10px", padding: "20px 14px",
+          overflow: "hidden",
         }}
       >
-        <div style={{ height: "100px", width: "100%" }}>
-          <ArtLayer art={card.art} palette={palette} isOpen={isOpen} />
-        </div>
-        <div style={{ fontSize: "0.9rem", color: palette.primary, fontFamily: "serif", textAlign: "center" }}>
-          {card.arabicVerse}
-        </div>
-        <div style={{ width: "40px", height: "1px", background: `${palette.primary}60` }} />
-        <div style={{ fontSize: "0.4rem", color: palette.text, fontStyle: "italic", textAlign: "center", lineHeight: 1.7 }}>
-          {card.englishMessage}
-        </div>
+        {card.art.tier === "image" ? (
+          /* Full-bleed image with text overlay */
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={card.art.src as string}
+              alt=""
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+            {(card.arabicVerse || card.englishMessage) && (
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0,
+                padding: "20px 14px 12px",
+                background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)",
+                display: "flex", flexDirection: "column", alignItems: "center", gap: "6px",
+              }}>
+                {card.arabicVerse && (
+                  <div style={{ fontSize: "0.9rem", color: palette.primary, fontFamily: "serif", textAlign: "center" }}>
+                    {card.arabicVerse}
+                  </div>
+                )}
+                {card.arabicVerse && card.englishMessage && (
+                  <div style={{ width: "40px", height: "1px", background: `${palette.primary}60` }} />
+                )}
+                {card.englishMessage && (
+                  <div style={{ fontSize: "0.55rem", color: "#fff", fontStyle: "italic", textAlign: "center", lineHeight: 1.7 }}>
+                    {card.englishMessage}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        ) : (
+          /* Non-image: art + text layout */
+          <div style={{
+            width: "100%", height: "100%",
+            background: `linear-gradient(160deg, ${palette.background}, color-mix(in srgb, ${palette.background} 60%, #120e04))`,
+            border: `1px solid ${palette.primary}30`,
+            display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            gap: "10px", padding: "20px 14px",
+          }}>
+            <div style={{ height: "100px", width: "100%" }}>
+              <ArtLayer art={card.art} palette={palette} isOpen={isOpen} />
+            </div>
+            <div style={{ fontSize: "0.9rem", color: palette.primary, fontFamily: "serif", textAlign: "center" }}>
+              {card.arabicVerse}
+            </div>
+            <div style={{ width: "40px", height: "1px", background: `${palette.primary}60` }} />
+            <div style={{ fontSize: "0.4rem", color: palette.text, fontStyle: "italic", textAlign: "center", lineHeight: 1.7 }}>
+              {card.englishMessage}
+            </div>
+          </div>
+        )}
       </motion.div>
 
       {/* Left door */}

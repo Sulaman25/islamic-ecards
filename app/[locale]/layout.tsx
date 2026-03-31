@@ -1,23 +1,11 @@
 import type { Metadata } from "next";
-import { Amiri, Noto_Naskh_Arabic } from "next/font/google";
+import type { CSSProperties } from "react";
 import { SessionProvider } from "@/components/layout/SessionProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
-
-const amiri = Amiri({
-  variable: "--font-amiri",
-  subsets: ["arabic", "latin"],
-  weight: ["400", "700"],
-});
-
-const notoNaskh = Noto_Naskh_Arabic({
-  variable: "--font-noto-naskh",
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
-});
 
 export const metadata: Metadata = {
   title: "Islamic Ecards — Spread Blessings",
@@ -30,6 +18,11 @@ export const metadata: Metadata = {
     "Muslim greeting cards",
     "Islamic gifts",
   ],
+};
+
+const fontVars: CSSProperties = {
+  ["--font-amiri" as string]: "Amiri",
+  ["--font-noto-naskh" as string]: "Noto Naskh Arabic",
 };
 
 export default async function LocaleLayout({
@@ -52,7 +45,8 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${amiri.variable} ${notoNaskh.variable} h-full`}
+      className="h-full"
+      style={fontVars}
     >
       <body className="min-h-full flex flex-col bg-stone-50 text-stone-900 antialiased">
         <SessionProvider>

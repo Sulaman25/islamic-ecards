@@ -86,6 +86,7 @@ model CardTemplate {
   isActive      Boolean  @default(true)
   sortOrder     Int      @default(0)
   createdAt     DateTime @default(now())
+  isFeatured  Boolean  @default(false)
 
   // AI generation fields (v3)
   status         String    @default("published")  // "pending_review" | "published" | "rejected"

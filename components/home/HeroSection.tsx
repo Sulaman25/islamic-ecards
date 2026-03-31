@@ -15,32 +15,45 @@ const TYPEWRITER_PHRASES = [
 const TRENDING = ["✨ Eid Mubarak", "🌙 Ramadan", "💍 Nikah", "🕌 Jummah", "🕋 Hajj", "🤲 Du'a"];
 
 function useTypewriter(phrases: string[], speed = 60, pause = 2000) {
-  const [display, setDisplay] = useState("");
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
+  const phrase = phrases[phraseIdx] ?? "";
 
   useEffect(() => {
-    const phrase = phrases[phraseIdx];
-    let timeout: ReturnType<typeof setTimeout>;
-    if (!deleting && charIdx <= phrase.length) {
-      timeout = setTimeout(() => {
-        setDisplay(phrase.slice(0, charIdx));
-        setCharIdx(c => c + 1);
-      }, charIdx === phrase.length ? pause : speed);
-    } else if (deleting && charIdx >= 0) {
-      timeout = setTimeout(() => {
-        setDisplay(phrase.slice(0, charIdx));
-        setCharIdx(c => c - 1);
-      }, speed / 2);
-    } else {
-      setDeleting(d => !d);
-      if (deleting) setPhraseIdx(i => (i + 1) % phrases.length);
-    }
-    return () => clearTimeout(timeout);
-  }, [charIdx, deleting, phraseIdx, phrases, speed, pause]);
+    if (phrases.length === 0) return;
 
-  return display;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+
+    if (!deleting) {
+      if (charIdx < phrase.length) {
+        timeout = setTimeout(() => {
+          setCharIdx((current) => current + 1);
+        }, speed);
+      } else {
+        timeout = setTimeout(() => {
+          setDeleting(true);
+        }, pause);
+      }
+    } else {
+      if (charIdx > 0) {
+        timeout = setTimeout(() => {
+          setCharIdx((current) => current - 1);
+        }, speed / 2);
+      } else {
+        timeout = setTimeout(() => {
+          setDeleting(false);
+          setPhraseIdx((index) => (index + 1) % phrases.length);
+        }, speed);
+      }
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [charIdx, deleting, phrase.length, phrases.length, speed, pause]);
+
+  return phrase.slice(0, charIdx);
 }
 
 export function HeroSection() {

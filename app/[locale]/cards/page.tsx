@@ -1,90 +1,139 @@
-import { getTranslations } from "next-intl/server";
-import { Navbar } from "@/components/layout/Navbar";
-import { CardGrid } from "@/components/cards/CardGrid";
 import { prisma } from "@/lib/db/prisma";
-import { Link } from "@/lib/i18n-navigation";
+import { BrowseCardsClient } from "./BrowseCardsClient";
+import type { BrowseCard, BrowseOccasion } from "./BrowseCardsClient";
 
-const CATEGORY_SLUGS: Record<string, string[]> = {
-  eid: ["eid-ul-fitr", "eid-ul-adha"],
-  ramadan: ["ramadan", "laylatul-qadr"],
-  "life-events": ["nikah", "aqiqah", "hajj", "graduation"],
-  weekly: ["jummah", "islamic-new-year", "mawlid"],
-  general: ["general"],
-  // Individual occasion slugs used by home page links
-  jummah: ["jummah"],
-  nikah: ["nikah"],
-  hajj: ["hajj"],
-  aqiqah: ["aqiqah"],
+const OCCASION_ICONS: Record<string, string> = {
+  "eid-ul-fitr": "🎁",
+  "eid-ul-adha": "🐑",
+  ramadan: "🕌",
+  "laylatul-qadr": "✨",
+  nikah: "💍",
+  hajj: "🕋",
+  jummah: "🌙",
+  aqiqah: "🕯️",
+  mawlid: "☪️",
+  "islamic-new-year": "🌙",
+  general: "✨",
 };
+
+const OCCASION_ORDER = [
+  "eid-ul-fitr",
+  "ramadan",
+  "nikah",
+  "hajj",
+  "eid-ul-adha",
+  "aqiqah",
+  "jummah",
+  "laylatul-qadr",
+  "mawlid",
+  "islamic-new-year",
+  "general",
+];
+
+function deriveTags(card: { isPremium: boolean; titleEn: string; bgImageUrl: string }): string[] {
+  const tags: string[] = ["Animated"];
+  const source = `${card.titleEn} ${card.bgImageUrl}`.toLowerCase();
+
+  if (source.includes("geometric")) tags.push("Geometric");
+  if (source.includes("crescent")) tags.push("Crescent");
+  if (source.includes("arabesque")) tags.push("Arabesque");
+  if (source.includes("floral")) tags.push("Floral");
+  if (source.includes("lantern")) tags.push("Lantern");
+  if (source.includes("mosque")) tags.push("Mosque");
+  if (source.includes("kaaba") || source.includes("hajj")) tags.push("Sacred");
+  if (source.includes("pattern")) tags.push("Pattern");
+  if (card.isPremium) tags.push("Premium");
+
+  return Array.from(new Set(tags)).slice(0, 3);
+}
+
+function buildDescription(card: { titleEn: string; bgImageUrl: string }, occasionName: string): string {
+  const source = `${card.titleEn} ${card.bgImageUrl}`.toLowerCase();
+
+  if (source.includes("floral")) {
+    return `${occasionName} card with floral ornament, layered motion, and room for a personal message.`;
+  }
+
+  if (source.includes("geometric") || source.includes("pattern")) {
+    return `${occasionName} card with geometric detail, luminous motion, and a clean message space.`;
+  }
+
+  if (source.includes("lantern") || source.includes("crescent") || source.includes("night")) {
+    return `${occasionName} card built around a night-sky scene with soft motion and warm lighting.`;
+  }
+
+  if (source.includes("mosque") || source.includes("kaaba")) {
+    return `${occasionName} card with a sacred focal point and room for a thoughtful greeting.`;
+  }
+
+  return `${occasionName} card with layered illustration, subtle animation, and space for a personal note.`;
+}
 
 interface Props {
   searchParams: Promise<{ occasion?: string }>;
 }
 
 export default async function CardsPage({ searchParams }: Props) {
-  const { occasion } = await searchParams;
-  const t = await getTranslations("cards");
+  const { occasion: initialOccasionSlug } = await searchParams;
 
-  const slugsToQuery = occasion && CATEGORY_SLUGS[occasion]
-    ? CATEGORY_SLUGS[occasion]
-    : undefined;
-
-  const templates = await prisma.cardTemplate.findMany({
-    where: {
-      isActive: true,
-      ...(slugsToQuery
-        ? { occasion: { slug: { in: slugsToQuery } } }
-        : {}),
-    },
-    include: { occasion: true },
-    orderBy: [{ isPremium: "asc" }, { sortOrder: "asc" }],
-  });
-
-  const occasions = await prisma.occasion.findMany({
+  const dbOccasions = await prisma.occasion.findMany({
     where: { isActive: true },
-    orderBy: { sortOrder: "asc" },
+    include: {
+      templates: {
+        where: { isActive: true },
+        orderBy: [{ isPremium: "asc" }, { sortOrder: "asc" }],
+      },
+    },
   });
 
-  const filters = [
-    { slug: "", label: t("filterAll") },
-    { slug: "eid", label: t("filterEid") },
-    { slug: "ramadan", label: t("filterRamadan") },
-    { slug: "life-events", label: t("filterLifeEvents") },
-    { slug: "weekly", label: t("filterWeekly") },
-    { slug: "general", label: t("filterGeneral") },
-  ];
+  const sortedOccasions = [...dbOccasions].sort((a, b) => {
+    const ai = OCCASION_ORDER.indexOf(a.slug);
+    const bi = OCCASION_ORDER.indexOf(b.slug);
+    if (ai === -1 && bi === -1) return a.nameEn.localeCompare(b.nameEn);
+    if (ai === -1) return 1;
+    if (bi === -1) return -1;
+    return ai - bi;
+  });
+
+  const occasions: BrowseOccasion[] = sortedOccasions
+    .filter((occasion) => occasion.templates.length > 0)
+    .map((occasion) => {
+      const cards: BrowseCard[] = occasion.templates.map((template) => ({
+        id: template.id,
+        titleEn: template.titleEn,
+        titleAr: template.titleAr,
+        occasionNameEn: occasion.nameEn,
+        occasionSlug: occasion.slug,
+        description: buildDescription(template, occasion.nameEn),
+        bgColor: template.bgColor ?? "#0a1a0a",
+        bgImageUrl: template.bgImageUrl,
+        animationFile: template.animationFile,
+        animationStyle: template.animationStyle,
+        isPremium: template.isPremium,
+        tags: deriveTags(template),
+      }));
+
+      return {
+        id: occasion.id,
+        slug: occasion.slug,
+        nameEn: occasion.nameEn,
+        nameAr: occasion.nameAr,
+        icon: OCCASION_ICONS[occasion.slug] ?? "✨",
+        cardCount: occasion.templates.length,
+        cards,
+        bg: "",
+        aurora1: "",
+        aurora2: "",
+        glow: "",
+        cutColor: "",
+        accentAiColor: "",
+      } satisfies BrowseOccasion;
+    });
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-10">
-        <h1 className="text-3xl font-bold text-stone-800 mb-2">
-          {t("title")}
-        </h1>
-        <p className="text-stone-500 mb-8">
-          {t("subtitle", { count: templates.length })}
-        </p>
-
-        {/* Occasion filters */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          {filters.map((f) => (
-            <Link
-              key={f.slug}
-              href={f.slug ? `/cards?occasion=${f.slug}` : "/cards"}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
-                occasion === f.slug || (!occasion && f.slug === "")
-                  ? "bg-amber-700 text-white border-amber-700"
-                  : "bg-white text-stone-600 border-stone-200 hover:border-amber-400 hover:text-amber-700"
-              }`}
-            >
-              {f.label}
-            </Link>
-          ))}
-        </div>
-
-        <CardGrid templates={templates} />
-      </main>
-    </div>
+    <BrowseCardsClient
+      occasions={occasions}
+      initialOccasionSlug={initialOccasionSlug}
+    />
   );
 }

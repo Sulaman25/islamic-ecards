@@ -8,6 +8,11 @@ interface Props { card: ECardData; isOpen: boolean; onToggle: () => void }
 
 export function LanternCard({ card, isOpen, onToggle }: Props) {
   const { palette } = card
+  const lanternGlowFrames: string[] = [
+    `drop-shadow(0 0 8px ${palette.primary})`,
+    `drop-shadow(0 0 20px ${palette.primary}) drop-shadow(0 0 40px ${palette.primary}40)`,
+    `drop-shadow(0 0 8px ${palette.primary})`,
+  ]
 
   return (
     <div
@@ -72,7 +77,7 @@ export function LanternCard({ card, isOpen, onToggle }: Props) {
         }}
       >
         <motion.div
-          animate={{ filter: [`drop-shadow(0 0 8px ${palette.primary})`, `drop-shadow(0 0 20px ${palette.primary}) drop-shadow(0 0 40px ${palette.primary}40)`, `drop-shadow(0 0 8px ${palette.primary})`] as any }}
+          animate={{ filter: lanternGlowFrames }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           style={{ fontSize: "2.8rem" }}
         >

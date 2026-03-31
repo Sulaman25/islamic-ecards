@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import type { AnimationStyle } from "@/types/card";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -20,17 +21,20 @@ function LottieLayer({ src }: { src: string }) {
   );
 }
 
-interface Template {
+export interface CardCanvasTemplate {
   bgColor: string;
   bgImageUrl?: string;
+  insideMediaUrl?: string;
+  insideMediaType?: "image" | "video";
   titleAr: string;
   titleEn: string;
   animationFile?: string;
+  animationStyle?: AnimationStyle | string | null;
   occasion: { slug: string; nameEn: string };
 }
 
-interface Props {
-  template: Template;
+export interface CardCanvasProps {
+  template: CardCanvasTemplate;
   recipientName?: string;
   senderName?: string;
   message?: string;
@@ -38,6 +42,8 @@ interface Props {
   fontStyle?: string;
   /** "preview" = compact studio panel | "full" = recipient view page */
   mode?: "preview" | "full";
+  contentMode?: "personalized" | "template";
+  showAnimation?: boolean;
 }
 
 type Theme = "eid" | "ramadan" | "laylatul" | "nikah" | "jummah" | "hajj" | "aqiqah" | "mawlid" | "islamicnewyear" | "graduation" | "general";
@@ -110,34 +116,65 @@ const PARTICLES = [
 // ── Theme-specific animated backgrounds ──────────────────────────────────────
 
 function EidBackground() {
+  const rays = Array.from({ length: 12 }, (_, index) => index * 30);
+
   return (
     <>
-      {/* Rotating 8-pointed star mandala */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 50% 18%, rgba(251,191,36,0.16), transparent 30%), radial-gradient(circle at 50% 72%, rgba(255,255,255,0.08), transparent 38%)",
+        }}
+      />
+
       <motion.div
         className="absolute inset-0 flex items-center justify-center"
         animate={{ rotate: 360 }}
-        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 72, repeat: Infinity, ease: "linear" }}
       >
-        <svg viewBox="0 0 200 200" className="w-4/5 h-4/5 opacity-10" fill="none">
-          {/* 8-pointed star: two overlapping squares */}
-          <rect x="60" y="60" width="80" height="80" stroke="#c9a84c" strokeWidth="1.5" fill="none" />
-          <rect x="60" y="60" width="80" height="80" stroke="#c9a84c" strokeWidth="1.5" fill="none" transform="rotate(45 100 100)" />
-          <circle cx="100" cy="100" r="50" stroke="#c9a84c" strokeWidth="1" fill="none" />
-          <circle cx="100" cy="100" r="30" stroke="#c9a84c" strokeWidth="0.8" fill="none" />
-          {/* radial lines */}
-          {[0,45,90,135].map(a => (
-            <line key={a} x1="100" y1="100" x2={100 + 90*Math.cos(a*Math.PI/180)} y2={100 + 90*Math.sin(a*Math.PI/180)} stroke="#c9a84c" strokeWidth="0.5" />
+        <svg viewBox="0 0 240 240" className="h-[88%] w-[88%] opacity-[0.14]" fill="none">
+          <circle cx="120" cy="120" r="94" stroke="#f4d58b" strokeWidth="0.8" strokeDasharray="4 10" />
+          <circle cx="120" cy="120" r="70" stroke="#f4d58b" strokeWidth="0.7" />
+          <circle cx="120" cy="120" r="42" stroke="#f4d58b" strokeWidth="0.6" />
+          <rect x="72" y="72" width="96" height="96" stroke="#f4d58b" strokeWidth="1.2" />
+          <rect x="72" y="72" width="96" height="96" stroke="#f4d58b" strokeWidth="1.2" transform="rotate(45 120 120)" />
+          <polygon
+            points="120,44 138,102 196,120 138,138 120,196 102,138 44,120 102,102"
+            stroke="#f4d58b"
+            strokeWidth="1"
+            fill="rgba(244,213,139,0.04)"
+          />
+          {rays.map((angle) => (
+            <line
+              key={angle}
+              x1="120"
+              y1="120"
+              x2={120 + 98 * Math.cos((angle * Math.PI) / 180)}
+              y2={120 + 98 * Math.sin((angle * Math.PI) / 180)}
+              stroke="#f4d58b"
+              strokeWidth="0.42"
+              opacity="0.45"
+            />
           ))}
         </svg>
       </motion.div>
-      {/* Counter-rotating inner ring */}
+
       <motion.div
         className="absolute inset-0 flex items-center justify-center"
         animate={{ rotate: -360 }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
       >
-        <svg viewBox="0 0 200 200" className="w-2/5 h-2/5 opacity-15" fill="none">
-          <polygon points="100,70 107,93 130,93 113,107 119,130 100,116 81,130 87,107 70,93 93,93" stroke="#c9a84c" strokeWidth="1.5" fill="rgba(201,168,76,0.1)" />
+        <svg viewBox="0 0 200 200" className="h-1/2 w-1/2 opacity-[0.16]" fill="none">
+          <circle cx="100" cy="100" r="44" stroke="#f4d58b" strokeWidth="1" />
+          <circle cx="100" cy="100" r="28" stroke="#f4d58b" strokeWidth="0.7" strokeDasharray="3 7" />
+          <polygon
+            points="100,66 110,90 136,90 116,106 124,132 100,118 76,132 84,106 64,90 90,90"
+            stroke="#f4d58b"
+            strokeWidth="1.2"
+            fill="rgba(244,213,139,0.08)"
+          />
+          <path d="M100 28l6 14 14 6-14 6-6 14-6-14-14-6 14-6z" stroke="#f4d58b" strokeWidth="0.9" />
         </svg>
       </motion.div>
     </>
@@ -567,13 +604,34 @@ function Particles({ color }: { color: string }) {
 
 // ── The main component ────────────────────────────────────────────────────────
 
-export function CardCanvas({ template, recipientName, senderName, message, selectedVerse, fontStyle = "amiri", mode = "full" }: Props) {
+export function CardCanvas({
+  template,
+  recipientName,
+  senderName,
+  message,
+  selectedVerse,
+  fontStyle = "amiri",
+  mode = "full",
+  contentMode = "personalized",
+  showAnimation = true,
+}: CardCanvasProps) {
   const t = useTranslations("view");
   const theme = getTheme(template.occasion.slug);
   const particleColor = PARTICLE_COLOR[theme];
   const gradient = GRADIENTS[theme];
 
   const isPreview = mode === "preview";
+  const isTemplateMode = contentMode === "template";
+  const hasMessage = Boolean(message?.trim());
+  const resolvedMessage = hasMessage
+    ? message!.trim()
+    : isTemplateMode
+      ? template.titleEn
+      : "Your personalised message will appear here...";
+  const showRecipient = Boolean(recipientName) || !isTemplateMode;
+  const showMessage = hasMessage || isTemplateMode || !isPreview;
+  const showSender = Boolean(senderName) || !isTemplateMode;
+  const messageUsesArabicFont = hasMessage && fontStyle === "amiri";
 
   return (
     <div
@@ -590,7 +648,7 @@ export function CardCanvas({ template, recipientName, senderName, message, selec
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: gradient }} />
 
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {template.animationFile && <LottieLayer src={template.animationFile} />}
+        {template.animationFile && showAnimation ? <LottieLayer src={template.animationFile} /> : null}
         {theme === "eid"           && <EidBackground />}
         {theme === "ramadan"       && <RamadanBackground />}
         {theme === "laylatul"      && <LaylatolQadrBackground />}
@@ -627,22 +685,24 @@ export function CardCanvas({ template, recipientName, senderName, message, selec
           {template.titleAr}
         </motion.p>
 
-        <motion.div
-          className="mb-2"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-        >
-          <p className={`text-white/50 ${isPreview ? "text-[10px]" : "text-sm"}`}>{t("to")}</p>
-          <p className={`text-white font-semibold ${isPreview ? "text-lg" : "text-2xl"}`}>
-            {recipientName || "Your Recipient"}
-          </p>
-        </motion.div>
+        {showRecipient && (
+          <motion.div
+            className="mb-2"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+          >
+            <p className={`text-white/50 ${isPreview ? "text-[10px]" : "text-sm"}`}>{t("to")}</p>
+            <p className={`text-white font-semibold ${isPreview ? "text-lg" : "text-2xl"}`}>
+              {recipientName || "Your Recipient"}
+            </p>
+          </motion.div>
+        )}
 
-        {(message || !isPreview) && (
+        {showMessage && (
           <motion.p
-            className={`text-white/85 leading-relaxed ${isPreview ? "text-xs max-w-[160px]" : "text-base max-w-xs"} ${fontStyle === "amiri" ? "font-arabic" : ""}`}
+            className={`text-white/85 leading-relaxed ${isPreview ? "text-xs max-w-[160px]" : "text-base max-w-xs"} ${messageUsesArabicFont ? "font-arabic" : ""}`}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
           >
-            {message || "Your personalised message will appear here..."}
+            {resolvedMessage}
           </motion.p>
         )}
 
@@ -663,12 +723,14 @@ export function CardCanvas({ template, recipientName, senderName, message, selec
           </motion.div>
         )}
 
-        <motion.p
-          className={`text-white/40 ${isPreview ? "text-[10px]" : "text-sm"} mt-3`}
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
-        >
-          {t("fromLabel", { name: senderName || "You" })}
-        </motion.p>
+        {showSender && (
+          <motion.p
+            className={`text-white/40 ${isPreview ? "text-[10px]" : "text-sm"} mt-3`}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+          >
+            {t("fromLabel", { name: senderName || "You" })}
+          </motion.p>
+        )}
       </div>
     </div>
   );

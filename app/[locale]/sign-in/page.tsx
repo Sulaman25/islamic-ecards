@@ -4,6 +4,8 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
+import { AuroraBackground } from "@/components/home/AuroraBackground";
+import { CustomCursor } from "@/components/home/CustomCursor";
 
 function SignInForm() {
   const searchParams = useSearchParams();
@@ -11,19 +13,77 @@ function SignInForm() {
   const t = useTranslations("signIn");
 
   return (
-    <div className="min-h-screen pattern-islamic flex items-center justify-center px-4">
-      <div className="bg-white rounded-3xl shadow-2xl p-10 w-full max-w-md text-center">
-        <p className="font-arabic text-2xl text-amber-700 mb-2">
+    <div style={{
+      minHeight:      "100vh",
+      display:        "flex",
+      alignItems:     "center",
+      justifyContent: "center",
+      padding:        "24px",
+      background:     "var(--v3-bg)",
+      position:       "relative",
+      overflow:       "hidden",
+    }}>
+      <AuroraBackground />
+      <CustomCursor />
+
+      <div style={{
+        position:       "relative",
+        zIndex:         2,
+        background:     "rgba(255,255,255,0.04)",
+        border:         "1px solid var(--v3-border)",
+        backdropFilter: "blur(20px)",
+        borderRadius:   "24px",
+        padding:        "48px 40px",
+        width:          "100%",
+        maxWidth:       "420px",
+        textAlign:      "center",
+        boxShadow:      "0 24px 80px rgba(0,0,0,0.6)",
+      }}>
+        {/* Arabic header */}
+        <p style={{
+          fontFamily:   "var(--font-amiri, serif)",
+          fontSize:     "1.5rem",
+          color:        "var(--gold)",
+          marginBottom: "8px",
+          textShadow:   "0 0 20px rgba(240,208,128,0.3)",
+        }}>
           بسم الله الرحمن الرحيم
         </p>
-        <h1 className="text-3xl font-bold text-stone-800 mb-1">{t("title")}</h1>
-        <p className="text-stone-500 text-sm mb-8">
+
+        {/* Divider */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "20px" }}>
+          <div style={{ height: "1px", width: "48px", background: "linear-gradient(to right, transparent, rgba(240,208,128,0.4))" }} />
+          <span style={{ color: "var(--gold)", fontSize: "0.55rem", opacity: 0.7 }}>✦</span>
+          <div style={{ height: "1px", width: "48px", background: "linear-gradient(to left, transparent, rgba(240,208,128,0.4))" }} />
+        </div>
+
+        <h1 style={{ fontSize: "1.8rem", fontWeight: 800, color: "#fff", marginBottom: "6px" }}>
+          {t("title")}
+        </h1>
+        <p style={{ color: "var(--v3-text-dim)", fontSize: "0.9rem", marginBottom: "32px" }}>
           {t("subtitle")}
         </p>
 
         <button
           onClick={() => signIn("google", { callbackUrl })}
-          className="w-full flex items-center justify-center gap-3 border border-stone-200 hover:bg-stone-50 text-stone-700 font-semibold py-3 px-6 rounded-xl transition-colors shadow-sm"
+          style={{
+            width:          "100%",
+            display:        "flex",
+            alignItems:     "center",
+            justifyContent: "center",
+            gap:            "12px",
+            padding:        "14px 24px",
+            borderRadius:   "14px",
+            border:         "1px solid var(--v3-border)",
+            background:     "rgba(255,255,255,0.06)",
+            color:          "var(--v3-text)",
+            fontSize:       "0.95rem",
+            fontWeight:     600,
+            cursor:         "pointer",
+            transition:     "all 0.2s",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(240,208,128,0.4)")}
+          onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--v3-border)")}
         >
           <svg width="20" height="20" viewBox="0 0 48 48">
             <path fill="#4285F4" d="M47.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h13.2c-.6 3-2.4 5.5-5 7.2v6h8c4.7-4.3 7.3-10.7 7.3-17.2z"/>
@@ -34,10 +94,10 @@ function SignInForm() {
           {t("continueGoogle")}
         </button>
 
-        <p className="text-xs text-stone-400 mt-8">
+        <p style={{ fontSize: "0.75rem", color: "var(--v3-text-dim)", marginTop: "28px", lineHeight: 1.7 }}>
           {t("terms")}
           <br />
-          جزاك الله خيراً
+          <span style={{ color: "var(--gold)", opacity: 0.7 }}>جزاك الله خيراً</span>
         </p>
       </div>
     </div>

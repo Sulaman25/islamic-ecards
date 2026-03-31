@@ -1,10 +1,43 @@
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
-import { Link, useRouter, usePathname } from "@/lib/i18n-navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/lib/i18n-navigation";
 import { HijriPill } from "@/components/home/HijriPill";
+
+const LOCALES = [
+  { code: "en", label: "English" },
+  { code: "ar", label: "Arabic" },
+  { code: "ur", label: "Urdu" },
+];
+
+function LocaleSelect({
+  locale,
+  onChangeLocale,
+  onSwitch,
+}: {
+  locale: string;
+  onChangeLocale: (nextLocale: string) => void;
+  onSwitch?: () => void;
+}) {
+  return (
+    <select
+      value={locale}
+      onChange={(event) => {
+        onChangeLocale(event.target.value);
+        onSwitch?.();
+      }}
+      className="text-xs font-semibold px-2 py-1 rounded-full border border-amber-300 text-amber-700 bg-white hover:bg-amber-50 focus:outline-none focus:border-amber-500 transition-colors cursor-pointer"
+    >
+      {LOCALES.map(({ code, label }) => (
+        <option key={code} value={code}>
+          {label}
+        </option>
+      ))}
+    </select>
+  );
+}
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -15,30 +48,19 @@ export function Navbar() {
   const pathname = usePathname();
 
   const closeMenu = () => setMenuOpen(false);
-
-  const LOCALES = [
-    { code: "en", label: "English" },
-    { code: "ar", label: "عربي" },
-    { code: "ur", label: "اردو" },
-  ];
-
-  const LocaleToggle = ({ onSwitch }: { onSwitch?: () => void }) => (
-    <select
-      value={locale}
-      onChange={(e) => {
-        router.replace(pathname, { locale: e.target.value });
-        onSwitch?.();
-      }}
-      className="text-xs font-semibold px-2 py-1 rounded-full border border-amber-300 text-amber-700 bg-white hover:bg-amber-50 focus:outline-none focus:border-amber-500 transition-colors cursor-pointer"
-    >
-      {LOCALES.map(({ code, label }) => (
-        <option key={code} value={code}>{label}</option>
-      ))}
-    </select>
-  );
+  const handleLocaleChange = (nextLocale: string) => {
+    router.replace(pathname, { locale: nextLocale });
+  };
 
   return (
-    <nav className="sticky top-0 z-50" style={{ background: "rgba(3,2,10,0.85)", backdropFilter: "blur(24px)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+    <nav
+      className="sticky top-0 z-50"
+      style={{
+        background: "rgba(3,2,10,0.85)",
+        backdropFilter: "blur(24px)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl">🌙</span>
@@ -46,14 +68,23 @@ export function Navbar() {
         </Link>
 
         <div className="hidden md:flex items-center gap-6 text-sm text-stone-100">
-          <Link href="/cards" className="hover:text-amber-700 transition-colors font-medium">
+          <Link
+            href="/cards"
+            className="hover:text-amber-700 transition-colors font-medium"
+          >
             {t("browseCards")}
           </Link>
-          <Link href="/pricing" className="hover:text-amber-700 transition-colors font-medium">
+          <Link
+            href="/pricing"
+            className="hover:text-amber-700 transition-colors font-medium"
+          >
             {t("pricing")}
           </Link>
           {session && (
-            <Link href="/dashboard" className="hover:text-amber-700 transition-colors font-medium">
+            <Link
+              href="/dashboard"
+              className="hover:text-amber-700 transition-colors font-medium"
+            >
               {t("dashboard")}
             </Link>
           )}
@@ -61,7 +92,7 @@ export function Navbar() {
 
         <div className="hidden md:flex items-center gap-3">
           <HijriPill />
-          <LocaleToggle />
+          <LocaleSelect locale={locale} onChangeLocale={handleLocaleChange} />
           {session ? (
             <>
               <span className="text-sm text-stone-300">{session.user?.name}</span>
@@ -93,7 +124,10 @@ export function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden border-t border-amber-100" style={{ backgroundColor: "#1a3a2a" }}>
+        <div
+          className="md:hidden border-t border-amber-100"
+          style={{ backgroundColor: "#1a3a2a" }}
+        >
           <div className="px-4 py-3 flex flex-col gap-1">
             <Link
               href="/cards"
@@ -122,14 +156,23 @@ export function Navbar() {
             <div className="border-t border-white/10 my-1" />
 
             <div className="px-3 py-2">
-              <LocaleToggle onSwitch={closeMenu} />
+              <LocaleSelect
+                locale={locale}
+                onChangeLocale={handleLocaleChange}
+                onSwitch={closeMenu}
+              />
             </div>
 
             {session ? (
               <>
-                <span className="px-3 py-1 text-xs text-stone-400">{session.user?.name}</span>
+                <span className="px-3 py-1 text-xs text-stone-400">
+                  {session.user?.name}
+                </span>
                 <button
-                  onClick={() => { signOut(); closeMenu(); }}
+                  onClick={() => {
+                    signOut();
+                    closeMenu();
+                  }}
                   className="text-left px-3 py-3 rounded-lg text-sm font-medium text-stone-200 hover:bg-white/10 hover:text-amber-400 transition-colors"
                 >
                   {t("signOut")}
@@ -137,7 +180,10 @@ export function Navbar() {
               </>
             ) : (
               <button
-                onClick={() => { signIn("google"); closeMenu(); }}
+                onClick={() => {
+                  signIn("google");
+                  closeMenu();
+                }}
                 className="mx-3 my-1 bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors text-center"
               >
                 {t("signIn")}

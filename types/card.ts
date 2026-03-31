@@ -1,6 +1,6 @@
 // types/card.ts
 
-export type AnimationStyle = 'envelope' | 'mosaic' | 'lantern' | 'doors' | 'portal'
+export type AnimationStyle = 'envelope' | 'mosaic' | 'lantern' | 'doors' | 'portal' | 'book' | 'pageflip'
 
 export type ArtTier = 'css' | 'lottie' | 'image'
 

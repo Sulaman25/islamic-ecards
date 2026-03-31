@@ -133,10 +133,11 @@ async function main() {
     // Eid ul-Fitr
     {
       slug: "eid-fitr-gold-geometric",
-      titleEn: "Golden Geometric Eid",
-      titleAr: "عيد الفطر الذهبي",
+      titleEn: "Golden Eid ul-Fitr",
+      titleAr: "\u0639\u064A\u062F \u0627\u0644\u0641\u0637\u0631 \u0627\u0644\u0645\u0628\u0627\u0631\u0643",
       occasionId: eidFitr!.id,
       animationFile: "/animations/eid-geometric.json",
+      animationStyle: "pageflip",
       bgImageUrl: "/images/cards/eid-gold-geometric.svg",
       bgColor: "#2d1b0e",
       isPremium: false,
@@ -144,10 +145,11 @@ async function main() {
     },
     {
       slug: "eid-fitr-crescent-moon",
-      titleEn: "Crescent Moon Eid",
+      titleEn: "Eid al-Fitr Mubarak",
       titleAr: "عيد الهلال",
       occasionId: eidFitr!.id,
       animationFile: "/animations/eid-geometric.json",
+      animationStyle: "pageflip",
       bgImageUrl: "/images/cards/eid-crescent.svg",
       bgColor: "#0f1f3d",
       isPremium: false,
@@ -159,6 +161,7 @@ async function main() {
       titleAr: "عيد مبارك الأرابيسك",
       occasionId: eidFitr!.id,
       animationFile: "/animations/eid-geometric.json",
+      animationStyle: "pageflip",
       bgImageUrl: "/images/cards/eid-arabesque.svg",
       bgColor: "#1a0a2e",
       isPremium: true,
@@ -186,6 +189,18 @@ async function main() {
       bgColor: "#0d1a0d",
       isPremium: true,
       sortOrder: 2,
+    },
+    {
+      slug: "eid-adha-premium-floral",
+      titleEn: "Premium Floral Eid",
+      titleAr: "عيد الأضحى المزخرف",
+      occasionId: eidAdha!.id,
+      animationFile: "/animations/eid-geometric.json",
+      animationStyle: 'book',
+      bgImageUrl: "/images/cards/eid-adha-premium-floral.svg",
+      bgColor: "#061a10",
+      isPremium: true,
+      sortOrder: 3,
     },
     // Ramadan
     {
@@ -399,10 +414,14 @@ async function main() {
   ];
 
   for (const template of templates) {
+    const configuredTemplate = { ...template, animationStyle: "pageflip" as const };
     await prisma.cardTemplate.upsert({
-      where: { slug: template.slug },
-      update: { bgImageUrl: template.bgImageUrl },
-      create: template,
+      where: { slug: configuredTemplate.slug },
+      update: {
+        bgImageUrl: configuredTemplate.bgImageUrl,
+        animationStyle: configuredTemplate.animationStyle,
+      },
+      create: configuredTemplate,
     });
   }
 
@@ -412,13 +431,13 @@ async function main() {
   const animationCards = [
     {
       slug:           'eid-portal-demo',
-      titleEn:        'Eid al-Fitr Mubarak',
+      titleEn:        'Crescent Moon Eid',
       titleAr:        'عِيدٌ مُبَارَك',
       occasionSlug:   'eid-ul-fitr',
-      animationStyle: 'portal',
+      animationStyle: 'pageflip',
       bgColor:        '#050210',
       animationFile:  '',
-      bgImageUrl:     '',
+      bgImageUrl:     '/images/cards/eid-crescent-moon-front-photo.png',
       isPremium:      false,
       sortOrder:      1,
     },
@@ -475,10 +494,11 @@ async function main() {
   for (const card of animationCards) {
     const occasion = await prisma.occasion.findUnique({ where: { slug: card.occasionSlug } });
     if (!occasion) { console.warn(`Occasion not found: ${card.occasionSlug}`); continue; }
+    const configuredAnimationStyle = 'pageflip' as const;
 
     await prisma.cardTemplate.upsert({
       where:  { slug: card.slug },
-      update: { animationStyle: card.animationStyle, status: 'published', isActive: true },
+      update: { animationStyle: configuredAnimationStyle, status: 'published', isActive: true },
       create: {
         slug:           card.slug,
         titleEn:        card.titleEn,
@@ -491,7 +511,7 @@ async function main() {
         isActive:       true,
         status:         'published',
         sortOrder:      card.sortOrder,
-        animationStyle: card.animationStyle,
+        animationStyle: configuredAnimationStyle,
       },
     });
     console.log(`✓ Seeded card: ${card.slug}`);

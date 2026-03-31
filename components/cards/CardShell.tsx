@@ -6,6 +6,7 @@ import { MosaicCard }   from "./animations/MosaicCard"
 import { LanternCard }  from "./animations/LanternCard"
 import { DoorsCard }    from "./animations/DoorsCard"
 import { PortalCard }   from "./animations/PortalCard"
+import { BookCard }     from "./animations/BookCard"
 
 interface Props {
   card: ECardData
@@ -19,6 +20,8 @@ export function CardShell({ card, isOpen, onToggle }: Props) {
     case "lantern":  return <LanternCard card={card} isOpen={isOpen} onToggle={onToggle} />
     case "doors":    return <DoorsCard   card={card} isOpen={isOpen} onToggle={onToggle} />
     case "portal":   return <PortalCard  card={card} isOpen={isOpen} onToggle={onToggle} />
+    case "book":     return <BookCard    card={card} isOpen={isOpen} onToggle={onToggle} />
+    case "pageflip": return <BookCard    card={card} isOpen={isOpen} onToggle={onToggle} />
     default:         return <EnvelopeCard card={card} isOpen={isOpen} onToggle={onToggle} />
   }
 }

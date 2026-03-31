@@ -1,75 +1,77 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
-  <rect width="600" height="800" fill="#0f1f3d"/>
   <defs>
-    <pattern id="starfield" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
-      <!-- 4-pointed star -->
-      <polygon points="20,10 22,18 30,20 22,22 20,30 18,22 10,20 18,18"
-        fill="none" stroke="#93c5fd" stroke-width="0.7" opacity="0.55"/>
-      <!-- Small dot stars -->
-      <circle cx="70" cy="30" r="1" fill="#93c5fd" opacity="0.45"/>
-      <circle cx="90" cy="70" r="1.2" fill="#93c5fd" opacity="0.4"/>
-      <circle cx="45" cy="85" r="0.8" fill="#93c5fd" opacity="0.35"/>
-      <circle cx="100" cy="10" r="1" fill="#93c5fd" opacity="0.3"/>
-      <circle cx="10" cy="60" r="0.9" fill="#93c5fd" opacity="0.38"/>
-      <circle cx="60" cy="55" r="0.6" fill="#93c5fd" opacity="0.25"/>
-      <!-- 4-pointed tiny star -->
-      <polygon points="80,55 81,59 85,60 81,61 80,65 79,61 75,60 79,59"
-        fill="none" stroke="#93c5fd" stroke-width="0.5" opacity="0.35"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#081327"/>
+      <stop offset="45%" stop-color="#102a58"/>
+      <stop offset="100%" stop-color="#050b18"/>
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="45%" r="42%">
+      <stop offset="0%" stop-color="#dbeafe" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#93c5fd" stop-opacity="0.36"/>
+      <stop offset="100%" stop-color="#93c5fd" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="archLight" cx="50%" cy="34%" r="60%">
+      <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#f8fafc" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="stars" width="120" height="120" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="20" r="1.2" fill="#dbeafe" opacity="0.55"/>
+      <circle cx="92" cy="38" r="1" fill="#bfdbfe" opacity="0.45"/>
+      <circle cx="68" cy="95" r="1.1" fill="#dbeafe" opacity="0.38"/>
+      <circle cx="28" cy="88" r="0.8" fill="#bfdbfe" opacity="0.35"/>
+      <path d="M58 16l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="none" stroke="#e0f2fe" stroke-width="0.7" opacity="0.55"/>
+      <path d="M101 81l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="none" stroke="#e0f2fe" stroke-width="0.55" opacity="0.4"/>
     </pattern>
+    <pattern id="tiles" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M32 0l32 32-32 32L0 32z" fill="none" stroke="#93c5fd" stroke-width="0.6" opacity="0.16"/>
+      <path d="M32 10l22 22-22 22L10 32z" fill="none" stroke="#dbeafe" stroke-width="0.45" opacity="0.1"/>
+    </pattern>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
   </defs>
-  <!-- Star field background -->
-  <rect width="600" height="800" fill="url(#starfield)"/>
 
-  <!-- Large central crescent -->
-  <g transform="translate(300,300)" opacity="0.14">
-    <circle cx="0" cy="0" r="130" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
-    <circle cx="30" cy="-15" r="110" fill="#0f1f3d"/>
-    <!-- Crescent outline only -->
-    <path d="M 0,-130 A 130,130 0 1,1 0,130 A 110,110 0 1,0 0,-130 Z"
-      fill="none" stroke="#93c5fd" stroke-width="1.2" opacity="0.8"/>
+  <rect width="600" height="800" fill="url(#bg)"/>
+  <rect width="600" height="800" fill="url(#stars)"/>
+  <rect width="600" height="800" fill="url(#tiles)" opacity="0.55"/>
+
+  <ellipse cx="300" cy="368" rx="248" ry="320" fill="url(#archLight)"/>
+
+  <g opacity="0.2">
+    <path d="M126 662c36-192 106-292 174-344 68 52 138 152 174 344" fill="none" stroke="#dbeafe" stroke-width="1.3"/>
+    <path d="M156 664c28-158 82-244 144-292 62 48 116 134 144 292" fill="none" stroke="#bfdbfe" stroke-width="0.9" stroke-dasharray="2 10"/>
+    <path d="M300 318v346" fill="none" stroke="#dbeafe" stroke-width="0.7" stroke-dasharray="3 12"/>
+    <path d="M202 430h196" fill="none" stroke="#bfdbfe" stroke-width="0.65" stroke-dasharray="5 8"/>
+    <path d="M180 514h240" fill="none" stroke="#bfdbfe" stroke-width="0.6" stroke-dasharray="4 10"/>
   </g>
 
-  <!-- Constellation-style connecting lines -->
-  <g opacity="0.1" stroke="#93c5fd" stroke-width="0.5">
-    <line x1="80" y1="120" x2="160" y2="200"/>
-    <line x1="160" y1="200" x2="300" y2="180"/>
-    <line x1="300" y1="180" x2="440" y2="220"/>
-    <line x1="440" y1="220" x2="520" y2="140"/>
-    <line x1="200" y1="500" x2="300" y2="520"/>
-    <line x1="300" y1="520" x2="400" y2="480"/>
-    <line x1="100" y1="650" x2="200" y2="680"/>
-    <line x1="200" y1="680" x2="350" y2="660"/>
-    <line x1="350" y1="660" x2="480" y2="700"/>
+  <g transform="translate(300 198)">
+    <ellipse cx="0" cy="0" rx="138" ry="110" fill="url(#moonGlow)" filter="url(#softGlow)" opacity="0.85"/>
+    <circle cx="-2" cy="0" r="74" fill="none" stroke="#f8fafc" stroke-width="1.6" opacity="0.55"/>
+    <circle cx="24" cy="-10" r="58" fill="#081327"/>
+    <path d="M-8-76c43 0 78 34 78 76s-35 76-78 76c-6 0-12-1-18-2 30-9 52-37 52-71s-22-62-52-71c6-1 12-2 18-2z" fill="#f8fafc" opacity="0.82"/>
   </g>
 
-  <!-- Large crescent at top -->
-  <g transform="translate(300,110)" opacity="0.13">
-    <path d="M-45,-55 A 70,70 0 1,1 45,-55 A 55,55 0 1,0 -45,-55 Z"
-      fill="none" stroke="#93c5fd" stroke-width="1.2"/>
-    <!-- Star beside crescent -->
-    <polygon points="70,-30 73,-20 83,-17 73,-14 70,-4 67,-14 57,-17 67,-20"
-      fill="none" stroke="#93c5fd" stroke-width="0.8" opacity="0.9"/>
+  <g fill="none" stroke="#f8fafc" opacity="0.36" stroke-width="0.95">
+    <path d="M415 158l4 11 11 4-11 4-4 11-4-11-11-4 11-4z"/>
+    <path d="M188 212l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/>
+    <path d="M456 262l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>
   </g>
 
-  <!-- Scattered larger stars -->
-  <g fill="none" stroke="#93c5fd" stroke-width="0.8" opacity="0.18">
-    <polygon points="80,300 83,310 93,313 83,316 80,326 77,316 67,313 77,310" transform="scale(1.5) translate(-26,130)"/>
-    <polygon points="80,300 83,310 93,313 83,316 80,326 77,316 67,313 77,310" transform="translate(430,580) scale(1.2)"/>
-    <polygon points="80,300 83,310 93,313 83,316 80,326 77,316 67,313 77,310" transform="translate(50,600) scale(0.9)"/>
+  <g opacity="0.14" stroke="#dbeafe" fill="none">
+    <path d="M78 628c42 16 84 24 126 24 34-1 66-5 96-14" stroke-width="0.8"/>
+    <path d="M522 628c-42 16-84 24-126 24-34-1-66-5-96-14" stroke-width="0.8"/>
+    <path d="M112 690c58 20 120 29 188 29 68 0 130-9 188-29" stroke-width="0.9"/>
   </g>
 
-  <!-- Bottom crescents small -->
-  <g opacity="0.1">
-    <path d="M 520,700 A 30,30 0 1,1 560,700 A 23,23 0 1,0 520,700 Z"
-      fill="none" stroke="#93c5fd" stroke-width="1"/>
-    <path d="M 30,720 A 25,25 0 1,1 65,720 A 19,19 0 1,0 30,720 Z"
-      fill="none" stroke="#93c5fd" stroke-width="1"/>
+  <g opacity="0.22" stroke="#dbeafe" fill="none">
+    <path d="M90 702h420" stroke-width="0.8"/>
+    <path d="M128 702v-40m14 40v-58m15 58v-34m16 34v-82m14 82v-52m14 52v-26m22 26v-92m16 92v-46m16 46v-120m18 120v-64m16 64v-36m18 36v-78m14 78v-44m16 44v-60m18 60v-30" stroke-width="0.8"/>
+    <path d="M90 730h420" stroke-width="0.6" stroke-dasharray="2 8"/>
   </g>
 
-  <!-- Concentric circle rings behind crescent -->
-  <g transform="translate(300,300)" opacity="0.07" fill="none" stroke="#93c5fd">
-    <circle cx="0" cy="0" r="160" stroke-width="0.6" stroke-dasharray="3,9"/>
-    <circle cx="0" cy="0" r="200" stroke-width="0.5" stroke-dasharray="2,12"/>
-    <circle cx="0" cy="0" r="250" stroke-width="0.4" stroke-dasharray="2,14"/>
+  <g opacity="0.18" stroke="#dbeafe" fill="none">
+    <rect x="28" y="28" width="544" height="744" rx="22" stroke-width="1"/>
+    <rect x="42" y="42" width="516" height="716" rx="18" stroke-width="0.7" stroke-dasharray="3 9"/>
   </g>
 </svg>

@@ -4,6 +4,10 @@ import { notFound } from "next/navigation";
 import { Link } from "@/lib/i18n-navigation";
 import type { Metadata } from "next";
 import { CardCanvas } from "@/components/cards/CardCanvas";
+import { BookCanvas } from "@/components/cards/BookCanvas";
+import { GoldenBookCanvas } from "@/components/cards/GoldenBookCanvas";
+import { resolveTemplateAnimationStyle } from "@/lib/card-themes/animation-style";
+import { applySpecialTemplateArtwork } from "@/lib/card-themes/special-template-artwork";
 
 interface Props {
   params: Promise<{ token: string }>;
@@ -45,6 +49,22 @@ export default async function ViewCardPage({ params }: Props) {
     },
   });
 
+  const animationStyle = resolveTemplateAnimationStyle({
+    animationStyle: card.template.animationStyle,
+    bgImageUrl: card.template.bgImageUrl,
+    titleEn: card.template.titleEn,
+    occasionSlug: card.template.occasion.slug,
+  });
+  const previewTemplate = applySpecialTemplateArtwork({
+    bgColor: card.template.bgColor,
+    bgImageUrl: card.template.bgImageUrl,
+    titleAr: card.template.titleAr,
+    titleEn: card.template.titleEn,
+    animationFile: card.template.animationFile,
+    animationStyle: card.template.animationStyle,
+    occasion: { slug: card.template.occasion.slug, nameEn: card.template.occasion.nameEn },
+  });
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-4"
@@ -52,22 +72,39 @@ export default async function ViewCardPage({ params }: Props) {
     >
       {/* Card */}
       <div className="w-full max-w-sm">
-        <CardCanvas
-          template={{
-            bgColor: card.template.bgColor,
-            bgImageUrl: card.template.bgImageUrl,
-            titleAr: card.template.titleAr,
-            titleEn: card.template.titleEn,
-            animationFile: card.template.animationFile,
-            occasion: { slug: card.template.occasion.slug, nameEn: card.template.occasion.nameEn },
-          }}
-          recipientName={card.recipientName}
-          senderName={card.senderName}
-          message={card.customMessage}
-          selectedVerse={card.verseTextAr ? { textAr: card.verseTextAr, textEn: card.verseTextEn ?? undefined, ref: card.selectedVerse ?? "" } : null}
-          fontStyle={card.fontStyle}
-          mode="full"
-        />
+        {animationStyle === "pageflip" ? (
+          <GoldenBookCanvas
+            template={previewTemplate}
+            recipientName={card.recipientName}
+            senderName={card.senderName}
+            message={card.customMessage}
+            selectedVerse={card.verseTextAr ? { textAr: card.verseTextAr, textEn: card.verseTextEn ?? undefined, ref: card.selectedVerse ?? "" } : null}
+            fontStyle={card.fontStyle}
+            mode="full"
+            autoOpen={false}
+          />
+        ) : animationStyle === "book" ? (
+          <BookCanvas
+            template={previewTemplate}
+            recipientName={card.recipientName}
+            senderName={card.senderName}
+            message={card.customMessage}
+            selectedVerse={card.verseTextAr ? { textAr: card.verseTextAr, textEn: card.verseTextEn ?? undefined, ref: card.selectedVerse ?? "" } : null}
+            fontStyle={card.fontStyle}
+            mode="full"
+            autoOpen={false}
+          />
+        ) : (
+          <CardCanvas
+            template={previewTemplate}
+            recipientName={card.recipientName}
+            senderName={card.senderName}
+            message={card.customMessage}
+            selectedVerse={card.verseTextAr ? { textAr: card.verseTextAr, textEn: card.verseTextEn ?? undefined, ref: card.selectedVerse ?? "" } : null}
+            fontStyle={card.fontStyle}
+            mode="full"
+          />
+        )}
       </div>
 
       {/* Footer */}

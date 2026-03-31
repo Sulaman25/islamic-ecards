@@ -1,78 +1,64 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
-  <rect width="600" height="800" fill="#2d1b0e"/>
   <defs>
-    <pattern id="floralArab" x="0" y="0" width="70" height="70" patternUnits="userSpaceOnUse">
-      <!-- Arabesque floral cell -->
-      <path d="M35,5 C42,15 50,22 42,35 C50,48 42,55 35,65 C28,55 20,48 28,35 C20,22 28,15 35,5 Z"
-        fill="none" stroke="#fca5a5" stroke-width="0.6" opacity="0.35"/>
-      <path d="M5,35 C15,28 22,20 35,28 C48,20 55,28 65,35 C55,42 48,50 35,42 C22,50 15,42 5,35 Z"
-        fill="none" stroke="#fca5a5" stroke-width="0.6" opacity="0.35"/>
-      <!-- Center circle -->
-      <circle cx="35" cy="35" r="6" fill="none" stroke="#fca5a5" stroke-width="0.5" opacity="0.3"/>
-      <circle cx="35" cy="35" r="2" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.25"/>
-      <!-- Diagonal petals -->
-      <path d="M12,12 C18,20 18,20 25,25" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.2"/>
-      <path d="M58,12 C52,20 52,20 45,25" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.2"/>
-      <path d="M12,58 C18,50 18,50 25,45" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.2"/>
-      <path d="M58,58 C52,50 52,50 45,45" fill="none" stroke="#fca5a5" stroke-width="0.4" opacity="0.2"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2b170d"/>
+      <stop offset="48%" stop-color="#5a3316"/>
+      <stop offset="100%" stop-color="#1a0d09"/>
+    </linearGradient>
+    <radialGradient id="centerGlow" cx="50%" cy="38%" r="54%">
+      <stop offset="0%" stop-color="#fde68a" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="floral" width="88" height="88" patternUnits="userSpaceOnUse">
+      <path d="M44 12c7 12 16 20 28 24-12 4-21 12-28 24-7-12-16-20-28-24 12-4 21-12 28-24z" fill="none" stroke="#fde68a" stroke-width="0.55" opacity="0.18"/>
+      <circle cx="44" cy="44" r="10" fill="none" stroke="#f8fafc" stroke-width="0.45" opacity="0.12"/>
+      <path d="M16 16c8 8 12 12 20 20M72 16c-8 8-12 12-20 20M16 72c8-8 12-12 20-20M72 72c-8-8-12-12-20-20" fill="none" stroke="#fde68a" stroke-width="0.4" opacity="0.1"/>
     </pattern>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
   </defs>
-  <rect width="600" height="800" fill="url(#floralArab)"/>
 
-  <!-- Central arabesque mandala -->
-  <g transform="translate(300,400)" opacity="0.14">
-    <!-- 8-petal rose mandala -->
-    <g stroke="#fca5a5" fill="none">
-      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(45)"/>
-      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(90)"/>
-      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(135)"/>
-      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(180)"/>
-      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(225)"/>
-      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(270)"/>
-      <ellipse cx="0" cy="-70" rx="20" ry="40" stroke-width="0.9" transform="rotate(315)"/>
-      <!-- Rings -->
-      <circle cx="0" cy="0" r="35" stroke-width="0.7"/>
-      <circle cx="0" cy="0" r="55" stroke-width="0.5" stroke-dasharray="3,4"/>
-      <circle cx="0" cy="0" r="95" stroke-width="0.5" stroke-dasharray="2,6"/>
-      <circle cx="0" cy="0" r="140" stroke-width="0.4" stroke-dasharray="1,8"/>
-      <circle cx="0" cy="0" r="200" stroke-width="0.3" stroke-dasharray="1,10"/>
-    </g>
+  <rect width="600" height="800" fill="url(#bg)"/>
+  <rect width="600" height="800" fill="url(#floral)" opacity="0.7"/>
+  <ellipse cx="300" cy="352" rx="250" ry="330" fill="url(#centerGlow)"/>
+
+  <g opacity="0.18" stroke="#fef3c7" fill="none">
+    <path d="M128 678c30-190 92-292 172-340 80 48 142 150 172 340" stroke-width="1.1"/>
+    <path d="M158 678c24-156 74-242 142-292 68 50 118 136 142 292" stroke-width="0.75" stroke-dasharray="3 10"/>
+    <path d="M214 448h172" stroke-width="0.7" stroke-dasharray="5 8"/>
+    <path d="M206 522h188" stroke-width="0.6" stroke-dasharray="4 10"/>
   </g>
 
-  <!-- Floating rose petals scattered -->
-  <g opacity="0.1" stroke="#fca5a5" fill="none" stroke-width="0.7">
-    <!-- Petal shapes at various positions -->
-    <ellipse cx="90" cy="150" rx="8" ry="18" transform="rotate(-30,90,150)"/>
-    <ellipse cx="120" cy="170" rx="6" ry="14" transform="rotate(20,120,170)"/>
-    <ellipse cx="480" cy="200" rx="8" ry="18" transform="rotate(40,480,200)"/>
-    <ellipse cx="510" cy="180" rx="6" ry="14" transform="rotate(-15,510,180)"/>
-    <ellipse cx="70" cy="620" rx="7" ry="16" transform="rotate(15,70,620)"/>
-    <ellipse cx="530" cy="580" rx="8" ry="18" transform="rotate(-25,530,580)"/>
-    <ellipse cx="150" cy="700" rx="6" ry="14" transform="rotate(35,150,700)"/>
-    <ellipse cx="440" cy="680" rx="7" ry="16" transform="rotate(-10,440,680)"/>
-    <!-- Small rose clusters -->
-    <circle cx="90" cy="150" r="4"/>
-    <circle cx="480" cy="200" r="4"/>
-    <circle cx="70" cy="620" r="3.5"/>
-    <circle cx="530" cy="580" r="4"/>
+  <g transform="translate(300 226)">
+    <ellipse cx="0" cy="0" rx="138" ry="94" fill="#fde68a" opacity="0.08" filter="url(#softGlow)"/>
+    <circle cx="-38" cy="0" r="46" fill="none" stroke="#fde68a" stroke-width="1.6" opacity="0.54"/>
+    <circle cx="38" cy="0" r="46" fill="none" stroke="#fde68a" stroke-width="1.6" opacity="0.54"/>
+    <circle cx="-38" cy="0" r="31" fill="none" stroke="#f8fafc" stroke-width="0.7" opacity="0.18"/>
+    <circle cx="38" cy="0" r="31" fill="none" stroke="#f8fafc" stroke-width="0.7" opacity="0.18"/>
+    <path d="M-2-26c10 7 16 15 18 26-8 0-16 3-24 10-4-12-2-24 6-36z" fill="#fde68a" opacity="0.22"/>
+    <path d="M-8-54l8 18 18 8-18 8-8 18-8-18-18-8 18-8z" fill="none" stroke="#fde68a" stroke-width="0.85" opacity="0.38"/>
   </g>
 
-  <!-- Elegant border frame -->
-  <g opacity="0.15" stroke="#fca5a5" fill="none">
-    <rect x="22" y="22" width="556" height="756" rx="5" stroke-width="0.8"/>
-    <rect x="30" y="30" width="540" height="740" rx="3" stroke-width="0.4" stroke-dasharray="3,5"/>
+  <g opacity="0.2" stroke="#fde68a" fill="none">
+    <path d="M118 138c36 22 74 34 112 34 28 0 54-6 80-18 26 12 52 18 80 18 38 0 76-12 112-34" stroke-width="0.85"/>
+    <path d="M146 168c28 16 56 24 84 24 25 0 52-7 80-22 28 15 55 22 80 22 28 0 56-8 84-24" stroke-width="0.65" stroke-dasharray="4 9"/>
   </g>
 
-  <!-- Corner rosettes -->
-  <g opacity="0.13" stroke="#fca5a5" fill="none" stroke-width="0.7">
-    <circle cx="55" cy="55" r="20"/>
-    <circle cx="55" cy="55" r="12"/>
-    <circle cx="545" cy="55" r="20"/>
-    <circle cx="545" cy="55" r="12"/>
-    <circle cx="55" cy="745" r="20"/>
-    <circle cx="55" cy="745" r="12"/>
-    <circle cx="545" cy="745" r="20"/>
-    <circle cx="545" cy="745" r="12"/>
+  <g opacity="0.22" stroke="#fde68a" fill="none">
+    <path d="M88 82c20 8 40 23 56 48 28-6 58-7 88 4 18-20 40-32 68-38 28 6 50 18 68 38 30-11 60-10 88-4 16-25 36-40 56-48" stroke-width="0.9"/>
+    <path d="M80 702c24-10 44-26 60-52 30 9 60 11 92 4 22 22 45 35 68 40 23-5 46-18 68-40 32 7 62 5 92-4 16 26 36 42 60 52" stroke-width="0.9"/>
+  </g>
+
+  <g opacity="0.16" stroke="#f8fafc" fill="none">
+    <rect x="26" y="26" width="548" height="748" rx="22" stroke-width="1"/>
+    <rect x="42" y="42" width="516" height="716" rx="18" stroke-width="0.7" stroke-dasharray="3 11"/>
+  </g>
+
+  <g opacity="0.18" stroke="#fde68a" fill="none">
+    <path d="M74 118c14 0 26 12 26 26s-12 26-26 26" stroke-width="0.8"/>
+    <path d="M526 118c-14 0-26 12-26 26s12 26 26 26" stroke-width="0.8"/>
+    <path d="M74 682c14 0 26-12 26-26s-12-26-26-26" stroke-width="0.8"/>
+    <path d="M526 682c-14 0-26-12-26-26s12-26 26-26" stroke-width="0.8"/>
   </g>
 </svg>
