@@ -13,6 +13,11 @@ const GOLDEN_EID_GREETING_EN = "Eid ul-Fitr Mubarak";
 const GOLDEN_EID_TEAL = "#1f516d";
 const GOLDEN_EID_GOLD = "#b98833";
 const SPECIAL_EID_PAGEFLIP_KEYS = ["eid-gold-geometric", "eid-crescent", "eid-crescent-moon", "eid-arabesque"];
+const SPECIAL_RAMADAN_PAGEFLIP_KEYS = ["ramadan-lantern"];
+const SPECIAL_ARTWORK_PAGEFLIP_KEYS = [
+  ...SPECIAL_EID_PAGEFLIP_KEYS,
+  ...SPECIAL_RAMADAN_PAGEFLIP_KEYS,
+];
 
 export function GoldenBookCanvas({
   template,
@@ -31,11 +36,14 @@ export function GoldenBookCanvas({
   const reduceMotion = useReducedMotion();
   const isPreview = mode === "preview";
   const isTemplateMode = contentMode === "template";
+  const isSpecialArtworkCard = SPECIAL_ARTWORK_PAGEFLIP_KEYS.some(key => template.bgImageUrl?.includes(key));
   const isSpecialEidCard = SPECIAL_EID_PAGEFLIP_KEYS.some(key => template.bgImageUrl?.includes(key));
   const isEidFitrMubarakCard = template.bgImageUrl?.includes("eid-crescent-front-photo") ?? false;
   const isCrescentMoonEidCard = template.bgImageUrl?.includes("eid-crescent-moon") ?? false;
   const isArabesqueEidCard = template.bgImageUrl?.includes("eid-arabesque") ?? false;
-  const isExactArtworkCoverCard = isCrescentMoonEidCard || isArabesqueEidCard;
+  const isRamadanArtworkCard = SPECIAL_RAMADAN_PAGEFLIP_KEYS.some(key => template.bgImageUrl?.includes(key));
+  const isExactArtworkCoverCard =
+    isCrescentMoonEidCard || isArabesqueEidCard || isRamadanArtworkCard;
   const isTextFreeCoverCard = isExactArtworkCoverCard || isEidFitrMubarakCard;
   const rootRef = useRef<HTMLDivElement>(null);
   const sideShadowRef = useRef<HTMLDivElement>(null);
@@ -50,20 +58,22 @@ export function GoldenBookCanvas({
   const resolvedMessage = message?.trim()
     ? message.trim()
     : isTemplateMode
-      ? isSpecialEidCard
-        ? "May Allah accept your Ramadan and fill your Eid day with prayer, family, gifts, and sweet moments."
+      ? isSpecialArtworkCard
+        ? isRamadanArtworkCard
+          ? "May this blessed month fill your home with light, your fasting with acceptance, and your nights with answered duas."
+          : "May Allah accept your Ramadan and fill your Eid day with prayer, family, gifts, and sweet moments."
         : "Personalise this card with names, your own message, and an optional Quran verse."
       : "Your heartfelt message will appear here.";
-  const coverEyebrow = isSpecialEidCard ? null : template.occasion.nameEn;
+  const coverEyebrow = isSpecialArtworkCard ? null : template.occasion.nameEn;
   const coverHeadingAr = isSpecialEidCard ? GOLDEN_EID_GREETING_AR : template.titleAr;
   const coverHeadingEn = isSpecialEidCard ? GOLDEN_EID_GREETING_EN : template.titleEn;
-  const coverMessage = isSpecialEidCard ? null : resolvedMessage;
+  const coverMessage = isSpecialArtworkCard ? null : resolvedMessage;
   const insideMediaUrl = template.insideMediaUrl ?? template.bgImageUrl;
   const insideMediaType =
     template.insideMediaType ??
     (insideMediaUrl?.toLowerCase().includes(".mp4") ? "video" : "image");
-  const useFullPageInsideArtwork = isSpecialEidCard && insideMediaType === "image" && !!insideMediaUrl;
-  const insideMediaLabel = isSpecialEidCard ? "Inside memory" : `${template.occasion.nameEn} media`;
+  const useFullPageInsideArtwork = isSpecialArtworkCard && insideMediaType === "image" && !!insideMediaUrl;
+  const insideMediaLabel = isSpecialArtworkCard ? "Inside memory" : `${template.occasion.nameEn} media`;
   const insideMediaCaption = insideMediaType === "video" ? "A video inside the card" : "A picture inside the card";
 
   const radius = isPreview ? "1rem" : "1.5rem";
@@ -461,8 +471,8 @@ export function GoldenBookCanvas({
                   inset: 0,
                   backgroundImage: `url(${template.bgImageUrl})`,
                   backgroundSize: isExactArtworkCoverCard ? "100% 100%" : "cover",
-                  backgroundPosition: isExactArtworkCoverCard ? "center center" : isSpecialEidCard ? "center 20%" : "center",
-                  opacity: isExactArtworkCoverCard ? 1 : isSpecialEidCard ? 0.9 : 0.55,
+                  backgroundPosition: isExactArtworkCoverCard ? "center center" : isSpecialArtworkCard ? "center 20%" : "center",
+                  opacity: isExactArtworkCoverCard ? 1 : isSpecialArtworkCard ? 0.9 : 0.55,
                 }}
               />
             ) : null}
@@ -474,13 +484,13 @@ export function GoldenBookCanvas({
                 background:
                   isExactArtworkCoverCard
                     ? "linear-gradient(180deg, rgba(255,250,240,0.01) 0%, rgba(24,37,52,0.02) 100%)"
-                    : isSpecialEidCard
+                    : isSpecialArtworkCard
                     ? "linear-gradient(180deg, rgba(255,250,240,0.03) 0%, rgba(24,37,52,0.06) 46%, rgba(24,37,52,0.16) 100%)"
                     : "linear-gradient(180deg, rgba(8,7,6,0.18) 0%, rgba(8,7,6,0.48) 58%, rgba(8,7,6,0.72) 100%)",
               }}
             />
 
-            {isSpecialEidCard && !isExactArtworkCoverCard ? (
+            {isSpecialArtworkCard && !isExactArtworkCoverCard ? (
               <div
                 style={{
                   position: "absolute",
@@ -498,7 +508,7 @@ export function GoldenBookCanvas({
                 position: "absolute",
                 inset: 0,
                 backgroundImage: `repeating-linear-gradient(45deg, ${FOIL}10 0px, ${FOIL}10 1px, transparent 1px, transparent 14px)`,
-                opacity: isExactArtworkCoverCard ? 0.06 : isSpecialEidCard ? 0.2 : 0.48,
+                opacity: isExactArtworkCoverCard ? 0.06 : isSpecialArtworkCard ? 0.2 : 0.48,
               }}
             />
 
@@ -533,14 +543,14 @@ export function GoldenBookCanvas({
                     marginTop: "auto",
                     padding: isPreview ? "12px 12px 14px" : "16px 16px 18px",
                     borderRadius: isPreview ? "16px" : "18px",
-                    border: isSpecialEidCard ? "none" : `1px solid ${FOIL}24`,
-                    background: isSpecialEidCard ? "transparent" : "linear-gradient(180deg, rgba(9,7,5,0.24) 0%, rgba(9,7,5,0.6) 100%)",
-                    boxShadow: isSpecialEidCard ? "none" : "0 18px 30px rgba(0,0,0,0.2)",
-                    backdropFilter: isSpecialEidCard ? undefined : "blur(6px)",
+                    border: isSpecialArtworkCard ? "none" : `1px solid ${FOIL}24`,
+                    background: isSpecialArtworkCard ? "transparent" : "linear-gradient(180deg, rgba(9,7,5,0.24) 0%, rgba(9,7,5,0.6) 100%)",
+                    boxShadow: isSpecialArtworkCard ? "none" : "0 18px 30px rgba(0,0,0,0.2)",
+                    backdropFilter: isSpecialArtworkCard ? undefined : "blur(6px)",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap: isSpecialEidCard ? (isPreview ? "8px" : "12px") : isPreview ? "6px" : "10px",
+                    gap: isSpecialArtworkCard ? (isPreview ? "8px" : "12px") : isPreview ? "6px" : "10px",
                   }}
                 >
                   <div
@@ -548,8 +558,8 @@ export function GoldenBookCanvas({
                       fontFamily: "'Amiri', serif",
                       fontSize: isPreview ? "1.22rem" : "1.84rem",
                       lineHeight: 1.12,
-                      color: isSpecialEidCard ? GOLDEN_EID_TEAL : "#fff6df",
-                      textShadow: isSpecialEidCard ? "0 1px 0 rgba(255,255,255,0.55)" : "0 10px 26px rgba(0,0,0,0.35)",
+                      color: isSpecialArtworkCard ? GOLDEN_EID_TEAL : "#fff6df",
+                      textShadow: isSpecialArtworkCard ? "0 1px 0 rgba(255,255,255,0.55)" : "0 10px 26px rgba(0,0,0,0.35)",
                     }}
                   >
                     {coverHeadingAr}
@@ -560,9 +570,9 @@ export function GoldenBookCanvas({
                       fontSize: isPreview ? "0.58rem" : "0.74rem",
                       letterSpacing: isPreview ? "1.6px" : "2.2px",
                       textTransform: "uppercase",
-                      color: isSpecialEidCard ? GOLDEN_EID_GOLD : `${FOIL}d2`,
+                      color: isSpecialArtworkCard ? GOLDEN_EID_GOLD : `${FOIL}d2`,
                       lineHeight: 1.45,
-                      fontWeight: isSpecialEidCard ? 700 : 500,
+                      fontWeight: isSpecialArtworkCard ? 700 : 500,
                     }}
                   >
                     {coverHeadingEn}
@@ -597,7 +607,7 @@ export function GoldenBookCanvas({
                 </div>
               ) : null}
 
-              {!isSpecialEidCard ? (
+              {!isSpecialArtworkCard ? (
                 <div
                   style={{
                     fontSize: smallSize,
@@ -651,6 +661,7 @@ export function GoldenBookCanvas({
                 </div>
               </>
             ) : null}
+
           </div>
 
           <div
@@ -707,8 +718,8 @@ export function GoldenBookCanvas({
                     position: "absolute",
                     inset: 0,
                     backgroundImage: `url(${insideMediaUrl})`,
-                    backgroundSize: isSpecialEidCard ? "cover" : "cover",
-                    backgroundPosition: isSpecialEidCard ? "center" : "center",
+                    backgroundSize: isSpecialArtworkCard ? "cover" : "cover",
+                    backgroundPosition: isSpecialArtworkCard ? "center" : "center",
                     backgroundRepeat: "no-repeat",
                   }}
                 />
@@ -763,7 +774,7 @@ export function GoldenBookCanvas({
                               inset: 0,
                               backgroundImage: `url(${insideMediaUrl})`,
                               backgroundSize: "cover",
-                              backgroundPosition: isSpecialEidCard ? "center 24%" : "center",
+                              backgroundPosition: isSpecialArtworkCard ? "center 24%" : "center",
                               opacity: 0.96,
                             }}
                           />

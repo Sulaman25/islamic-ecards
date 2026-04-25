@@ -15,6 +15,9 @@ const ARABESQUE_EID_TEMPLATE_KEY = "eid-arabesque";
 const ARABESQUE_EID_SOURCE = "/images/cards/eid-arabesque.svg";
 const ARABESQUE_EID_FRONT = "/images/cards/eid-arabesque-front-photo.png";
 const ARABESQUE_EID_INSIDE = "/images/cards/eid-arabesque-inside-photo.png";
+const RAMADAN_LANTERN_TEMPLATE_KEY = "ramadan-lantern";
+const RAMADAN_LANTERN_SOURCE = "/images/cards/ramadan-lantern.svg";
+const RAMADAN_LANTERN_INSIDE = "/images/cards/ramadan-lantern-inside-art.svg";
 
 export function applySpecialTemplateArtwork(template: CardCanvasTemplate): CardCanvasTemplate {
   if (template.bgImageUrl?.includes(GOLDEN_EID_TEMPLATE_KEY)) {
@@ -65,6 +68,17 @@ export function applySpecialTemplateArtwork(template: CardCanvasTemplate): CardC
       ...template,
       bgImageUrl: ARABESQUE_EID_FRONT,
       insideMediaUrl: ARABESQUE_EID_INSIDE,
+      insideMediaType: "image",
+    };
+  }
+
+  if (
+    template.bgImageUrl === RAMADAN_LANTERN_SOURCE ||
+    template.bgImageUrl?.includes(RAMADAN_LANTERN_TEMPLATE_KEY)
+  ) {
+    return {
+      ...template,
+      insideMediaUrl: RAMADAN_LANTERN_INSIDE,
       insideMediaType: "image",
     };
   }

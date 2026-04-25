@@ -1,76 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" width="1200" height="1600">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#180a1a"/>
-      <stop offset="50%" stop-color="#261138"/>
-      <stop offset="100%" stop-color="#090612"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#184f8b"/>
+      <stop offset="55%" stop-color="#123f73"/>
+      <stop offset="100%" stop-color="#0d315d"/>
     </linearGradient>
-    <radialGradient id="lanternGlow" cx="50%" cy="36%" r="36%">
-      <stop offset="0%" stop-color="#fde68a" stop-opacity="0.95"/>
-      <stop offset="35%" stop-color="#fbbf24" stop-opacity="0.38"/>
-      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    <radialGradient id="lanternGlow" cx="50%" cy="28%" r="34%">
+      <stop offset="0%" stop-color="#fff4bf" stop-opacity="0.98"/>
+      <stop offset="30%" stop-color="#ffd875" stop-opacity="0.72"/>
+      <stop offset="70%" stop-color="#f1b94f" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f1b94f" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="upperAura" cx="50%" cy="18%" r="60%">
-      <stop offset="0%" stop-color="#fcd34d" stop-opacity="0.12"/>
-      <stop offset="100%" stop-color="#fcd34d" stop-opacity="0"/>
-    </radialGradient>
-    <pattern id="stars" width="90" height="90" patternUnits="userSpaceOnUse">
-      <circle cx="14" cy="20" r="0.9" fill="#fef3c7" opacity="0.4"/>
-      <circle cx="58" cy="14" r="1.1" fill="#fde68a" opacity="0.3"/>
-      <circle cx="72" cy="56" r="0.8" fill="#fef3c7" opacity="0.34"/>
-      <circle cx="24" cy="70" r="0.75" fill="#fde68a" opacity="0.28"/>
-      <path d="M44 38l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="none" stroke="#fde68a" stroke-width="0.55" opacity="0.4"/>
+    <linearGradient id="lanternMetal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3cd6e"/>
+      <stop offset="100%" stop-color="#b67f22"/>
+    </linearGradient>
+    <linearGradient id="lanternGlass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff6cf"/>
+      <stop offset="100%" stop-color="#efb950"/>
+    </linearGradient>
+    <pattern id="geom" width="180" height="180" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="#8dc6df" stroke-width="2" opacity="0.18">
+        <path d="M90 22l38 38-38 38-38-38z"/>
+        <path d="M90 82l38 38-38 38-38-38z"/>
+        <path d="M30 82l38 38-38 38-38-38z"/>
+        <path d="M150 82l38 38-38 38-38-38z"/>
+        <circle cx="90" cy="90" r="60"/>
+      </g>
     </pattern>
-    <pattern id="mashrabiya" width="72" height="72" patternUnits="userSpaceOnUse">
-      <path d="M36 0l20 20-20 20-20-20z" fill="none" stroke="#fbbf24" stroke-width="0.55" opacity="0.15"/>
-      <path d="M36 16l20 20-20 20-20-20z" fill="none" stroke="#fde68a" stroke-width="0.45" opacity="0.1"/>
-      <circle cx="36" cy="36" r="8" fill="none" stroke="#fde68a" stroke-width="0.45" opacity="0.12"/>
-    </pattern>
-    <filter id="softBlur" x="-25%" y="-25%" width="150%" height="150%">
-      <feGaussianBlur stdDeviation="18"/>
+    <filter id="softBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+    <filter id="miniGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
     </filter>
   </defs>
 
-  <rect width="600" height="800" fill="url(#bg)"/>
-  <rect width="600" height="800" fill="url(#stars)"/>
-  <rect width="600" height="800" fill="url(#mashrabiya)" opacity="0.5"/>
-  <ellipse cx="300" cy="170" rx="260" ry="230" fill="url(#upperAura)"/>
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+  <rect width="1200" height="1600" fill="url(#geom)"/>
+  <rect width="1200" height="1600" fill="#1e6b9a" opacity="0.12"/>
 
-  <path d="M68 110c76-18 152-27 232-27s156 9 232 27" fill="none" stroke="#fde68a" stroke-width="0.8" opacity="0.2" stroke-dasharray="4 8"/>
-  <path d="M94 142c66-14 135-21 206-21 71 0 140 7 206 21" fill="none" stroke="#fde68a" stroke-width="0.6" opacity="0.14" stroke-dasharray="3 10"/>
-
-  <g transform="translate(300 274)">
-    <ellipse cx="0" cy="16" rx="142" ry="178" fill="url(#lanternGlow)" filter="url(#softBlur)" opacity="0.92"/>
-    <line x1="0" y1="-190" x2="0" y2="-142" stroke="#fde68a" stroke-width="1.2" opacity="0.42"/>
-    <line x1="-12" y1="-200" x2="12" y2="-200" stroke="#fde68a" stroke-width="0.9" opacity="0.26"/>
-    <path d="M-18-142h36l10 18h-56z" fill="none" stroke="#fde68a" stroke-width="1" opacity="0.38"/>
-    <path d="M-84-124h168l18 36-8 168-22 54H-72l-22-54-8-168z" fill="none" stroke="#fde68a" stroke-width="1.3" opacity="0.34"/>
-    <path d="M-84-124c19 24 43 38 84 38s65-14 84-38" fill="none" stroke="#fde68a" stroke-width="0.95" opacity="0.28"/>
-    <path d="M-102 44h204" fill="none" stroke="#fde68a" stroke-width="0.8" opacity="0.2" stroke-dasharray="4 8"/>
-    <path d="M-92 86h184" fill="none" stroke="#fde68a" stroke-width="0.7" opacity="0.18" stroke-dasharray="4 10"/>
-    <path d="M-72 134h144" fill="none" stroke="#fde68a" stroke-width="0.8" opacity="0.18"/>
-    <path d="M-64 134l16 28h96l16-28" fill="none" stroke="#fde68a" stroke-width="1" opacity="0.28"/>
-    <line x1="0" y1="162" x2="0" y2="194" stroke="#fde68a" stroke-width="0.9" opacity="0.26"/>
-    <path d="M-14 196h28" fill="none" stroke="#fde68a" stroke-width="0.85" opacity="0.24"/>
-
-    <g opacity="0.28" stroke="#fde68a" fill="none">
-      <path d="M-52-74c16 10 32 16 52 16s36-6 52-16" stroke-width="0.8"/>
-      <path d="M-44-26c12 7 26 11 44 11s32-4 44-11" stroke-width="0.75"/>
-      <path d="M-36 22c10 5 22 8 36 8s26-3 36-8" stroke-width="0.7"/>
-    </g>
-
-    <path d="M0-28l8 24 24 8-24 8-8 24-8-24-24-8 24-8z" fill="none" stroke="#fef3c7" stroke-width="1.1" opacity="0.62"/>
-    <circle cx="0" cy="4" r="18" fill="none" stroke="#fde68a" stroke-width="0.75" opacity="0.34"/>
+  <g opacity="0.38" stroke="#f3cd6e" stroke-width="5" stroke-linecap="round">
+    <line x1="120" y1="0" x2="120" y2="184"/>
+    <line x1="300" y1="0" x2="300" y2="126"/>
+    <line x1="518" y1="0" x2="518" y2="102"/>
+    <line x1="680" y1="0" x2="680" y2="122"/>
+    <line x1="862" y1="0" x2="862" y2="182"/>
+    <line x1="1086" y1="0" x2="1086" y2="166"/>
   </g>
 
-  <g opacity="0.12" stroke="#fde68a" fill="none">
-    <path d="M126 690c28-144 82-230 174-278 92 48 146 134 174 278" stroke-width="1"/>
-    <path d="M164 690c22-112 68-180 136-220 68 40 114 108 136 220" stroke-width="0.7" stroke-dasharray="3 10"/>
-    <path d="M216 736h168" stroke-width="0.8"/>
+  <g fill="#f6cf55" stroke="#6a5115" stroke-width="6">
+    <polygon points="120,184 134,224 176,224 142,248 154,288 120,264 86,288 98,248 64,224 106,224"/>
+    <polygon points="300,126 312,160 348,160 319,182 330,216 300,196 270,216 281,182 252,160 288,160"/>
+    <polygon points="518,102 528,132 560,132 534,150 544,180 518,162 492,180 502,150 476,132 508,132"/>
+    <polygon points="680,122 690,152 722,152 696,170 706,200 680,182 654,200 664,170 638,152 670,152"/>
+    <polygon points="862,182 876,222 918,222 884,246 896,286 862,262 828,286 840,246 806,222 848,222"/>
+    <polygon points="1086,166 1100,206 1142,206 1108,230 1120,270 1086,246 1052,270 1064,230 1030,206 1072,206"/>
   </g>
 
-  <g opacity="0.18" stroke="#fde68a" fill="none">
-    <rect x="26" y="26" width="548" height="748" rx="22" stroke-width="1"/>
-    <rect x="40" y="40" width="520" height="720" rx="18" stroke-width="0.7" stroke-dasharray="3 10"/>
+  <ellipse cx="602" cy="444" rx="286" ry="296" fill="url(#lanternGlow)" filter="url(#softBlur)"/>
+  <ellipse cx="602" cy="438" rx="170" ry="198" fill="#ffd45e" opacity="0.16" filter="url(#softBlur)"/>
+
+  <g transform="translate(600 236)">
+    <line x1="0" y1="-152" x2="0" y2="-52" stroke="#f3cd6e" stroke-width="8" stroke-linecap="round"/>
+    <path d="M-26 -52h52l12 22h-76z" fill="#d29937" opacity="0.85"/>
+    <path d="M-92 -30h184l26 40-10 218-26 70h-164l-26-70-10-218z" fill="none" stroke="url(#lanternMetal)" stroke-width="10"/>
+    <path d="M-92 -30c22 31 50 48 92 48s70-17 92-48" fill="none" stroke="#f7da87" stroke-width="8" opacity="0.68"/>
+    <path d="M-72 10h144l15 24-8 170-22 54h-114l-22-54-8-170z" fill="url(#lanternGlass)" opacity="0.94"/>
+    <path d="M-12 20c62 18 80 78 48 128-18 28-29 47-36 80-5-27-16-48-35-76-34-50-16-113 23-131z" fill="#fff9dd" opacity="0.76" filter="url(#miniGlow)"/>
+    <line x1="-102" y1="110" x2="102" y2="110" stroke="#f7db8b" stroke-width="6" opacity="0.58"/>
+    <line x1="-92" y1="164" x2="92" y2="164" stroke="#f7db8b" stroke-width="5" opacity="0.4"/>
+    <path d="M-64 298l18 36h92l18-36" fill="none" stroke="#dba648" stroke-width="10" stroke-linejoin="round"/>
+    <line x1="0" y1="334" x2="0" y2="376" stroke="#dba648" stroke-width="8" stroke-linecap="round"/>
+    <line x1="-20" y1="382" x2="20" y2="382" stroke="#dba648" stroke-width="7" stroke-linecap="round"/>
+  </g>
+
+  <g opacity="0.22">
+    <circle cx="204" cy="540" r="8" fill="#f9e5aa"/>
+    <circle cx="946" cy="618" r="10" fill="#f9e5aa"/>
+    <circle cx="858" cy="924" r="6" fill="#f9e5aa"/>
+    <circle cx="290" cy="1038" r="7" fill="#f9e5aa"/>
+    <circle cx="1016" cy="380" r="6" fill="#f9e5aa"/>
+    <circle cx="164" cy="852" r="5" fill="#f9e5aa"/>
+  </g>
+
+  <g opacity="0.38" stroke="#f3cd6e" fill="none">
+    <rect x="42" y="42" width="1116" height="1516" rx="30" stroke-width="4"/>
+    <rect x="72" y="72" width="1056" height="1456" rx="24" stroke-width="2.5" stroke-dasharray="6 12"/>
   </g>
 </svg>
